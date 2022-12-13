@@ -21,7 +21,7 @@ const password = process.env.PASSWORD;
 const postgresPort = parseInt(process.env.POSTGRESQLPORT ?? '5432');
 const clientID = process.env.GOOGLE_CLIENT_ID;
 const clientSecret = process.env.GOOGLE_CLIENT_SECRET;
-const jwtSecret  = process.env.JWT_SECRET_KEY;
+const jwtSecret = process.env.JWT_SECRET_KEY;
 export {
   port,
   user,

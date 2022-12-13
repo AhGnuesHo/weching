@@ -7,6 +7,10 @@ export class GuestService {
   async createUser(userType: userType): Promise<void> {
     await userModel.createUser(userType);
   }
+
+  async isEmail(email: string): Promise<boolean> {
+    return await userModel.isEmail(email);
+  }
 }
 
 const guestService = new GuestService(userModel);
