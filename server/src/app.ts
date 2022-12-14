@@ -10,6 +10,7 @@ import { errorHandler, loginRequired } from './middlewares';
 import { indexRouter, guestRouter, authRouter } from './routers';
 import { endPoint } from './constants';
 import { Pool } from 'pg';
+import { noticeRouter } from './routers/noticeRouter';
 require('./passport')();
 const app = express();
 
@@ -33,6 +34,7 @@ app.use(cookieParser());
 
 app.get(endPoint.index, indexRouter);
 app.use(endPoint.guest, guestRouter);
+app.use(endPoint.notice, noticeRouter);
 app.use(endPoint.user, loginRequired);
 app.use('/auth', authRouter);
 
