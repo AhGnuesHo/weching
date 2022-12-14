@@ -32,9 +32,9 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
 app.get(endPoint.index, indexRouter);
+app.use(endPoint.auth, authRouter);
 app.use(endPoint.guest, guestRouter);
 app.use(endPoint.user, loginRequired);
-app.use('/auth', authRouter);
 
 app.use(function (req, res, next) {
   next(createError(404));

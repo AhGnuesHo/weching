@@ -1,4 +1,5 @@
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
+import { doesNotMatch } from 'assert';
 import { clientID, clientSecret } from '../../config';
 import { guestService } from '../../services/guestService';
 
@@ -8,7 +9,7 @@ const config = {
   callbackURL: '/auth/google/callback',
 };
 
-const google = new GoogleStrategy(
+const login = new GoogleStrategy(
   config,
   async (
     accessToken: string,
@@ -17,13 +18,13 @@ const google = new GoogleStrategy(
     done: any
   ) => {
     try {
-      const exUser = await guestService.isEmail(profile._json.email);
+      const exUser = await guestService.isUser(profile._json.email);
 
       if (exUser) {
         done(null, exUser);
       } else {
-        // todo 회원가입 하도록 리다이렉트
-        console.log('회원가입되지 않은 이메일입니다.');
+        // throw new Error('회원가입되지 않은 사용자');
+        done(null, profile._json.email);
       }
     } catch (error) {
       console.error(error);
@@ -31,4 +32,4 @@ const google = new GoogleStrategy(
     }
   }
 );
-export { google };
+export { login };

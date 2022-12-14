@@ -1,15 +1,11 @@
-interface user {
-  user: userType;
-  createUser(): void;
-  getUserInfo(): userType;
-  
+interface user extends registerUserType {
+  email: string;
+  point: number;
 }
 
-type userType = {
-  email: string;
-  password: string;
-  ranking: number;
-  point: number;
-};
+interface registerUserType {
+  nickName: string;
+  birthday: Date;
+}
 
-export { user, userType };
+export { user, registerUserType };

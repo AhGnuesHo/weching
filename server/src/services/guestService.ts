@@ -1,15 +1,15 @@
+import { QueryResult } from 'pg';
 import { userModel, UserModel } from '../model/userModel';
-import { userType } from '../services/interfaces/userInterface';
+import { user } from '../services/interfaces/userInterface';
 export class GuestService {
-  // 의존성 주입
-  constructor(private usermodel: UserModel) {}
+  constructor(private userModel: UserModel) {}
 
-  async createUser(userType: userType): Promise<void> {
-    await userModel.createUser(userType);
+  async createUser(user: user): Promise<QueryResult<any>> {
+    return await userModel.createUser(user);
   }
 
-  async isEmail(email: string): Promise<boolean> {
-    return await userModel.isEmail(email);
+  async isUser(email: string): Promise<boolean> {
+    return await userModel.isUser(email);
   }
 }
 
