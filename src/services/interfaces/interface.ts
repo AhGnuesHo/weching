@@ -14,6 +14,11 @@ interface post {
   status?: postStatus;
 }
 
+interface notice {
+  title: string;
+  content: string;
+}
+
 interface advice {
   author: string;
   authorrofile: string;
@@ -50,6 +55,14 @@ interface IPostModel {
   createReview(targetUser: number[], postId: number): Promise<void>;
 }
 
+interface INoticeModel {
+  createNotice(notice: notice): Promise<notice[]>;
+  findNotice(id: number): Promise<notice[]>;
+  findAll(start: number): Promise<notice[]>;
+  update(id: number, notice: notice): Promise<notice[]>;
+  delete(id: number): Promise<notice[]>;
+}
+
 interface IAdviceModel {
   getAdvice(): Promise<advice[]>;
 }
@@ -65,4 +78,6 @@ export {
   IReviewModel,
   advice,
   IAdviceModel,
+  notice,
+  INoticeModel,
 };
