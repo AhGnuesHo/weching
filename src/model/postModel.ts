@@ -1,4 +1,9 @@
-import { post, IPostModel, newPost } from '../services/interfaces/interface';
+import {
+  post,
+  IPostModel,
+  newPost,
+  review,
+} from '../services/interfaces/interface';
 import { pg } from '../app';
 import { QueryResult } from 'pg';
 
@@ -22,7 +27,7 @@ export class PostModel implements IPostModel {
   }
 
   async createReview(targetUser: number[], postId: number): Promise<void> {
-    const r = await Promise.all(
+    await Promise.all(
       targetUser.map(
         async (user) =>
           await pg.query(
@@ -31,6 +36,15 @@ export class PostModel implements IPostModel {
           )
       )
     );
+  }
+
+  async getPost(postId: number, userId: number): Promise<review> {
+    const getPost = await pg.query(
+      `select posts.content, review.content from posts inner join
+   review on posts.id = review.post_id where posts.id = $1  and posts.user_id = $2`,
+      [postId, userId]
+    );
+    return getPost.rows[0];
   }
 }
 

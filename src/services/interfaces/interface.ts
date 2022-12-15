@@ -1,4 +1,3 @@
-import { LargeNumberLike } from 'crypto';
 import { QueryResult } from 'pg';
 
 interface user {
@@ -42,8 +41,11 @@ interface IPostModel {
   post(post: post): Promise<newPost>;
   getAllUsersCount(): Promise<number>;
   createReview(targetUser: number[], postId: number): Promise<void>;
+  getPost(postId: number, userId: number): Promise<review>;
 }
-
+interface RequestBody {
+  userId: number;
+}
 export {
   user,
   post,
@@ -52,5 +54,7 @@ export {
   IUserModel,
   IPostModel,
   newPost,
+  review,
   IReviewModel,
+  RequestBody,
 };

@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 
-export type AsyncRequestHandler = (
-  req: Request,
+export type AsyncRequestHandler<T> = (
+  req: T,
   res: Response,
   next?: NextFunction
 ) => Promise<any>;

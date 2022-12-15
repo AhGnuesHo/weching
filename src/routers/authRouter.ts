@@ -18,7 +18,7 @@ authRouter.get(
   }),
   (req: Request, res: Response, next: NextFunction) => {
     if (req.user === userEnum.GUEST) {
-      res.status(400).json(req.user);
+      res.json(req.authInfo);
       return;
     }
 

@@ -2,15 +2,15 @@ import { noticeService } from '../services/noticeService';
 import { AsyncRequestHandler } from '../types';
 import { noticeType } from '../services/interfaces/noticeInterface';
 
-interface noticeControllerInterface {
-  create: AsyncRequestHandler;
-  findById: AsyncRequestHandler;
-  findAll: AsyncRequestHandler;
-  update: AsyncRequestHandler;
-  delete: AsyncRequestHandler;
-}
+// interface noticeControllerInterface {
+//   create: AsyncRequestHandler;
+//   findById: AsyncRequestHandler;
+//   findAll: AsyncRequestHandler;
+//   update: AsyncRequestHandler;
+//   delete: AsyncRequestHandler;
+// }
 
-export const noticeController: noticeControllerInterface = {
+export const noticeController = {
   //공지사항 생성
   async create(req: any, res: any, next: any): Promise<any> {
     const newNotice: noticeType = {
