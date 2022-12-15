@@ -14,9 +14,11 @@ import {
   postRouter,
   noticeRouter,
   reviewRouter,
+  adviceRouter,
 } from './routers';
 import { endPoint } from './constants';
 import { Pool } from 'pg';
+
 require('./passport')();
 const app = express();
 
@@ -44,6 +46,7 @@ app.use(endPoint.guest, guestRouter);
 app.use(endPoint.post, loginRequired, postRouter);
 app.use(endPoint.review, loginRequired, reviewRouter);
 app.use(endPoint.notice, noticeRouter);
+app.use(endPoint.advice, adviceRouter);
 app.use(endPoint.user, loginRequired);
 
 app.use(function (req, res, next) {

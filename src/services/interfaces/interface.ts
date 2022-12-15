@@ -14,6 +14,12 @@ interface post {
   status?: postStatus;
 }
 
+interface advice {
+  author: string;
+  authorrofile: string;
+  message: string;
+}
+
 interface newPost extends post {
   id: number;
 }
@@ -44,6 +50,10 @@ interface IPostModel {
   createReview(targetUser: number[], postId: number): Promise<void>;
 }
 
+interface IAdviceModel {
+  getAdvice(): Promise<advice[]>;
+}
+
 export {
   user,
   post,
@@ -53,4 +63,6 @@ export {
   IPostModel,
   newPost,
   IReviewModel,
+  advice,
+  IAdviceModel,
 };
