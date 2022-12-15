@@ -1,4 +1,4 @@
-import { postService } from './../services';
+import { postService } from '../services/postService';
 
 import { AsyncRequestHandler } from '../types';
 import { post } from '../services/interfaces/interface';

@@ -1,4 +1,4 @@
-import { guestService } from './../services/guestService';
+import { guestService } from '../services/guestService';
 
 import { AsyncRequestHandler } from '../types';
 import { user } from '../services/interfaces/interface';
