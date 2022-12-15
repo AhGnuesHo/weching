@@ -1,6 +1,10 @@
 import { Router } from 'express';
 import passport from 'passport';
 import { setUserToken } from '../utils/jwt';
+import { Request, Response, NextFunction } from 'express';
+import jwt, { Secret } from 'jsonwebtoken';
+import { jwtSecret } from '../config';
+import { userEnum } from '../services/interfaces/interface';
 
 export const authRouter = Router();
 
@@ -14,14 +18,12 @@ authRouter.get(
   passport.authenticate('google', {
     session: false,
   }),
-  (req: any, res: any, next: any) => {
-    console.log(req.users);
-
-    if (typeof req.uses === 'string') {
-      res.status(400).json(req.users);
-    } else {
-      setUserToken(res, req.user);
-      res.redirect('/');
+  (req: Request, res: Response, next: NextFunction) => {
+    if (req.user === userEnum.GUEST) {
+      res.status(400).json(req.user);
+      return;
     }
+
+    res.json(setUserToken(res, req.user));
   }
 );

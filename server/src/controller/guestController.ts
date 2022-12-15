@@ -1,7 +1,7 @@
 import { guestService } from './../services/guestService';
 
 import { AsyncRequestHandler } from '../types';
-import { user } from '../services/interfaces/userInterface';
+import { user } from '../services/interfaces/interface';
 
 interface guestControllerInterface {
   register: AsyncRequestHandler;
@@ -12,7 +12,6 @@ export const guestController: guestControllerInterface = {
     const newUser: user = {
       email: req.body.email,
       birthday: new Date(req.body.birthday),
-      point: 10,
       nickName: req.body.nickName,
     };
 

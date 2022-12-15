@@ -1,10 +1,10 @@
 import { Request, Response, NextFunction } from 'express';
 import { errorResponse } from '../utils';
-
+import jwt from 'jsonwebtoken';
 export function loginRequired(req: Request, res: Response, next: NextFunction) {
   const userToken = req.headers.authorization?.split(' ')[1];
   if (!userToken || userToken === 'null') {
-    console.log('서비스 사용 요청이 있습니다.하지만, Authorization 토큰: 없음');
+    console.log('Authorization 토큰 없음');
     errorResponse(
       res,
       'FORBIDDEN',
@@ -16,7 +16,11 @@ export function loginRequired(req: Request, res: Response, next: NextFunction) {
 
   try {
     const secretKey = process.env.JWT_SECRET_KEY || 'secret-key';
-    // const jwtDecoded = jwt.verify(userToken, secretKey);
+    const jwtDecoded = jwt.verify(userToken, secretKey);
+    const userId = (<{ userId: string }>jwtDecoded).userId;
+    const email = (<{ email: string }>jwtDecoded).email;
+    req.body.userId = userId;
+    req.body.email = email;
     next();
   } catch (error) {
     errorResponse(res, 'FORBIDDEN', '정상적인 토큰이 아닙니다.');

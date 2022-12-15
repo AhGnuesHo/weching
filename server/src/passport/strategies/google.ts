@@ -2,7 +2,7 @@ const GoogleStrategy = require('passport-google-oauth20').Strategy;
 import { doesNotMatch } from 'assert';
 import { clientID, clientSecret } from '../../config';
 import { guestService } from '../../services/guestService';
-
+import { userEnum } from '../../services/interfaces/interface';
 const config = {
   clientID: clientID,
   clientSecret: clientSecret,
@@ -24,7 +24,8 @@ const login = new GoogleStrategy(
         done(null, exUser);
       } else {
         // throw new Error('회원가입되지 않은 사용자');
-        done(null, profile._json.email);
+
+        done(null, userEnum.GUEST);
       }
     } catch (error) {
       console.error(error);
