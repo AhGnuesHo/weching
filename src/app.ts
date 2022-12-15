@@ -7,7 +7,13 @@ import logger from 'morgan';
 
 import { port, user, host, database, password, postgresPort } from './config';
 import { errorHandler, loginRequired } from './middlewares';
-import { indexRouter, guestRouter, authRouter, postRouter } from './routers';
+import {
+  indexRouter,
+  guestRouter,
+  authRouter,
+  postRouter,
+  noticeRouter,
+} from './routers';
 import { endPoint } from './constants';
 import { Pool } from 'pg';
 require('./passport')();
@@ -35,6 +41,7 @@ app.get(endPoint.index, indexRouter);
 app.use(endPoint.auth, authRouter);
 app.use(endPoint.guest, guestRouter);
 app.use(endPoint.post, loginRequired, postRouter);
+app.use(endPoint.notice, noticeRouter);
 app.use(endPoint.user, loginRequired);
 
 app.use(function (req, res, next) {
