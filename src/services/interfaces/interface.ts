@@ -1,3 +1,6 @@
+import { LargeNumberLike } from 'crypto';
+import { QueryResult } from 'pg';
+
 interface user {
   email: string;
   nickName: string;
@@ -11,6 +14,13 @@ interface post {
   status?: postStatus;
 }
 
+interface newPost extends post {
+  id: number;
+}
+
+interface review extends newPost {
+  content: string;
+}
 enum postStatus {
   PENDING = 'pending',
   COMPLETE = 'complete',
@@ -20,5 +30,27 @@ enum userEnum {
   USER = 'user',
   GUEST = 'guest',
 }
+interface IReviewModel {
+  getReview(userId: number): Promise<newPost[]>;
+}
+interface IUserModel {
+  createUser(user: user): Promise<QueryResult<any>>;
+  isUser(email: string): Promise<QueryResult<any>>;
+}
 
-export { user, post, postStatus, userEnum };
+interface IPostModel {
+  post(post: post): Promise<newPost>;
+  getAllUsersCount(): Promise<number>;
+  createReview(targetUser: number[], postId: number): Promise<void>;
+}
+
+export {
+  user,
+  post,
+  postStatus,
+  userEnum,
+  IUserModel,
+  IPostModel,
+  newPost,
+  IReviewModel,
+};

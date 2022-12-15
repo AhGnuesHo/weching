@@ -1,12 +1,26 @@
 import { QueryResult } from 'pg';
-import { postModel, PostModel } from '../model/postModel';
-import { post } from './interfaces/interface';
+
+import { postModel } from '../model/postModel';
+import { post, IPostModel, newPost } from './interfaces/interface';
 
 export class PostService {
-  constructor(private postModel: PostModel) {}
+  constructor(private postModel: IPostModel) {}
 
-  async post(post: post): Promise<QueryResult<any>> {
-    return await postModel.post(post);
+  async post(post: post): Promise<newPost> {
+    const result = await postModel.post(post);
+    const postId = result.id;
+    await this.createReview(postId);
+    return result;
+  }
+
+  async createReview(postId: number): Promise<void> {
+    const count = await postModel.getAllUsersCount();
+    const target = [];
+    for (let i = 0; i < 3; i++) {
+      target.push(Math.floor(Math.random() * (count - 15) + 15));
+    }
+
+    await postModel.createReview(target, postId);
   }
 }
 

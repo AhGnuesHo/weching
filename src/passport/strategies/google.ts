@@ -1,7 +1,7 @@
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 import { doesNotMatch } from 'assert';
 import { clientID, clientSecret } from '../../config';
-import { guestService } from '../../services/guestService';
+import { userService } from '../../services/userService';
 import { userEnum } from '../../services/interfaces/interface';
 const config = {
   clientID: clientID,
@@ -18,7 +18,7 @@ const login = new GoogleStrategy(
     done: any
   ) => {
     try {
-      const exUser = await guestService.isUser(profile._json.email);
+      const exUser = await userService.isUser(profile._json.email);
 
       if (exUser) {
         done(null, exUser);
