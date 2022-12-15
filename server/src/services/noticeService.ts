@@ -15,8 +15,8 @@ export class NoticeService {
     return await noticeModel.findNotice(id);
   }
   //공지사항 전체 조회
-  async findAll(): Promise<noticeType[]> {
-    return await noticeModel.findAll();
+  async findAll(start: number): Promise<noticeType[]> {
+    return await noticeModel.findAll(start);
   }
 
   //공지사항 수정
