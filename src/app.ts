@@ -13,6 +13,7 @@ import {
   authRouter,
   postRouter,
   noticeRouter,
+  reviewRouter,
 } from './routers';
 import { endPoint } from './constants';
 import { Pool } from 'pg';
@@ -41,6 +42,7 @@ app.get(endPoint.index, indexRouter);
 app.use(endPoint.auth, authRouter);
 app.use(endPoint.guest, guestRouter);
 app.use(endPoint.post, loginRequired, postRouter);
+app.use(endPoint.review, loginRequired, reviewRouter);
 app.use(endPoint.notice, noticeRouter);
 app.use(endPoint.user, loginRequired);
 

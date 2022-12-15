@@ -1,4 +1,4 @@
-import { guestService } from '../services/guestService';
+import { userService } from '../services';
 
 import { AsyncRequestHandler } from '../types';
 import { user } from '../services/interfaces/interface';
@@ -15,7 +15,7 @@ export const guestController: guestControllerInterface = {
       nickName: req.body.nickName,
     };
 
-    const user = await guestService.createUser(newUser);
+    const user = await userService.createUser(newUser);
     res.json(user);
   },
 };

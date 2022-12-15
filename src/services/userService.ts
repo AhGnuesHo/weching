@@ -1,11 +1,8 @@
 import { QueryResult } from 'pg';
-import { userModel, UserModel } from '../model/userModel';
-import { user } from './interfaces/interface';
-export class GuestService {
-  /// UserModel을  인터페이스로 지정해주기
-  // 다형성 
-  
-  constructor(private userModel: UserModel) {}
+import { userModel } from '../model/userModel';
+import { user, IUserModel } from './interfaces/interface';
+export class UserService {
+  constructor(private userModel: IUserModel) {}
 
   async createUser(user: user): Promise<QueryResult<any>> {
     const isUser = await this.isUser(user.email);
@@ -20,6 +17,6 @@ export class GuestService {
   }
 }
 
-const guestService = new GuestService(userModel);
+const userService = new UserService(userModel);
 
-export { guestService };
+export { userService };
