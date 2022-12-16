@@ -10,6 +10,15 @@ export class ReviewService {
     }
     return todoReview;
   }
+
+  async writeReview(
+    userId: number,
+    postId: number,
+    content: string
+  ): Promise<newPost> {
+    const review = await reviewModel.writeReview(userId, postId, content);
+    return review;
+  }
 }
 
 const reviewService = new ReviewService(reviewModel);

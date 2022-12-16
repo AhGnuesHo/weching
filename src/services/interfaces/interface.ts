@@ -3,7 +3,6 @@ import { QueryResult } from 'pg';
 interface user {
   email: string;
   nickName: string;
-  birthday: Date;
   point?: number;
 }
 
@@ -20,6 +19,7 @@ interface newPost extends post {
 interface review extends newPost {
   content: string;
 }
+
 enum postStatus {
   PENDING = 'pending',
   COMPLETE = 'complete',
@@ -31,6 +31,11 @@ enum userEnum {
 }
 interface IReviewModel {
   getReview(userId: number): Promise<newPost[]>;
+  writeReview(
+    userId: number,
+    postId: number,
+    content: string
+  ): Promise<newPost>;
 }
 interface IUserModel {
   createUser(user: user): Promise<QueryResult<any>>;
@@ -44,7 +49,8 @@ interface IPostModel {
   getPost(postId: number, userId: number): Promise<review>;
 }
 interface RequestBody {
-  userId: number;
+  userId?: number;
+  postId?: number;
 }
 export {
   user,

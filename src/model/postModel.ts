@@ -40,8 +40,8 @@ export class PostModel implements IPostModel {
 
   async getPost(postId: number, userId: number): Promise<review> {
     const getPost = await pg.query(
-      `select posts.content, review.content from posts inner join
-   review on posts.id = review.post_id where posts.id = $1  and posts.user_id = $2`,
+      `select  * from posts p FULL OUTER JOIN
+   review r on p.id = r.post_id where p.id =$1  and r.user_id = $2`,
       [postId, userId]
     );
     return getPost.rows[0];

@@ -29,3 +29,6 @@ export class PostService {
 const postService = new PostService(postModel);
 
 export { postService };
+
+// 닉네임 중복확인
+//

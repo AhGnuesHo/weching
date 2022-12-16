@@ -8,8 +8,8 @@ interface RequestParams {
 }
 
 interface postControllerInterface {
-  post: AsyncRequestHandler<Request>;
-  getPost: AsyncRequestHandler<Request<RequestParams, RequestBody>>;
+  post: AsyncRequestHandler;
+  getPost: AsyncRequestHandler;
 }
 
 export const postController: postControllerInterface = {
@@ -25,9 +25,10 @@ export const postController: postControllerInterface = {
   },
 
   async getPost(req, res) {
-    const postId = req.params.postId;
+    const postId = parseInt(req.params.postId);
     const { userId } = req.body;
     const myPost = await postService.getPost(postId, userId);
+
     return res.json(myPost);
   },
 };
