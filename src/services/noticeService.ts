@@ -1,6 +1,6 @@
 import { QueryResult } from 'pg';
-import { noticeModel, NoticeModel } from '../model/noticeModel';
 import { notice } from './interfaces/interface';
+import { NoticeModel, noticeModel } from '../model/noticeModel';
 
 export class NoticeService {
   constructor(private noticeModel: NoticeModel) {
