@@ -12,6 +12,17 @@ interface post {
   status?: postStatus;
 }
 
+interface notice {
+  title: string;
+  content: string;
+}
+
+interface advice {
+  author: string;
+  authorrofile: string;
+  message: string;
+}
+
 interface newPost extends post {
   id: number;
 }
@@ -52,6 +63,19 @@ interface RequestBody {
   userId?: number;
   postId?: number;
 }
+
+interface INoticeModel {
+  createNotice(notice: notice): Promise<notice[]>;
+  findNotice(id: number): Promise<notice[]>;
+  findAll(start: number): Promise<notice[]>;
+  update(id: number, notice: notice): Promise<notice[]>;
+  delete(id: number): Promise<notice[]>;
+}
+
+interface IAdviceModel {
+  getAdvice(): Promise<advice[]>;
+}
+
 export {
   user,
   post,
@@ -62,5 +86,8 @@ export {
   newPost,
   review,
   IReviewModel,
-  RequestBody,
+  advice,
+  IAdviceModel,
+  notice,
+  INoticeModel,
 };
