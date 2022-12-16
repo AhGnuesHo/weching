@@ -19,6 +19,10 @@ export class UserService {
   async findUser(id: number): Promise<user[]> {
     return await userModel.findUser(id);
   }
+
+  async userStatusUpdate(id: number): Promise<user[]> {
+    return await userModel.userStatusUpdate(id);
+  }
 }
 
 const userService = new UserService(userModel);

@@ -5,3 +5,4 @@ import { userController } from '../controller/userController';
 export const userRouter = Router();
 
 userRouter.get('/', asyncHandler(userController.findUser));
+userRouter.delete('/', asyncHandler(userController.deleteUser));

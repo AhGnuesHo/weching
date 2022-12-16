@@ -17,9 +17,14 @@ export class UserModel implements IUserModel {
       `select * from users where email = $1`,
       [email]
     );
+
     if (result.rows.length > 1) {
       throw new Error(`user ${result.rows.length} is already`);
     }
+    if (result.rows[0].status !== 0) {
+      throw new Error(`회원정보가 없습니다.`);
+    }
+
     return result.rows[0];
   }
 
@@ -35,12 +40,11 @@ export class UserModel implements IUserModel {
     return row.rows;
   }
 
-  // async userStatusUpdate(status: number, id: number): Promise<user[]> {
-  //   await pg.query('UPDATE users SET status = ($1) WHERE id=($2)', [
-  //     status,
-  //     id,
-  //   ]).then(()=>this.);
-  // }
+  async userStatusUpdate(id: number): Promise<user[]> {
+    return await pg
+      .query('UPDATE users SET status = 1 WHERE id=($1)', [id])
+      .then(() => this.findUser(id));
+  }
 }
 
 export const userModel = new UserModel();
