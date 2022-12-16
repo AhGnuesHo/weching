@@ -1,7 +1,5 @@
-import { QueryResult } from 'pg';
-
 import { postModel } from '../model/postModel';
-import { post, IPostModel, newPost } from './interfaces/interface';
+import { post, IPostModel, newPost, review } from './interfaces/interface';
 
 export class PostService {
   constructor(private postModel: IPostModel) {}
@@ -22,8 +20,15 @@ export class PostService {
 
     await postModel.createReview(target, postId);
   }
+
+  async getPost(postId: number, userId: number): Promise<review> {
+    return await postModel.getPost(postId, userId);
+  }
 }
 
 const postService = new PostService(postModel);
 
 export { postService };
+
+// 닉네임 중복확인
+//
