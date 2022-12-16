@@ -1,11 +1,7 @@
 import { postService } from '../services/postService';
-import { Request } from 'express';
-import { AsyncRequestHandler } from '../types';
-import { post, RequestBody } from '../services/interfaces/interface';
 
-interface RequestParams {
-  postId: number;
-}
+import { AsyncRequestHandler } from '../types';
+import { post } from '../services/interfaces/interface';
 
 interface postControllerInterface {
   post: AsyncRequestHandler;

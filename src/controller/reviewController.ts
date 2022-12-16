@@ -1,7 +1,5 @@
 import { reviewService } from '../services';
 import { AsyncRequestHandler } from '../types';
-import { Request } from 'express';
-import { RequestBody } from '../services/interfaces/interface';
 
 interface reviewControllerInterface {
   getReview: AsyncRequestHandler;
