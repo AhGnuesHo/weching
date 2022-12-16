@@ -3,10 +3,10 @@ import { pg } from '../app';
 import { QueryResult } from 'pg';
 export class UserModel implements IUserModel {
   async createUser(user: user): Promise<QueryResult<any>> {
-    const { email, nickName, birthday } = user;
+    const { email, nickName } = user;
     const newUser: QueryResult<any> = await pg.query(
-      'INSERT INTO users ( email, nickname , birthday) VALUES ($1, $2,$3) RETURNING *',
-      [email, nickName, birthday]
+      'INSERT INTO users ( email, nickname ) VALUES ($1, $2) RETURNING *',
+      [email, nickName]
     );
 
     return newUser.rows[0];
@@ -29,6 +29,18 @@ export class UserModel implements IUserModel {
     );
     return result.rows[0];
   }
+
+  async findUser(id: number): Promise<user[]> {
+    const row = await pg.query('SELECT * FROM users WHERE id=($1)', [id]);
+    return row.rows;
+  }
+
+  // async userStatusUpdate(status: number, id: number): Promise<user[]> {
+  //   await pg.query('UPDATE users SET status = ($1) WHERE id=($2)', [
+  //     status,
+  //     id,
+  //   ]).then(()=>this.);
+  // }
 }
 
 export const userModel = new UserModel();

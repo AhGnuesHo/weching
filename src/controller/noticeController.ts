@@ -1,7 +1,6 @@
 import { noticeService } from '../services/noticeService';
 import { AsyncRequestHandler } from '../types';
-import { noticeType } from '../services/interfaces/noticeInterface';
-
+import { notice } from '../services/interfaces/interface';
 interface noticeControllerInterface {
   create: AsyncRequestHandler;
   findById: AsyncRequestHandler;
@@ -13,7 +12,7 @@ interface noticeControllerInterface {
 export const noticeController: noticeControllerInterface = {
   //공지사항 생성
   async create(req: any, res: any, next: any): Promise<any> {
-    const newNotice: noticeType = {
+    const newNotice: notice = {
       title: req.body.title,
       content: req.body.content,
     };
@@ -38,7 +37,7 @@ export const noticeController: noticeControllerInterface = {
   //공지사항 수정
   async update(req: any, res: any, next: any): Promise<any> {
     const { id } = req.params;
-    const updateNotice: noticeType = {
+    const updateNotice: notice = {
       title: req.body.title,
       content: req.body.content,
     };

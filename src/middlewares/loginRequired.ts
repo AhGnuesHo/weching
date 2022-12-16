@@ -21,6 +21,7 @@ export function loginRequired(req: Request, res: Response, next: NextFunction) {
     const email = (<{ email: string }>jwtDecoded).email;
     req.body.userId = userId;
     req.body.email = email;
+
     next();
   } catch (error) {
     errorResponse(res, 'FORBIDDEN', '정상적인 토큰이 아닙니다.');

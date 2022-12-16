@@ -4,8 +4,8 @@ import { QueryResult } from 'pg';
 interface user {
   email: string;
   nickName: string;
-  birthday: Date;
   point?: number;
+  status?: number;
 }
 
 interface post {
