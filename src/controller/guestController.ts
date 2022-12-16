@@ -1,12 +1,8 @@
 import { userService } from '../services';
-import { Request } from 'express';
+
 import { AsyncRequestHandler } from '../types';
 import { user } from '../services/interfaces/interface';
 
-interface RequestBody {
-  email: string;
-  nickname: string;
-}
 interface guestControllerInterface {
   register: AsyncRequestHandler;
 }
