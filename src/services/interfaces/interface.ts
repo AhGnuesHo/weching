@@ -59,11 +59,6 @@ interface IPostModel {
   createReview(targetUser: number[], postId: number): Promise<void>;
   getPost(postId: number, userId: number): Promise<review>;
 }
-interface RequestBody {
-  userId?: number;
-  postId?: number;
-}
-
 interface INoticeModel {
   createNotice(notice: notice): Promise<notice[]>;
   findNotice(id: number): Promise<notice[]>;
