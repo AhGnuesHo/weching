@@ -1,7 +1,7 @@
 import { reviewService } from '../services';
 import { AsyncRequestHandler } from '../types';
 import { plainToClass } from 'class-transformer';
-import { review } from '../services/interfaces/interface';
+import { review } from '../interfaces';
 interface reviewControllerInterface {
   getReview: AsyncRequestHandler;
   writeReview: AsyncRequestHandler;

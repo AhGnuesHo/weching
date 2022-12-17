@@ -3,7 +3,7 @@ import {
   IPostModel,
   newPost,
   review,
-} from '../services/interfaces/interface';
+} from '../interfaces';
 import { pg } from '../app';
 import { QueryResult } from 'pg';
 import { postService } from '../services/postService';

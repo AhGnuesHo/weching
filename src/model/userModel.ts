@@ -1,5 +1,5 @@
 import { User } from '../controller/userController';
-import { user, IUserModel } from '../services/interfaces/interface';
+import { user, IUserModel } from '../interfaces';
 import { pg } from '../app';
 import { QueryResult } from 'pg';
 import { plainToClass } from 'class-transformer';

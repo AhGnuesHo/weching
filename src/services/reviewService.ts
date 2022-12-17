@@ -1,5 +1,5 @@
 import { reviewModel } from '../model/reviewModel';
-import { IReviewModel, newPost, review } from './interfaces/interface';
+import { IReviewModel, newPost, review } from '../interfaces';
 
 export class ReviewService {
   constructor(private reviewModel: IReviewModel) {}

@@ -1,6 +1,6 @@
 import { AsyncRequestHandler } from './../types/index';
 import { postModel } from '../model/postModel';
-import { post, IPostModel, newPost, review } from './interfaces/interface';
+import { post, IPostModel, newPost, review } from '../interfaces';
 
 export class PostService {
   constructor(private postModel: IPostModel) {}

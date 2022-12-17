@@ -1,5 +1,5 @@
 import { QueryResult } from 'pg';
-import { notice } from './interfaces/interface';
+import { notice } from '../interfaces';
 import { NoticeModel, noticeModel } from '../model/noticeModel';
 
 export class NoticeService {
