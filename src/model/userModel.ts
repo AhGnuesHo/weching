@@ -19,7 +19,29 @@ export class UserModel implements IUserModel {
     if (result.rows.length > 1) {
       throw new Error(`user ${result.rows.length} is already`);
     }
+    if (result.rows[0].status !== 0) {
+      throw new Error(`회원정보가 없습니다.`);
+    }
+
     return result.rows[0];
+  }
+
+  async getAllUsersCount(): Promise<QueryResult<any>> {
+    const result: QueryResult<any> = await pg.query(
+      `select max(id) from users `
+    );
+    return result.rows[0];
+  }
+
+  async findUser(id: number): Promise<user[]> {
+    const row = await pg.query('SELECT * FROM users WHERE id=($1)', [id]);
+    return row.rows;
+  }
+
+  async userStatusUpdate(id: number): Promise<user[]> {
+    return await pg
+      .query('UPDATE users SET status = 1 WHERE id=($1)', [id])
+      .then(() => this.findUser(id));
   }
 }
 

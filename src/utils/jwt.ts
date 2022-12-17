@@ -3,18 +3,19 @@ import { jwtSecret } from '../config';
 
 export const setUserToken = (res: any, user: any) => {
   const accessToken = jwt.sign(
-    { userId: user.id, email: user.email },
+    { userId: user.id, email: user.email, status: user.status },
     jwtSecret as Secret,
     {
       expiresIn: '1h',
     }
   );
   const refreshToken = jwt.sign(
-    { userId: user.id, email: user.email },
+    { userId: user.id, email: user.email, status: user.status },
     jwtSecret as Secret,
     {
       expiresIn: '14d',
     }
   );
+  console.log(accessToken);
   return { accessToken, refreshToken };
 };
