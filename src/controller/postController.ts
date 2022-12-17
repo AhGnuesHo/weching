@@ -10,7 +10,7 @@ interface IPostController {
 }
 
 export class Post implements newPost {
-  id: string;
+  id: number;
   userId: number;
   content: string;
   status?: postStatus;
@@ -20,17 +20,12 @@ export class Post implements newPost {
     content: string,
     status?: postStatus
   ) {
-    this.id = id;
+    this.id = parseInt(id, 10);
     this.userId = userId;
     this.content = content;
     this.status = status;
   }
-  get strToNumber(): number {
-    const id = parseInt(this.id, 10);
-    return id;
-  }
 }
-// todo 게시글 목록 조회
 
 export class PostController implements IPostController {
   posting: AsyncRequestHandler = async (req, res) => {

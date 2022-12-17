@@ -7,17 +7,13 @@ interface reviewControllerInterface {
   writeReview: AsyncRequestHandler;
 }
 export class Review implements review {
-  postId: string;
+  postId: number;
   userId: number;
   content: string;
   constructor(postId: string, userId: number, content: string) {
-    this.postId = postId;
+    this.postId = parseInt(postId, 10);
     this.userId = userId;
     this.content = content;
-  }
-  get strToNumber(): number {
-    const postId = parseInt(this.postId, 10);
-    return postId;
   }
 }
 
