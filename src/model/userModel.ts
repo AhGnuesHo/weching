@@ -1,6 +1,8 @@
+import { User } from '../controller/userController';
 import { user, IUserModel } from '../services/interfaces/interface';
 import { pg } from '../app';
 import { QueryResult } from 'pg';
+import { plainToClass } from 'class-transformer';
 
 export class UserModel implements IUserModel {
   async createUser(user: user): Promise<user> {
@@ -15,14 +17,15 @@ export class UserModel implements IUserModel {
 
   async isUser(email: string): Promise<user> {
     const result = await pg.query(
-      `select * from users where email = $1 and status = 0`,
+      `select id, email, nickname, status, point  from users where email = $1 and status = 0`,
       [email]
     );
 
-    if (result.rows.length > 1) {
-      throw new Error(`user ${result.rows.length} is already`);
-    }
-
+    // const result = plainToClass(User, result);
+    // result.rows[0]를 확인해보면 db에서 status와 point모두 int 타입으로 정의했지만, status만 number
+    // 타입이고, point는 문자열로 들어옵니다
+    // 이유가 뭘까요 ?
+    // 쿼리 결과도 직렬화를 해주어야 하냐요 ? 그럼 모든 메소드에서 plainToClass 를 다 사용해주어야하나요 ?
     return result.rows[0];
   }
 
@@ -30,12 +33,22 @@ export class UserModel implements IUserModel {
     const result = await pg.query('select * from users where nickname = $1', [
       nickName,
     ]);
+
     return result.rows.length >= 1;
   }
+
+  async hasPoint(email: string, deduct: number): Promise<Boolean> {
+    const point = (await this.isUser(email))?.point;
+ 
+    // todo point가 문자열로 판단되어 계산오류 생김
+    return typeof point !== 'undefined' && point + deduct > 0;
+  }
+
   async getAllUsersCount(): Promise<QueryResult<any>> {
     const result: QueryResult<any> = await pg.query(
       `select max(id) from users `
     );
+
     return result.rows[0];
   }
 

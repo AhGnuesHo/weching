@@ -1,11 +1,23 @@
 import { userService } from '../services';
-
 import { AsyncRequestHandler } from '../types';
 import { user } from '../services/interfaces/interface';
 
 interface userControllerInterface {
   findUser: AsyncRequestHandler;
   deleteUser: AsyncRequestHandler;
+}
+
+export class User implements user {
+  email: string;
+  nickName: string;
+  point: number;
+  status: number;
+  constructor(email: string, nickName: string, point: number, status: number) {
+    this.email = email;
+    this.nickName = nickName;
+    this.point = point;
+    this.status = status;
+  }
 }
 
 export const userController: userControllerInterface = {
