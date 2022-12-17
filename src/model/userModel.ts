@@ -37,11 +37,21 @@ export class UserModel implements IUserModel {
     return result.rows.length >= 1;
   }
 
-  async hasPoint(email: string, deduct: number): Promise<Boolean> {
-    const point = (await this.isUser(email))?.point;
- 
+  async updatePoint(email: string, deduct: number): Promise<void> {
+    const point = (await this.isUser(email)).point;
+
     // todo point가 문자열로 판단되어 계산오류 생김
-    return typeof point !== 'undefined' && point + deduct > 0;
+    if (typeof point !== 'undefined') {
+      // todo * 1 수정하기
+      const rest = point * 1 + deduct;
+      if (rest < 0) {
+        throw new Error('lack of points ');
+      }
+      await pg.query(`update users set point = $1 where email = $2`, [
+        rest,
+        email,
+      ]);
+    }
   }
 
   async getAllUsersCount(): Promise<QueryResult<any>> {
