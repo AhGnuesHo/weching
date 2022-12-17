@@ -1,4 +1,3 @@
-import { QueryResult } from 'pg';
 import { userModel } from '../model/userModel';
 import { user, IUserModel } from './interfaces/interface';
 export class UserService {
@@ -6,14 +5,6 @@ export class UserService {
   constructor(private userModel: IUserModel) {}
 
   async createUser(user: user): Promise<user> {
-    const isUser = await this.isUser(user.email);
-    if (isUser) {
-      throw new Error(`email ${user.email} already exists`);
-    }
-    const isNickName = await userModel.isNickName(user.nickName);
-    if (isNickName) {
-      throw new Error(`nickname ${user.nickName} already exists`);
-    }
 
     return await userModel.createUser(user);
   }
