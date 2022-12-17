@@ -1,6 +1,5 @@
 import { notice, INoticeModel } from '../services/interfaces/interface';
 import { pg } from '../app';
-import { QueryResult } from 'pg';
 
 export class NoticeModel implements INoticeModel {
   //공지사항 생성
@@ -11,12 +10,12 @@ export class NoticeModel implements INoticeModel {
       [title, content]
     );
 
-    return row.rows;
+    return row.rows[0];
   }
   //공지사항 조회
   async findNotice(id: number): Promise<notice[]> {
     const row = await pg.query('SELECT * FROM notice WHERE id =($1)', [id]);
-    return row.rows;
+    return row.rows[0];
   }
   //공지사항 전체 조회
   async findAll(start: number): Promise<notice[]> {
@@ -24,7 +23,7 @@ export class NoticeModel implements INoticeModel {
       'select  * from notice order BY id desc limit 10 offset (($1)-1)*10 ',
       [start]
     );
-    return row.rows;
+    return row.rows[0];
   }
 
   //공지사항 업데이트
@@ -43,7 +42,7 @@ export class NoticeModel implements INoticeModel {
 
   async delete(id: number): Promise<notice[]> {
     const row = await pg.query('DELETE FROM notice WHERE id = ($1)', [id]);
-    return row.rows;
+    return row.rows[0];
   }
 }
 

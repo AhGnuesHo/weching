@@ -24,6 +24,12 @@ interface advice {
   message: string;
 }
 
+interface report {
+  type: string;
+  typeId: number;
+  content: string;
+}
+
 interface newPost extends post {
   id: number;
 }
@@ -72,6 +78,12 @@ interface IAdviceModel {
   getAdvice(): Promise<advice[]>;
 }
 
+interface IReportModel {
+  createReport(type: string, type_id: number, content: string): Promise<report>;
+  findAll(page: number): Promise<report[]>;
+  findType(type: string, page: number): Promise<report[]>;
+}
+
 export {
   user,
   post,
@@ -86,4 +98,6 @@ export {
   IAdviceModel,
   notice,
   INoticeModel,
+  report,
+  IReportModel,
 };
