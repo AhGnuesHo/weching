@@ -1,6 +1,6 @@
 import { userService } from '../services';
 import { AsyncRequestHandler } from '../types';
-import { user } from '../services/interfaces/interface';
+import { user } from '../interfaces';
 
 interface userControllerInterface {
   findUser: AsyncRequestHandler;

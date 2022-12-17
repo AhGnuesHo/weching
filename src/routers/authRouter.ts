@@ -2,7 +2,7 @@ import { Router } from 'express';
 import passport from 'passport';
 import { setUserToken } from '../utils/jwt';
 import { Request, Response, NextFunction } from 'express';
-import { userEnum } from '../services/interfaces/interface';
+import { userEnum } from '../interfaces';
 
 export const authRouter = Router();
 

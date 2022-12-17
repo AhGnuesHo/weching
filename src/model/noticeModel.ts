@@ -1,4 +1,4 @@
-import { notice, INoticeModel } from '../services/interfaces/interface';
+import { notice, INoticeModel } from '../interfaces';
 import { pg } from '../app';
 import { QueryResult } from 'pg';
 

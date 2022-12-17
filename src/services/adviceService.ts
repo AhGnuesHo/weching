@@ -1,5 +1,5 @@
 import { adviceModel } from '../model/adviceModel';
-import { IAdviceModel, advice } from '../services/interfaces/interface';
+import { IAdviceModel, advice } from '../interfaces';
 
 export class AdviceService {
   constructor(private adviceModel: IAdviceModel) {}
