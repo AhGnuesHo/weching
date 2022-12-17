@@ -2,10 +2,12 @@ import { postService } from '../services/postService';
 import { AsyncRequestHandler } from '../types';
 import { newPost, post, postStatus } from '../services/interfaces/interface';
 import { plainToClass } from 'class-transformer';
+import { request } from 'http';
 
 interface IPostController {
-  post: AsyncRequestHandler;
+  posting: AsyncRequestHandler;
   getPost: AsyncRequestHandler;
+  getPosts: AsyncRequestHandler;
 }
 
 export class Post implements newPost {
@@ -32,14 +34,14 @@ export class Post implements newPost {
 // todo 게시글 목록 조회
 
 export class PostController implements IPostController {
-  post: AsyncRequestHandler = async (req, res) => {
+  posting: AsyncRequestHandler = async (req, res) => {
     const { userId, content } = req.body;
     const post: post = {
       userId: userId,
       content: content,
     };
 
-    const user = await postService.post(post);
+    const user = await postService.posting(post);
     res.json(user);
   };
 
@@ -52,6 +54,12 @@ export class PostController implements IPostController {
     const myPost = await postService.getPost(postInfo);
 
     return res.json(myPost);
+  };
+
+  getPosts: AsyncRequestHandler = async (req, res) => {
+    const userId = req.body.userId;
+    const myAllPost = await postService.getPosts(userId);
+    res.json(myAllPost);
   };
 }
 

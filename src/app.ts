@@ -6,7 +6,7 @@ import cookieParser from 'cookie-parser';
 import logger from 'morgan';
 
 import { port, user, host, database, password, postgresPort } from './config';
-import { errorHandler, loginRequired } from './middlewares';
+import { errorHandler, loginRequired, userHandler } from './middlewares';
 import {
   indexRouter,
   guestRouter,
@@ -43,7 +43,7 @@ app.use(cookieParser());
 
 app.get(endPoint.index, indexRouter);
 app.use(endPoint.auth, authRouter);
-app.use(endPoint.guest, guestRouter);
+app.use(endPoint.guest, userHandler, guestRouter);
 app.use(endPoint.post, loginRequired, postRouter);
 app.use(endPoint.review, loginRequired, reviewRouter);
 app.use(endPoint.notice, noticeRouter);

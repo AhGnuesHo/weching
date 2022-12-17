@@ -26,6 +26,12 @@ export class UserModel implements IUserModel {
     return result.rows[0];
   }
 
+  async isNickName(nickName: string): Promise<Boolean> {
+    const result = await pg.query('select * from users where nickname = $1', [
+      nickName,
+    ]);
+    return result.rows.length >= 1;
+  }
   async getAllUsersCount(): Promise<QueryResult<any>> {
     const result: QueryResult<any> = await pg.query(
       `select max(id) from users `

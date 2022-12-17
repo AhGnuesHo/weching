@@ -6,9 +6,10 @@ import {
 } from '../services/interfaces/interface';
 import { pg } from '../app';
 import { QueryResult } from 'pg';
+import { postService } from '../services/postService';
 
 export class PostModel implements IPostModel {
-  async post(post: post): Promise<newPost> {
+  async posting(post: post): Promise<newPost> {
     const { userId, content } = post;
     const newPost: QueryResult<newPost> = await pg.query(
       'INSERT INTO posts ( user_id, content ) VALUES ($1, $2) RETURNING *',
@@ -44,6 +45,13 @@ export class PostModel implements IPostModel {
       [postId, userId]
     );
     return getPost.rows[0];
+  }
+
+  async getPosts(userId: number): Promise<newPost[]> {
+    const posts = await pg.query(`select * from posts where user_id = $1`, [
+      userId,
+    ]);
+    return posts.rows;
   }
 }
 

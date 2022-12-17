@@ -4,5 +4,6 @@ import { asyncHandler } from '../utils';
 
 export const postRouter = Router();
 
-postRouter.post('/', asyncHandler(postController.post));
+postRouter.post('/', asyncHandler(postController.posting));
 postRouter.get('/:postId', asyncHandler(postController.getPost));
+postRouter.get('/', asyncHandler(postController.getPosts));
