@@ -29,6 +29,8 @@ interface advice {
 }
 
 interface review {
+  // postId : Review 클래스에서 생성자로 string받음 , req.params...
+  // 그래서 string 도 써버린..
   postId: number | string;
   userId: number;
   content: string;
@@ -46,14 +48,11 @@ enum userEnum {
 
 enum point {
   POST = -3,
+  REVIEW = 5,
 }
 interface IReviewModel {
   getReview(userId: number): Promise<newPost[]>;
-  writeReview(
-    userId: number,
-    postId: number,
-    content: string
-  ): Promise<newPost>;
+  writeReview(review: review): Promise<newPost>;
 }
 interface IUserModel {
   createUser(user: user): Promise<user>;

@@ -14,16 +14,13 @@ export class ReviewModel implements IReviewModel {
     return todoReview.rows;
   }
 
-  async writeReview(
-    userId: number,
-    postId: number,
-    content: string
-  ): Promise<newPost> {
-    const review = await pg.query(
+  async writeReview(review: review): Promise<newPost> {
+    const { postId, userId, content } = review;
+    const myReview = await pg.query(
       `update review set content = $1 where post_id = $2 and user_id = $3`,
       [content, postId, userId]
     );
-    return review.rows[0];
+    return myReview.rows[0];
   }
 }
 
