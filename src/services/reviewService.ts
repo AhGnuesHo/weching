@@ -12,9 +12,8 @@ export class ReviewService {
     return todoReview;
   }
 
-  async writeReview(request: review): Promise<newPost> {
-    const { userId, content, postId } = request;
-    return await reviewModel.writeReview(userId, postId as number, content);
+  async writeReview(review: review): Promise<newPost> {
+    return await reviewModel.writeReview(review);
   }
 }
 

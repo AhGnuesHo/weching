@@ -1,9 +1,10 @@
 import { Router } from 'express';
 import { postController } from '../controller';
+import { checkPoint } from '../middlewares';
 import { asyncHandler } from '../utils';
 
 export const postRouter = Router();
 
-postRouter.post('/', asyncHandler(postController.posting));
+postRouter.post('/', checkPoint, asyncHandler(postController.posting));
 postRouter.get('/:postId', asyncHandler(postController.getPost));
 postRouter.get('/', asyncHandler(postController.getPosts));
