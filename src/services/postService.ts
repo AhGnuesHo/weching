@@ -1,11 +1,12 @@
+import { AsyncRequestHandler } from './../types/index';
 import { postModel } from '../model/postModel';
 import { post, IPostModel, newPost, review } from './interfaces/interface';
 
 export class PostService {
   constructor(private postModel: IPostModel) {}
 
-  async post(post: post): Promise<newPost> {
-    const result = await postModel.post(post);
+  async posting(post: post): Promise<newPost> {
+    const result = await postModel.posting(post);
     const postId = result.id;
     await this.createReview(postId as number);
     return result;
@@ -25,10 +26,12 @@ export class PostService {
     const { id, userId } = postInfo;
     return await postModel.getPost(id as number, userId);
   }
+
+  async getPosts(userId: number): Promise<newPost[]> {
+    return await postModel.getPosts(userId);
+  }
 }
 
 const postService = new PostService(postModel);
 
 export { postService };
-
-
