@@ -1,5 +1,5 @@
 import { userModel } from '../model/userModel';
-import { user, IUserModel } from './interfaces/interface';
+import { user, IUserModel } from '../interfaces';
 export class UserService {
 
   constructor(private userModel: IUserModel) {}

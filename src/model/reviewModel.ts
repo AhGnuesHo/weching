@@ -2,7 +2,7 @@ import {
   newPost,
   IReviewModel,
   review,
-} from '../services/interfaces/interface';
+} from '../interfaces';
 import { pg } from '../app';
 
 export class ReviewModel implements IReviewModel {

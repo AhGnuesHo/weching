@@ -1,7 +1,7 @@
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 import { clientID, clientSecret } from '../../config';
 import { userService } from '../../services/userService';
-import { userEnum } from '../../services/interfaces/interface';
+import { userEnum } from '../../interfaces';
 const config = {
   clientID: clientID,
   clientSecret: clientSecret,

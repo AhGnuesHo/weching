@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { point } from '../services/interfaces/interface';
+import { point } from '../interfaces';
 import { userModel } from '../model/userModel';
 export async function checkPoint(
   req: Request,

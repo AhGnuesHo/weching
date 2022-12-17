@@ -1,6 +1,6 @@
 import { noticeService } from '../services/noticeService';
 import { AsyncRequestHandler } from '../types';
-import { notice } from '../services/interfaces/interface';
+import { notice } from '../interfaces';
 interface noticeControllerInterface {
   create: AsyncRequestHandler;
   findById: AsyncRequestHandler;

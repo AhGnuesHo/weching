@@ -1,4 +1,4 @@
-import { IAdviceModel, advice } from '../services/interfaces/interface';
+import { IAdviceModel, advice } from '../interfaces';
 import { pg } from '../app';
 import { QueryResult } from 'pg';
 
