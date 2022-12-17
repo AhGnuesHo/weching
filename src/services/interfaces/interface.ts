@@ -13,6 +13,10 @@ interface post {
   status?: postStatus;
 }
 
+interface newPost extends post {
+  id: number | string;
+}
+
 interface notice {
   title: string;
   content: string;
@@ -22,10 +26,6 @@ interface advice {
   author: string;
   authorrofile: string;
   message: string;
-}
-
-interface newPost extends post {
-  id: number | string;
 }
 
 interface review {
@@ -59,7 +59,7 @@ interface IUserModel {
   createUser(user: user): Promise<user>;
   isUser(email: string): Promise<user>;
   isNickName(nickName: string): Promise<Boolean>;
-  hasPoint(email: string, deduct: number): Promise<Boolean>;
+  updatePoint(email: string, deduct: number): Promise<void>;
 }
 
 interface IPostModel {

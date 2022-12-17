@@ -9,10 +9,7 @@ export async function checkPoint(
   const { email } = req.body;
   try {
     const deduct = point.POST;
-    const checkPoint = await userModel.hasPoint(email, deduct);
-    if (!checkPoint) {
-      throw new Error(`Invalid point`);
-    }
+    await userModel.updatePoint(email, deduct);
 
     next();
   } catch (err) {
