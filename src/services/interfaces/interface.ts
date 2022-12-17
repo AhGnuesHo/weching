@@ -4,6 +4,7 @@ interface user {
   email: string;
   nickName: string;
   point?: number;
+  status?: number;
 }
 
 interface post {

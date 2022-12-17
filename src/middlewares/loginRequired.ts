@@ -19,8 +19,11 @@ export function loginRequired(req: Request, res: Response, next: NextFunction) {
     const jwtDecoded = jwt.verify(userToken, secretKey);
     const userId = (<{ userId: string }>jwtDecoded).userId;
     const email = (<{ email: string }>jwtDecoded).email;
+    const status = (<{ status: number }>jwtDecoded).status;
     req.body.userId = userId;
     req.body.email = email;
+    req.body.status = status;
+
     next();
   } catch (error) {
     errorResponse(res, 'FORBIDDEN', '정상적인 토큰이 아닙니다.');
