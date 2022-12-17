@@ -54,6 +54,7 @@ interface IReviewModel {
 interface IUserModel {
   createUser(user: user): Promise<user>;
   isUser(email: string): Promise<user>;
+  isNickName(nickName: string): Promise<Boolean>;
 }
 
 interface IPostModel {

@@ -8,8 +8,13 @@ export class UserService {
   async createUser(user: user): Promise<user> {
     const isUser = await this.isUser(user.email);
     if (isUser) {
-      throw new Error(`User ${user.email} already exists`);
+      throw new Error(`email ${user.email} already exists`);
     }
+    const isNickName = await userModel.isNickName(user.nickName);
+    if (isNickName) {
+      throw new Error(`nickname ${user.nickName} already exists`);
+    }
+
     return await userModel.createUser(user);
   }
 
