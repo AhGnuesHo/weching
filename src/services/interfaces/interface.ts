@@ -43,6 +43,10 @@ enum userEnum {
   USER = 'user',
   GUEST = 'guest',
 }
+
+enum point {
+  POST = -3,
+}
 interface IReviewModel {
   getReview(userId: number): Promise<newPost[]>;
   writeReview(
@@ -55,6 +59,7 @@ interface IUserModel {
   createUser(user: user): Promise<user>;
   isUser(email: string): Promise<user>;
   isNickName(nickName: string): Promise<Boolean>;
+  hasPoint(email: string, deduct: number): Promise<Boolean>;
 }
 
 interface IPostModel {
@@ -89,5 +94,6 @@ export {
   advice,
   IAdviceModel,
   notice,
+  point,
   INoticeModel,
 };

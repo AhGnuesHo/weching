@@ -2,7 +2,6 @@ import { postService } from '../services/postService';
 import { AsyncRequestHandler } from '../types';
 import { newPost, post, postStatus } from '../services/interfaces/interface';
 import { plainToClass } from 'class-transformer';
-import { request } from 'http';
 
 interface IPostController {
   posting: AsyncRequestHandler;

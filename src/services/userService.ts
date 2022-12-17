@@ -1,7 +1,7 @@
 import { userModel } from '../model/userModel';
 import { user, IUserModel } from './interfaces/interface';
 export class UserService {
-  //// 닉네임 중복확인
+
   constructor(private userModel: IUserModel) {}
 
   async createUser(user: user): Promise<user> {
