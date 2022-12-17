@@ -1,5 +1,6 @@
 import { user, IUserModel } from '../services/interfaces/interface';
 import { pg } from '../app';
+import { QueryResult } from 'pg';
 
 export class UserModel implements IUserModel {
   async createUser(user: user): Promise<user> {
@@ -13,14 +14,13 @@ export class UserModel implements IUserModel {
   }
 
   async isUser(email: string): Promise<user> {
-    const result = await pg.query(`select * from users where email = $1`, [
-      email,
-    ]);
+    const result = await pg.query(
+      `select * from users where email = $1 and status = 0`,
+      [email]
+    );
+
     if (result.rows.length > 1) {
       throw new Error(`user ${result.rows.length} is already`);
-    }
-    if (result.rows[0].status !== 0) {
-      throw new Error(`회원정보가 없습니다.`);
     }
 
     return result.rows[0];
