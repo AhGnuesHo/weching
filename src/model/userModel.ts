@@ -1,10 +1,10 @@
 import { user, IUserModel } from '../services/interfaces/interface';
 import { pg } from '../app';
-import { QueryResult } from 'pg';
+
 export class UserModel implements IUserModel {
-  async createUser(user: user): Promise<QueryResult<any>> {
+  async createUser(user: user): Promise<user> {
     const { email, nickName } = user;
-    const newUser: QueryResult<any> = await pg.query(
+    const newUser = await pg.query(
       'INSERT INTO users ( email, nickname ) VALUES ($1, $2) RETURNING *',
       [email, nickName]
     );
@@ -12,12 +12,10 @@ export class UserModel implements IUserModel {
     return newUser.rows[0];
   }
 
-  async isUser(email: string): Promise<QueryResult<any>> {
-    const result: QueryResult<any> = await pg.query(
-      `select * from users where email = $1`,
-      [email]
-    );
-
+  async isUser(email: string): Promise<user> {
+    const result = await pg.query(`select * from users where email = $1`, [
+      email,
+    ]);
     if (result.rows.length > 1) {
       throw new Error(`user ${result.rows.length} is already`);
     }

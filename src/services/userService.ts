@@ -2,9 +2,10 @@ import { QueryResult } from 'pg';
 import { userModel } from '../model/userModel';
 import { user, IUserModel } from './interfaces/interface';
 export class UserService {
+  //// 닉네임 중복확인
   constructor(private userModel: IUserModel) {}
 
-  async createUser(user: user): Promise<QueryResult<any>> {
+  async createUser(user: user): Promise<user> {
     const isUser = await this.isUser(user.email);
     if (isUser) {
       throw new Error(`User ${user.email} already exists`);
@@ -12,7 +13,7 @@ export class UserService {
     return await userModel.createUser(user);
   }
 
-  async isUser(email: string): Promise<QueryResult<any>> {
+  async isUser(email: string): Promise<user> {
     return await userModel.isUser(email);
   }
 

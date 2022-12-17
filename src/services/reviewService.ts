@@ -1,5 +1,6 @@
 import { reviewModel } from '../model/reviewModel';
-import { IReviewModel, newPost } from './interfaces/interface';
+import { IReviewModel, newPost, review } from './interfaces/interface';
+
 export class ReviewService {
   constructor(private reviewModel: IReviewModel) {}
 
@@ -11,13 +12,9 @@ export class ReviewService {
     return todoReview;
   }
 
-  async writeReview(
-    userId: number,
-    postId: number,
-    content: string
-  ): Promise<newPost> {
-    const review = await reviewModel.writeReview(userId, postId, content);
-    return review;
+  async writeReview(request: review): Promise<newPost> {
+    const { userId, content, postId } = request;
+    return await reviewModel.writeReview(userId, postId as number, content);
   }
 }
 

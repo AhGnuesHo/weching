@@ -7,7 +7,7 @@ export class PostService {
   async post(post: post): Promise<newPost> {
     const result = await postModel.post(post);
     const postId = result.id;
-    await this.createReview(postId);
+    await this.createReview(postId as number);
     return result;
   }
 
@@ -21,8 +21,9 @@ export class PostService {
     await postModel.createReview(target, postId);
   }
 
-  async getPost(postId: number, userId: number): Promise<review> {
-    return await postModel.getPost(postId, userId);
+  async getPost(postInfo: newPost): Promise<review> {
+    const { id, userId } = postInfo;
+    return await postModel.getPost(id as number, userId);
   }
 }
 
@@ -30,5 +31,4 @@ const postService = new PostService(postModel);
 
 export { postService };
 
-// 닉네임 중복확인
-//
+

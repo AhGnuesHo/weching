@@ -1,15 +1,38 @@
 import { postService } from '../services/postService';
-
 import { AsyncRequestHandler } from '../types';
-import { post } from '../services/interfaces/interface';
+import { newPost, post, postStatus } from '../services/interfaces/interface';
+import { plainToClass } from 'class-transformer';
 
-interface postControllerInterface {
+interface IPostController {
   post: AsyncRequestHandler;
   getPost: AsyncRequestHandler;
 }
 
-export const postController: postControllerInterface = {
-  async post(req, res) {
+export class Post implements newPost {
+  id: string;
+  userId: number;
+  content: string;
+  status?: postStatus;
+  constructor(
+    id: string,
+    userId: number,
+    content: string,
+    status?: postStatus
+  ) {
+    this.id = id;
+    this.userId = userId;
+    this.content = content;
+    this.status = status;
+  }
+  get strToNumber(): number {
+    const id = parseInt(this.id, 10);
+    return id;
+  }
+}
+// todo 게시글 목록 조회
+
+export class PostController implements IPostController {
+  post: AsyncRequestHandler = async (req, res) => {
     const { userId, content } = req.body;
     const post: post = {
       userId: userId,
@@ -18,13 +41,19 @@ export const postController: postControllerInterface = {
 
     const user = await postService.post(post);
     res.json(user);
-  },
+  };
 
-  async getPost(req, res) {
-    const postId = parseInt(req.params.postId);
-    const { userId } = req.body;
-    const myPost = await postService.getPost(postId, userId);
+  getPost: AsyncRequestHandler = async (req, res) => {
+    const post: newPost = {
+      id: req.params.postId,
+      userId: req.body.userId,
+    };
+    const postInfo = plainToClass(Post, post);
+    const myPost = await postService.getPost(postInfo);
 
     return res.json(myPost);
-  },
-};
+  };
+}
+
+const postController = new PostController();
+export { postController };
