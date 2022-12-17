@@ -54,13 +54,15 @@ interface IReviewModel {
 interface IUserModel {
   createUser(user: user): Promise<user>;
   isUser(email: string): Promise<user>;
+  isNickName(nickName: string): Promise<Boolean>;
 }
 
 interface IPostModel {
-  post(post: post): Promise<newPost>;
+  posting(post: post): Promise<newPost>;
   getAllUsersCount(): Promise<number>;
   createReview(targetUser: number[], postId: number): Promise<void>;
   getPost(postId: number, userId: number): Promise<review>;
+  getPosts(userId: number): Promise<newPost[]>;
 }
 interface INoticeModel {
   createNotice(notice: notice): Promise<notice[]>;
