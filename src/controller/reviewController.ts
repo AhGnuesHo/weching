@@ -3,12 +3,19 @@ import { AsyncRequestHandler } from '../types';
 
 interface reviewControllerInterface {
   getReview: AsyncRequestHandler;
+  writeReview: AsyncRequestHandler;
 }
-
 export const reviewController: reviewControllerInterface = {
-  async getReview(req: any, res: any): Promise<any> {
-    const userId = req.body.userId;
+  async getReview(req, res) {
+    const { userId } = req.body;
     const user = await reviewService.getReview(userId);
     res.json(user);
+  },
+
+  async writeReview(req, res) {
+    const { userId, content } = req.body;
+    const postId = parseInt(req.params.postId);
+    const review = await reviewService.writeReview(userId, postId, content);
+    res.json(review);
   },
 };

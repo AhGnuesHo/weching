@@ -1,4 +1,3 @@
-import { LargeNumberLike } from 'crypto';
 import { QueryResult } from 'pg';
 
 interface user {
@@ -32,6 +31,7 @@ interface newPost extends post {
 interface review extends newPost {
   content: string;
 }
+
 enum postStatus {
   PENDING = 'pending',
   COMPLETE = 'complete',
@@ -43,6 +43,11 @@ enum userEnum {
 }
 interface IReviewModel {
   getReview(userId: number): Promise<newPost[]>;
+  writeReview(
+    userId: number,
+    postId: number,
+    content: string
+  ): Promise<newPost>;
 }
 interface IUserModel {
   createUser(user: user): Promise<QueryResult<any>>;
@@ -53,8 +58,8 @@ interface IPostModel {
   post(post: post): Promise<newPost>;
   getAllUsersCount(): Promise<number>;
   createReview(targetUser: number[], postId: number): Promise<void>;
+  getPost(postId: number, userId: number): Promise<review>;
 }
-
 interface INoticeModel {
   createNotice(notice: notice): Promise<notice[]>;
   findNotice(id: number): Promise<notice[]>;
@@ -75,6 +80,7 @@ export {
   IUserModel,
   IPostModel,
   newPost,
+  review,
   IReviewModel,
   advice,
   IAdviceModel,

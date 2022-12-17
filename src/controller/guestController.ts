@@ -5,9 +5,8 @@ import { user } from '../services/interfaces/interface';
 interface guestControllerInterface {
   register: AsyncRequestHandler;
 }
-
 export const guestController: guestControllerInterface = {
-  async register(req: any, res: any): Promise<any> {
+  async register(req, res) {
     const newUser: user = {
       email: req.body.email,
       nickName: req.body.nickName,
