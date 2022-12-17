@@ -7,8 +7,8 @@ interface user {
 }
 
 interface post {
-  userId: BigInt;
-  content: string;
+  userId: number;
+  content?: string;
   status?: postStatus;
 }
 
@@ -24,10 +24,12 @@ interface advice {
 }
 
 interface newPost extends post {
-  id: number;
+  id: number | string;
 }
 
-interface review extends newPost {
+interface review {
+  postId: number | string;
+  userId: number;
   content: string;
 }
 
@@ -49,8 +51,8 @@ interface IReviewModel {
   ): Promise<newPost>;
 }
 interface IUserModel {
-  createUser(user: user): Promise<QueryResult<any>>;
-  isUser(email: string): Promise<QueryResult<any>>;
+  createUser(user: user): Promise<user>;
+  isUser(email: string): Promise<user>;
 }
 
 interface IPostModel {

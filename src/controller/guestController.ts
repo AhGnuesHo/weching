@@ -3,11 +3,12 @@ import { userService } from '../services';
 import { AsyncRequestHandler } from '../types';
 import { user } from '../services/interfaces/interface';
 
-interface guestControllerInterface {
+interface IGuestController {
   register: AsyncRequestHandler;
 }
-export const guestController: guestControllerInterface = {
-  async register(req, res) {
+
+export class GuestController implements IGuestController {
+  register: AsyncRequestHandler = async (req, res) => {
     const newUser: user = {
       email: req.body.email,
       nickName: req.body.nickName,
@@ -15,5 +16,9 @@ export const guestController: guestControllerInterface = {
 
     const user = await userService.createUser(newUser);
     res.json(user);
-  },
-};
+  };
+}
+
+const guestController = new GuestController();
+
+export { guestController };
