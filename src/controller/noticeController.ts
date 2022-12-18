@@ -23,7 +23,6 @@ export const noticeController: noticeControllerInterface = {
   async findById(req: any, res: any, next: any): Promise<any> {
     const { id } = req.params;
     const findById = await noticeService.findOneNotice(id);
-    console.log(findById);
 
     res.json(findById);
   },
