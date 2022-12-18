@@ -1,5 +1,6 @@
 import { reviewModel } from '../model/reviewModel';
-import { IReviewModel, newPost, review } from '../interfaces';
+import { IReviewModel, newPost, point, review } from '../interfaces';
+import { userModel } from '../model';
 
 export class ReviewService {
   constructor(private reviewModel: IReviewModel) {}
@@ -17,6 +18,9 @@ export class ReviewService {
     if (!result) {
       throw new Error(`칭찬 실패`);
     }
+    const { userId } = review;
+    await userModel.updatePoint(userId, point.REVIEW);
+
     return review;
   }
 }

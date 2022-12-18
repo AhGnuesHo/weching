@@ -1,11 +1,9 @@
 import { userModel } from '../model/userModel';
 import { user, IUserModel } from '../interfaces';
 export class UserService {
-
   constructor(private userModel: IUserModel) {}
 
   async createUser(user: user): Promise<user> {
-
     return await userModel.createUser(user);
   }
 

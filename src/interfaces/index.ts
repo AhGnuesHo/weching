@@ -65,9 +65,9 @@ interface IReviewModel {
 }
 interface IUserModel {
   createUser(user: user): Promise<user>;
-  isUser(email: string): Promise<user>;
+  isUser(info: any): Promise<user>;
   isNickName(nickName: string): Promise<Boolean>;
-  updatePoint(email: string, deduct: number): Promise<void>;
+  updatePoint(info: any, deduct: number): Promise<void>;
 }
 
 interface IPostModel {
