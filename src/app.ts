@@ -1,8 +1,9 @@
+import { rankModel } from './model/rankModel';
 import express from 'express';
 import cors from 'cors';
 import createError from 'http-errors';
 import cookieParser from 'cookie-parser';
-
+import cron from 'node-cron';
 import logger from 'morgan';
 
 import { port, user, host, database, password, postgresPort } from './config';
@@ -59,3 +60,14 @@ app.use(errorHandler);
 app.listen(port, () => {
   console.log(`Server listening on port: ${port}`);
 });
+
+cron.schedule(
+  '* * 1-12 * *',
+  async () => {
+    await rankModel.resetElevation();
+  },
+  {
+    scheduled: true,
+    timezone: 'Asia/Seoul',
+  }
+);
