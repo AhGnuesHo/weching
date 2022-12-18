@@ -16,7 +16,7 @@ export class ReportModel implements IReportModel {
 
   async findAll(page: number): Promise<report[]> {
     const row = await pg.query(
-      `SELECT * FROM report limit 10 offset (($1)-1)*10`,
+      `SELECT * FROM report order BY id desc limit 10 offset (($1)-1)*10`,
       [page]
     );
     return row.rows;

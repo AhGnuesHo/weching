@@ -23,7 +23,7 @@ export class NoticeModel implements INoticeModel {
       'select  * from notice order BY id desc limit 10 offset (($1)-1)*10 ',
       [start]
     );
-    return row.rows[0];
+    return row.rows;
   }
 
   //공지사항 업데이트
