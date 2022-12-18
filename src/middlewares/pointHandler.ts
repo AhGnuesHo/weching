@@ -6,10 +6,10 @@ export async function checkPoint(
   res: Response,
   next: NextFunction
 ) {
-  const { email } = req.body;
+  const { userId } = req.body;
   try {
     const deduct = point.POST;
-    await userModel.updatePoint(email, deduct);
+    await userModel.updatePoint(userId, deduct);
 
     next();
   } catch (err) {

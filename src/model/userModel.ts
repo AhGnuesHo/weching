@@ -15,18 +15,27 @@ export class UserModel implements IUserModel {
     return newUser.rows[0];
   }
 
-  async isUser(email: string): Promise<user> {
-    const result = await pg.query(
-      `select id, email, nickname, status, point  from users where email = $1 and status = 0`,
-      [email]
-    );
+  // 다형성을 써보려고 했는데 코드가 좀 별로 인 것 같음
+  async isUser(info: string | number): Promise<any> {
+    if (typeof info === 'string') {
+      let result = await pg.query(
+        `select id, email, nickname, status, point  from users where email = $1 and status = 0`,
+        [info]
+      );
+      return result.rows[0];
+    } else if (typeof info === 'number') {
+      let result = await pg.query(
+        `select id, email, nickname, status, point  from users where id = $1 and status = 0`,
+        [info]
+      );
+      return result.rows[0];
+    }
 
     // const result = plainToClass(User, result);
     // result.rows[0]를 확인해보면 db에서 status와 point모두 int 타입으로 정의했지만, status만 number
     // 타입이고, point는 문자열로 들어옵니다
     // 이유가 뭘까요 ?
     // 쿼리 결과도 직렬화를 해주어야 하냐요 ? 그럼 모든 메소드에서 plainToClass 를 다 사용해주어야하나요 ?
-    return result.rows[0];
   }
 
   async isNickName(nickName: string): Promise<Boolean> {
@@ -37,8 +46,8 @@ export class UserModel implements IUserModel {
     return result.rows.length >= 1;
   }
 
-  async updatePoint(email: string, deduct: number): Promise<void> {
-    const point = (await this.isUser(email)).point;
+  async updatePoint(info: string | number, deduct: number): Promise<void> {
+    const point = (await this.isUser(info)).point;
 
     // todo point가 문자열로 판단되어 계산오류 생김
     if (typeof point !== 'undefined') {
@@ -47,10 +56,17 @@ export class UserModel implements IUserModel {
       if (rest < 0) {
         throw new Error('lack of points ');
       }
-      await pg.query(`update users set point = $1 where email = $2`, [
-        rest,
-        email,
-      ]);
+      if (typeof info === 'string') {
+        await pg.query(`update users set point = $1 where email = $2`, [
+          rest,
+          info,
+        ]);
+      } else if (typeof info === 'number') {
+        await pg.query(`update users set point = $1 where id = $2`, [
+          rest,
+          info,
+        ]);
+      }
     }
   }
 
