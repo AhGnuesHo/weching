@@ -88,6 +88,9 @@ interface INoticeModel {
 interface IAdviceModel {
   getAdvice(): Promise<advice[]>;
 }
+interface IRankModel {
+  resetElevation(): Promise<void>;
+}
 
 export {
   user,
@@ -105,4 +108,5 @@ export {
   point,
   INoticeModel,
   postWithReview,
+  IRankModel,
 };
