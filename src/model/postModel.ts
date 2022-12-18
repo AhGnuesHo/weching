@@ -1,9 +1,4 @@
-import {
-  post,
-  IPostModel,
-  newPost,
-  review,
-} from '../interfaces';
+import { post, IPostModel, newPost, review } from '../interfaces';
 import { pg } from '../app';
 import { QueryResult } from 'pg';
 import { postService } from '../services/postService';
@@ -39,7 +34,7 @@ export class PostModel implements IPostModel {
     );
   }
 
-  async getPost(postId: number, userId: number): Promise<review> {
+  async getPost(postId: number, userId: number): Promise<newPost> {
     const getPost = await pg.query(
       `select * from posts where id = $1 and user_id = $2`,
       [postId, userId]

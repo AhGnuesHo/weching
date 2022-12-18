@@ -1,5 +1,3 @@
-import { QueryResult } from 'pg';
-
 interface user {
   email: string;
   nickName: string;
@@ -17,6 +15,18 @@ interface newPost extends post {
   id: number | string;
 }
 
+interface review {
+  // postId : Review 클래스에서 생성자로 string받음 , req.params...
+  // 그래서 string 도 써버린..
+  postId: number | string;
+  userId: number;
+  content: string;
+}
+
+interface postWithReview {
+  post: newPost;
+  reviews: review[];
+}
 interface notice {
   title: string;
   content: string;
@@ -26,14 +36,6 @@ interface advice {
   author: string;
   authorrofile: string;
   message: string;
-}
-
-interface review {
-  // postId : Review 클래스에서 생성자로 string받음 , req.params...
-  // 그래서 string 도 써버린..
-  postId: number | string;
-  userId: number;
-  content: string;
 }
 
 enum postStatus {
@@ -51,8 +53,9 @@ enum point {
   REVIEW = 5,
 }
 interface IReviewModel {
-  getReview(userId: number): Promise<newPost[]>;
-  writeReview(review: review): Promise<newPost>;
+  todoReview(userId: number): Promise<newPost[]>;
+  writeReview(review: review): Promise<Boolean>;
+  getReviewByPost(postId: number): Promise<review[]>;
 }
 interface IUserModel {
   createUser(user: user): Promise<user>;
@@ -65,7 +68,7 @@ interface IPostModel {
   posting(post: post): Promise<newPost>;
   getAllUsersCount(): Promise<number>;
   createReview(targetUser: number[], postId: number): Promise<void>;
-  getPost(postId: number, userId: number): Promise<review>;
+  getPost(postId: number, userId: number): Promise<newPost>;
   getPosts(userId: number): Promise<newPost[]>;
 }
 interface INoticeModel {
@@ -95,4 +98,5 @@ export {
   notice,
   point,
   INoticeModel,
+  postWithReview,
 };

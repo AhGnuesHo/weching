@@ -10,7 +10,7 @@ interface IPostController {
 }
 
 export class Post implements newPost {
-  id: number;
+  id: string;
   userId: number;
   content: string;
   status?: postStatus;
@@ -20,10 +20,14 @@ export class Post implements newPost {
     content: string,
     status?: postStatus
   ) {
-    this.id = parseInt(id, 10);
+    this.id = id;
     this.userId = userId;
     this.content = content;
     this.status = status;
+  }
+  get strToNumber(): number {
+    const id = parseInt(this.id, 10);
+    return id;
   }
 }
 
