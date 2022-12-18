@@ -1,15 +1,17 @@
 import dotenv from 'dotenv';
-import { Secret } from 'jsonwebtoken';
+import { log } from './logger';
 
 const envFound = dotenv.config();
 
 if (envFound.error) {
+  log.error("Couldn't find .env file");
   throw new Error("Couldn't find .env file");
 }
 
 if (process.env.POSTGRESQL === undefined) {
+  log.error("'어플리케이션을 시작하려면 POSTGRESQL 환경변수가 필요합니다.");
   throw new Error(
-    '어플리케이션을 시작하려면 MONGODB_URI 환경변수가 필요합니다.'
+    '어플리케이션을 시작하려면 POSTGRESQL 환경변수가 필요합니다.'
   );
 }
 

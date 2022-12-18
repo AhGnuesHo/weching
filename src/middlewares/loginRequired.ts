@@ -1,10 +1,11 @@
 import { Request, Response, NextFunction } from 'express';
 import { errorResponse } from '../utils';
+import { log } from '../logger';
 import jwt from 'jsonwebtoken';
 export function loginRequired(req: Request, res: Response, next: NextFunction) {
   const userToken = req.headers.authorization?.split(' ')[1];
   if (!userToken || userToken === 'null') {
-    console.log('Authorization 토큰 없음');
+    log.error('Authorization 토큰 없음');
     errorResponse(
       res,
       'FORBIDDEN',

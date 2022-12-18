@@ -16,6 +16,6 @@ export const setUserToken = (res: any, user: any) => {
       expiresIn: '14d',
     }
   );
-  console.log(accessToken);
+
   return { accessToken, refreshToken };
 };

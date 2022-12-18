@@ -5,7 +5,7 @@ import createError from 'http-errors';
 import cookieParser from 'cookie-parser';
 import cron from 'node-cron';
 import logger from 'morgan';
-
+import { log } from './logger';
 import { port, user, host, database, password, postgresPort } from './config';
 import { errorHandler, loginRequired, userHandler } from './middlewares';
 import {
@@ -33,8 +33,8 @@ export const pg = new Pool({
 });
 
 pg.connect()
-  .then(() => console.log('connected'))
-  .catch((err) => console.error('connection error', err.stack));
+  .then(() => log.info(`database Connect`))
+  .catch((err) => log.err('connection error', err.stack));
 
 app.use(cors());
 app.use(logger('dev'));
@@ -58,16 +58,22 @@ app.use(function (req, res, next) {
 app.use(errorHandler);
 
 app.listen(port, () => {
-  console.log(`Server listening on port: ${port}`);
+  log.info(`Server listening on port: ${port}`);
 });
 
 cron.schedule(
   '* * 1-12 * *',
   async () => {
-    await rankModel.resetElevation();
+    try {
+      await rankModel.resetElevation();
+    } catch (e) {
+      log.error(e);
+    }
   },
   {
     scheduled: true,
     timezone: 'Asia/Seoul',
   }
 );
+
+

@@ -2,6 +2,7 @@ const GoogleStrategy = require('passport-google-oauth20').Strategy;
 import { clientID, clientSecret } from '../../config';
 import { userService } from '../../services/userService';
 import { userEnum } from '../../interfaces';
+import { log } from '../../logger';
 const config = {
   clientID: clientID,
   clientSecret: clientSecret,
@@ -28,7 +29,7 @@ const login = new GoogleStrategy(
         done(null, userEnum.GUEST, res);
       }
     } catch (error) {
-      console.error(error);
+      log.err(error);
       done(error);
     }
   }
