@@ -16,6 +16,7 @@ import {
   noticeRouter,
   reviewRouter,
   adviceRouter,
+  reportRouter,
 } from './routers';
 import { endPoint } from './constants';
 import { Pool } from 'pg';
@@ -50,7 +51,7 @@ app.use(endPoint.review, loginRequired, reviewRouter);
 app.use(endPoint.notice, noticeRouter);
 app.use(endPoint.advice, adviceRouter);
 app.use(endPoint.user, loginRequired, userRouter);
-
+app.use(endPoint.report, reportRouter);
 app.use(function (req, res, next) {
   next(createError(404));
 });

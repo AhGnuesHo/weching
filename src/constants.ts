@@ -7,6 +7,7 @@ interface EndPointInterface {
   notice: string;
   review: string;
   advice: string;
+  report: string;
 }
 
 export const endPoint: EndPointInterface = {
@@ -18,4 +19,5 @@ export const endPoint: EndPointInterface = {
   post: '/api/post',
   review: '/api/review',
   advice: '/api/advice',
+  report: '/api/report',
 };
