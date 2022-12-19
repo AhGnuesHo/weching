@@ -5,7 +5,7 @@ import { plainToClass } from 'class-transformer';
 
 interface IPostController {
   posting: AsyncRequestHandler;
-  getPost: AsyncRequestHandler;
+  // getPost: AsyncRequestHandler;
   getPosts: AsyncRequestHandler;
 }
 
@@ -41,17 +41,6 @@ export class PostController implements IPostController {
 
     const user = await postService.posting(post);
     res.json(user);
-  };
-
-  getPost: AsyncRequestHandler = async (req, res) => {
-    const post: newPost = {
-      id: req.params.postId,
-      userId: req.body.userId,
-    };
-    const postInfo = plainToClass(Post, post);
-    const myPost = await postService.getPost(postInfo);
-
-    return res.json(myPost);
   };
 
   getPosts: AsyncRequestHandler = async (req, res) => {
