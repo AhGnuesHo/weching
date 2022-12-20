@@ -4,6 +4,7 @@ interface user {
   nickName: string;
   point?: number;
   status?: number;
+  grade?: number;
 }
 
 interface post {
@@ -19,7 +20,11 @@ interface newPost extends post {
 interface review {
   postId: number | string;
   userId: number;
-  content: string;
+  content?: string;
+}
+
+interface newReview extends review {
+  id: number | string;
 }
 
 interface postWithReview {
@@ -129,4 +134,5 @@ export {
   IRankModel,
   IReportModel,
   report,
+  newReview,
 };

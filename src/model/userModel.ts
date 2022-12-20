@@ -2,8 +2,8 @@ import { User } from '../controller/userController';
 import { user, IUserModel } from '../interfaces';
 import { pg } from '../app';
 import { QueryResult } from 'pg';
-import { plainToClass } from 'class-transformer';
-
+import { reviewModel } from './reviewModel';
+import { log } from '../logger';
 export class UserModel implements IUserModel {
   async createUser(user: user): Promise<user> {
     const { email, nickName } = user;
@@ -90,6 +90,16 @@ export class UserModel implements IUserModel {
     return await pg
       .query('UPDATE users SET status = 1 WHERE id=($1)', [id])
       .then(() => this.findUser(id));
+  }
+
+  //평점
+  async userGrade(grade: number, reviewId: number): Promise<Boolean> {
+    const id = await reviewModel.getReviewOne(reviewId);
+    const row = await pg.query(
+      'UPDATE users SET grade =grade +($1) WHERE id=($2)',
+      [grade, id]
+    );
+    return row.rowCount === 1;
   }
 
   async updateNickname(nickName: string, userId: number): Promise<boolean> {
