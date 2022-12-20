@@ -1,54 +1,100 @@
 import { noticeService } from '../services/noticeService';
 import { AsyncRequestHandler } from '../types';
-import { notice } from '../interfaces';
-interface noticeControllerInterface {
+import { notice, newNotice } from '../interfaces';
+import { plainToClass } from 'class-transformer';
+import { Request, Response, NextFunction } from 'express';
+
+interface Query {
+  page: number;
+}
+type custom = (req: Request<{}, {}, {}, Query>, res: Response) => Promise<any>;
+interface INoticeController {
   create: AsyncRequestHandler;
   findById: AsyncRequestHandler;
-  findAll: AsyncRequestHandler;
+  findAll: custom;
   update: AsyncRequestHandler;
-  delete: AsyncRequestHandler;
+  // delete: AsyncRequestHandler;
 }
 
-export const noticeController: noticeControllerInterface = {
+export class Notice implements newNotice {
+  id: string;
+
+  title: string;
+  content: string;
+  constructor(id: string, title: string, content: string) {
+    this.id = id;
+
+    this.title = title;
+    this.content = content;
+  }
+  get strToNumber(): number {
+    const id = parseInt(this.id);
+    return id;
+  }
+}
+
+export class NoticeController implements INoticeController {
   //공지사항 생성
-  async create(req: any, res: any, next: any): Promise<any> {
-    const newNotice: notice = {
-      title: req.body.title,
-      content: req.body.content,
+  create: AsyncRequestHandler = async (req, res) => {
+    const { title, content } = req.body;
+    const notice: notice = {
+      title: title,
+      content: content,
     };
-    const noticeCreate = await noticeService.createNotice(newNotice);
+    const noticeCreate = await noticeService.createNotice(notice);
     res.status(201).json(noticeCreate);
-  },
+  };
+
   //공지사항 조회
-  async findById(req: any, res: any, next: any): Promise<any> {
-    const { id } = req.params;
-    const findById = await noticeService.findOneNotice(id);
+  findById: AsyncRequestHandler = async (req, res) => {
+    const noticeId: newNotice = {
+      id: req.params.id,
+    };
+    const { id } = noticeId;
+    const noticeDetailId = plainToClass(Notice, id);
+    const findById = await noticeService.findOneNotice(noticeDetailId);
 
     res.json(findById);
-  },
+  };
+
   //공지사항 전체 조회
-  async findAll(req: any, res: any, next: any): Promise<any> {
-    const { page } = req.query;
+  findAll: custom = async (req, res) => {
+    let { query } = req;
+    const page = query.page;
+
     const findAll = await noticeService.findAll(page);
     res.json(findAll);
-  },
+  };
 
   //공지사항 수정
-  async update(req: any, res: any, next: any): Promise<any> {
-    const { id } = req.params;
+  update: AsyncRequestHandler = async (req, res) => {
+    const noticeId: newNotice = {
+      id: req.params.id,
+    };
+    const { id } = noticeId;
+
     const updateNotice: notice = {
       title: req.body.title,
       content: req.body.content,
     };
-    const update = await noticeService.update(id, updateNotice);
+    const noticeDetailId = plainToClass(Notice, id);
+
+    const update = await noticeService.update(noticeDetailId, updateNotice);
     res.json(update);
-  },
+  };
 
-  //공지사항 삭제
+  // //공지사항 삭제
 
-  async delete(req: any, res: any, next: any): Promise<any> {
-    const { id } = req.params;
-    const deleteNotice = await noticeService.delete(id);
+  delete: AsyncRequestHandler = async (req, res) => {
+    const noticeId: newNotice = {
+      id: req.params.id,
+    };
+    const { id } = noticeId;
+    const noticeDetailId = plainToClass(Notice, id);
+    const deleteNotice = await noticeService.delete(noticeDetailId);
     res.json(deleteNotice);
-  },
-};
+  };
+}
+
+const noticeController = new NoticeController();
+export { noticeController };

@@ -4,7 +4,7 @@ import { IAdviceModel, advice } from '../interfaces';
 export class AdviceService {
   constructor(private adviceModel: IAdviceModel) {}
 
-  async getAdvice(): Promise<advice[]> {
+  async getAdvice(): Promise<advice> {
     const row = await adviceModel.getAdvice();
     return row;
   }

@@ -1,5 +1,5 @@
 import { reportModel } from '../model/reportModel';
-import { IReportModel, report } from './interfaces/interface';
+import { IReportModel } from '../interfaces';
 
 export class ReportService {
   constructor(private reportModel: IReportModel) {}

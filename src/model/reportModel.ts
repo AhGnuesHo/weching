@@ -1,4 +1,4 @@
-import { report, IReportModel } from '../services/interfaces/interface';
+import { report, IReportModel } from '../interfaces';
 import { pg } from '../app';
 
 export class ReportModel implements IReportModel {
