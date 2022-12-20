@@ -1,12 +1,6 @@
-import { AsyncRequestHandler } from './../types/index';
 import { postModel, reviewModel } from '../model/index';
-import {
-  post,
-  IPostModel,
-  newPost,
-  review,
-  postWithReview,
-} from '../interfaces';
+import { post, IPostModel, newPost, postWithReview } from '../interfaces';
+import { reviewService } from './reviewService';
 
 export class PostService {
   constructor(private postModel: IPostModel) {}
@@ -19,28 +13,31 @@ export class PostService {
   }
 
   async createReview(postId: number): Promise<void> {
+    const targetUserCount = 3;
     const count = await postModel.getAllUsersCount();
-    const target = [];
-    for (let i = 0; i < 3; i++) {
+    let target = [];
+    for (let i = 0; i < targetUserCount; i++) {
       target.push(Math.floor(Math.random() * (count - 15) + 15));
     }
+    // todo api array로 변경
 
     await postModel.createReview(target, postId);
   }
 
-  async getPost(postInfo: newPost): Promise<postWithReview> {
-    const { id, userId } = postInfo;
-    const post = await postModel.getPost(id as number, userId);
-    const review = await reviewModel.getReviewByPost(id as number);
-    const result = {
-      post: post,
-      reviews: review,
-    };
+  async getPosts(userId: number): Promise<postWithReview[]> {
+    const posts = await postModel.getPosts(userId);
+    const result = await Promise.all(
+      posts.map(async (post) => {
+        const { id } = post;
+        const review = await reviewModel.getReviewByPost(id as number);
+        const result = {
+          post: post,
+          reviews: review,
+        };
+        return result;
+      })
+    );
     return result;
-  }
-
-  async getPosts(userId: number): Promise<newPost[]> {
-    return await postModel.getPosts(userId);
   }
 }
 

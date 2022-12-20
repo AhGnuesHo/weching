@@ -34,19 +34,12 @@ export class PostModel implements IPostModel {
     );
   }
 
-  async getPost(postId: number, userId: number): Promise<newPost> {
-    const getPost = await pg.query(
-      `select * from posts where id = $1 and user_id = $2`,
-      [postId, userId]
-    );
-    return getPost.rows[0];
-  }
-
   async getPosts(userId: number): Promise<newPost[]> {
-    const posts = await pg.query(`select * from posts where user_id = $1`, [
-      userId,
-    ]);
-    return posts.rows;
+    const getPost = await pg.query(
+      `select * from posts where user_id = $1`,
+      [userId]
+    );
+    return getPost.rows;
   }
 }
 

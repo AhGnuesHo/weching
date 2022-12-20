@@ -3,5 +3,6 @@ export * from './postController';
 export * from './noticeController';
 export * from './reviewController';
 export * from './adviceController';
+export * from './mainController';
 export * from './userController';
 export * from './reportController';
