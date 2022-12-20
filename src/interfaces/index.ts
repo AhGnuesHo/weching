@@ -27,8 +27,12 @@ interface postWithReview {
   reviews: review[];
 }
 interface notice {
-  title: string;
-  content: string;
+  title?: string;
+  content?: string;
+}
+
+interface newNotice extends notice {
+  id: number | string;
 }
 
 interface advice {
@@ -61,6 +65,18 @@ interface IReviewModel {
   writeReview(review: review): Promise<Boolean>;
   getReviewByPost(postId: number): Promise<review[]>;
 }
+interface IReportModel {
+  createReport(type: string, type_id: number, content: string): Promise<report>;
+  findAll(page: number): Promise<report[]>;
+  findType(type: string, page: number): Promise<report[]>;
+}
+
+interface report {
+  type: string;
+  typeId: number;
+  content: string;
+}
+
 interface IUserModel {
   createUser(user: user): Promise<user>;
   userInfo(id: number): Promise<user>;
@@ -77,15 +93,16 @@ interface IPostModel {
 }
 interface INoticeModel {
   createNotice(notice: notice): Promise<notice[]>;
-  findNotice(id: number): Promise<notice[]>;
-  findAll(start: number): Promise<notice[]>;
-  update(id: number, notice: notice): Promise<notice[]>;
-  delete(id: number): Promise<notice[]>;
+  findNotice(noticeInfo: newNotice): Promise<newNotice[]>;
+  findAll(page: number): Promise<notice[]>;
+  update(noticeInfo: newNotice, notice: notice): Promise<notice[]>;
+  // delete(id: number): Promise<notice[]>;
 }
 
 interface IAdviceModel {
-  getAdvice(): Promise<advice[]>;
+  getAdvice(): Promise<advice>;
 }
+``;
 interface IRankModel {
   resetElevation(): Promise<void>;
 }
@@ -104,8 +121,11 @@ export {
   advice,
   IAdviceModel,
   notice,
+  newNotice,
   point,
   INoticeModel,
   postWithReview,
   IRankModel,
+  IReportModel,
+  report,
 };
