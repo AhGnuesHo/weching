@@ -15,7 +15,7 @@ export class PostService {
   async createReview(postId: number): Promise<void> {
     const targetUserCount = 3;
     const count = await postModel.getAllUsersCount();
-    let target: number[] = [];
+    let target = [];
     for (let i = 0; i < targetUserCount; i++) {
       target.push(Math.floor(Math.random() * (count - 15) + 15));
     }

@@ -14,7 +14,10 @@ export class UserModel implements IUserModel {
 
     return newUser.rows[0];
   }
-
+  async userInfo(id: number): Promise<user> {
+    const info = await pg.query('select * from users where id = $1', [id]);
+    return info.rows[0];
+  }
   // 다형성을 써보려고 했는데 코드가 좀 별로 인 것 같음
   async isUser(info: string | number): Promise<any> {
     if (typeof info === 'string') {

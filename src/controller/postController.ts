@@ -5,7 +5,6 @@ import { plainToClass } from 'class-transformer';
 
 interface IPostController {
   posting: AsyncRequestHandler;
-  // getPost: AsyncRequestHandler;
   getPosts: AsyncRequestHandler;
 }
 

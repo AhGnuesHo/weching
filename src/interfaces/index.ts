@@ -1,3 +1,4 @@
+import { AdviceModel } from './../model/adviceModel';
 interface user {
   email: string;
   nickName: string;
@@ -35,7 +36,11 @@ interface advice {
   authorrofile: string;
   message: string;
 }
-
+interface main {
+  user: user;
+  todoReview: newPost[];
+  advice: advice;
+}
 enum postStatus {
   PENDING = 'pending',
   COMPLETE = 'complete',
@@ -58,6 +63,7 @@ interface IReviewModel {
 }
 interface IUserModel {
   createUser(user: user): Promise<user>;
+  userInfo(id: number): Promise<user>;
   isUser(info: any): Promise<user>;
   isNickName(nickName: string): Promise<Boolean>;
   updatePoint(info: any, deduct: number): Promise<void>;
@@ -92,6 +98,7 @@ export {
   IUserModel,
   IPostModel,
   newPost,
+  main,
   review,
   IReviewModel,
   advice,

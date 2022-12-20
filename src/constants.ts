@@ -1,5 +1,6 @@
 interface EndPointInterface {
   index: string;
+  main: string;
   user: string;
   guest: string;
   auth: string;
@@ -12,6 +13,7 @@ interface EndPointInterface {
 export const endPoint: EndPointInterface = {
   index: '/',
   auth: '/auth',
+  main: '/api/main',
   user: '/api/user',
   guest: '/api/guest',
   notice: '/api/notice',

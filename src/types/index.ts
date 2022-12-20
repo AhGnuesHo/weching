@@ -7,3 +7,5 @@ export type AsyncRequestHandler = (
 ) => Promise<any>;
 
 export type ErrorType = 'FORBIDDEN' | 'NOTFOUND' | 'SERVERERROR' | 'BADREQUEST';
+
+export type Constructor<T = {}> = new (...args: any[]) => T;

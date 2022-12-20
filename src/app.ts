@@ -11,6 +11,7 @@ import { errorHandler, loginRequired, userHandler } from './middlewares';
 import {
   indexRouter,
   guestRouter,
+  mainRouter,
   authRouter,
   postRouter,
   noticeRouter,
@@ -43,6 +44,8 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
 app.get(endPoint.index, indexRouter);
+// todo .get 과 .use의 차이?
+app.use(endPoint.main, loginRequired, mainRouter);
 app.use(endPoint.auth, authRouter);
 app.use(endPoint.guest, userHandler, guestRouter);
 app.use(endPoint.post, loginRequired, postRouter);
@@ -75,5 +78,3 @@ cron.schedule(
     timezone: 'Asia/Seoul',
   }
 );
-
-
