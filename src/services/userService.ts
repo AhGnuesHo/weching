@@ -18,6 +18,14 @@ export class UserService {
   async userStatusUpdate(id: number): Promise<user[]> {
     return await userModel.userStatusUpdate(id);
   }
+
+  async updateNickname(nickname: string, userId: number): Promise<Boolean> {
+    const result = await userModel.updateNickname(nickname, userId);
+    if (!result) {
+      throw new Error('fail update NickName');
+    }
+    return result;
+  }
 }
 
 const userService = new UserService(userModel);
