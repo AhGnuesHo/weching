@@ -83,7 +83,7 @@ export class UserModel implements IUserModel {
 
   async findUser(id: number): Promise<user[]> {
     const row = await pg.query('SELECT * FROM users WHERE id=($1)', [id]);
-    return row.rows;
+    return row.rows[0];
   }
 
   async userStatusUpdate(id: number): Promise<user[]> {

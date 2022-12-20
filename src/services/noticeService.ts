@@ -1,9 +1,9 @@
 import { QueryResult } from 'pg';
-import { notice } from '../interfaces';
-import { NoticeModel, noticeModel } from '../model/noticeModel';
+import { notice, INoticeModel } from './interfaces/interface';
+import { noticeModel } from '../model/noticeModel';
 
 export class NoticeService {
-  constructor(private noticeModel: NoticeModel) {
+  constructor(private noticeModel: INoticeModel) {
     this.noticeModel = noticeModel;
   }
   //공지사항 생성
