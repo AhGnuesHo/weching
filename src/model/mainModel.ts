@@ -13,7 +13,7 @@ export class Main {
     const result: main = {
       user: userInfo,
       todoReview: todoReview,
-      advice: advice[0],
+      advice: advice,
     };
     return result;
   }

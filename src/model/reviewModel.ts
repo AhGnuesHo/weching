@@ -1,5 +1,6 @@
 import { newPost, IReviewModel, review } from '../interfaces';
 import { pg } from '../app';
+import { Review } from '../controller/reviewController';
 
 export class ReviewModel implements IReviewModel {
   async todoReview(userId: number): Promise<newPost[]> {
@@ -25,6 +26,13 @@ export class ReviewModel implements IReviewModel {
       [postId]
     );
     return reviews.rows;
+  }
+
+  async getReviewOne(id: number): Promise<review> {
+    const review = await pg.query(`select user_id from review where id=($1)`, [
+      id,
+    ]);
+    return review.rows[0].user_id;
   }
 }
 

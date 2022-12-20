@@ -6,3 +6,4 @@ export const userRouter = Router();
 
 userRouter.get('/', asyncHandler(userController.findUser));
 userRouter.delete('/', asyncHandler(userController.deleteUser));
+userRouter.patch('/:reviewId', asyncHandler(userController.updateUserGrade));
