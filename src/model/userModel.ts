@@ -91,6 +91,14 @@ export class UserModel implements IUserModel {
       .query('UPDATE users SET status = 1 WHERE id=($1)', [id])
       .then(() => this.findUser(id));
   }
+
+  async updateNickname(nickName: string, userId: number): Promise<boolean> {
+    const update = await pg.query(
+      'UPDATE users SET nickname = $1 where id= $2',
+      [nickName, userId]
+    );
+    return update.rowCount === 1;
+  }
 }
 
 export const userModel = new UserModel();

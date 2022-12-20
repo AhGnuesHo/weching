@@ -5,6 +5,7 @@ import { user } from '../interfaces';
 interface userControllerInterface {
   findUser: AsyncRequestHandler;
   deleteUser: AsyncRequestHandler;
+  updateNickname: AsyncRequestHandler;
 }
 
 export class User implements user {
@@ -36,6 +37,13 @@ export const userController: userControllerInterface = {
   async deleteUser(req: any, res: any, next: any): Promise<any> {
     const id = req.body.userId;
     const update = await userService.userStatusUpdate(id);
+    res.json(update);
+  },
+
+  async updateNickname(req, res) {
+    const { nickName } = req.body;
+    const { userId } = req.body;
+    const update = await userService.updateNickname(nickName, userId);
     res.json(update);
   },
 };

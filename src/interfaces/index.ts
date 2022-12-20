@@ -67,6 +67,7 @@ interface IUserModel {
   isUser(info: any): Promise<user>;
   isNickName(nickName: string): Promise<Boolean>;
   updatePoint(info: any, deduct: number): Promise<void>;
+  updateNickname(nickName: string, userId: number): Promise<Boolean>;
 }
 
 interface IPostModel {
