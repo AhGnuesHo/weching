@@ -38,7 +38,7 @@ pg.connect()
   .then(() => log.info(`database Connect`))
   .catch((err) => log.err('connection error', err.stack));
 
-app.use(cors({ origin: '*' }));
+app.use(cors({ origin: 'http://localhost:3000', credentials: true }));
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
