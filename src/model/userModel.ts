@@ -4,6 +4,7 @@ import { pg } from '../app';
 import { QueryResult } from 'pg';
 import { reviewModel } from './reviewModel';
 import { log } from '../logger';
+import { reviewRouter } from '../routers/reviewRouter';
 export class UserModel implements IUserModel {
   async createUser(user: user): Promise<user> {
     const { email, nickName } = user;
@@ -15,7 +16,10 @@ export class UserModel implements IUserModel {
     return newUser.rows[0];
   }
   async userInfo(id: number): Promise<user> {
-    const info = await pg.query('select * from users where id = $1', [id]);
+    const info = await pg.query(
+      'select *,(select count(*) from posts where user_id = ($1)) as post_count,(select count(*) from review  where user_id = ($1) ) as review_count from users where id =($1)',
+      [id]
+    );
     return info.rows[0];
   }
   // 다형성을 써보려고 했는데 코드가 좀 별로 인 것 같음
@@ -81,22 +85,18 @@ export class UserModel implements IUserModel {
     return result.rows[0];
   }
 
-  async findUser(id: number): Promise<user[]> {
-    const row = await pg.query('SELECT * FROM users WHERE id=($1)', [id]);
-    return row.rows[0];
-  }
-
-  async userStatusUpdate(id: number): Promise<user[]> {
+  async userStatusUpdate(id: number): Promise<user> {
     return await pg
       .query('UPDATE users SET status = 1 WHERE id=($1)', [id])
-      .then(() => this.findUser(id));
+      .then(() => this.userInfo(id));
   }
 
   //평점
   async userGrade(grade: number, reviewId: number): Promise<Boolean> {
     const id = await reviewModel.getReviewOne(reviewId);
+
     const row = await pg.query(
-      'UPDATE users SET grade =grade +($1) WHERE id=($2)',
+      'UPDATE users SET grade =(grade +($1)WHERE id=($3)',
       [grade, id]
     );
     return row.rowCount === 1;
