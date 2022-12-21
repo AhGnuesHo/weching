@@ -22,7 +22,7 @@ export class ReviewModel implements IReviewModel {
 
   async getReviewByPost(postId: number): Promise<review[]> {
     const reviews = await pg.query(
-      `select id, content, grade, status from review where post_id = $1`,
+      `select id, content, status from review where post_id = $1`,
       [postId]
     );
     return reviews.rows;
