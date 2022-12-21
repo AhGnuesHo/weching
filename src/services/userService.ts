@@ -1,5 +1,6 @@
-import { userModel } from '../model/userModel';
+import { userModel, reviewModel } from '../model';
 import { user, IUserModel } from '../interfaces';
+import { log } from '../logger';
 export class UserService {
   constructor(private userModel: IUserModel) {}
 
@@ -20,7 +21,17 @@ export class UserService {
   }
 
   async userGradeUpdate(grade: number, id: number): Promise<Boolean> {
-    return await userModel.userGrade(grade, id);
+    const doGrade = await userModel.userGrade(grade, id);
+    if (!doGrade) {
+      log.error('평가 실패');
+      throw new Error('평가 실패');
+    }
+    const isDone = await reviewModel.isDone(id);
+    if (!isDone) {
+      log.error('평가 실패 : 평가 미완료');
+      throw new Error('평가 실패 : 평가 미완료');
+    }
+    return true;
   }
 
   async updateNickname(nickname: string, userId: number): Promise<Boolean> {

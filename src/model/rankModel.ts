@@ -2,7 +2,7 @@ import { IRankModel } from '../interfaces';
 import { pg } from '../app';
 
 export class RanKModel implements IRankModel {
-  async resetElevation(): Promise<void> {
+  async getRank(): Promise<void> {
     await pg.query('update rank set elevation = 0 ');
   }
 }

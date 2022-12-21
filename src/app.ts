@@ -23,7 +23,6 @@ import { endPoint } from './constants';
 import { Pool } from 'pg';
 import { userRouter } from './routers/userRouter';
 
-require('./passport')();
 const app = express();
 
 export const pg = new Pool({
@@ -38,11 +37,13 @@ pg.connect()
   .then(() => log.info(`database Connect`))
   .catch((err) => log.err('connection error', err.stack));
 
-app.use(cors({ origin: 'http://localhost:3000', credentials: true }));
+app.use(cors({ origin: '*' }));
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+
+require('./passport')();
 
 app.get(endPoint.index, indexRouter);
 // todo .get 과 .use의 차이?
@@ -69,7 +70,7 @@ cron.schedule(
   '* * 1-12 * *',
   async () => {
     try {
-      await rankModel.resetElevation();
+      await rankModel.getRank();
     } catch (e) {
       log.error(e);
     }

@@ -69,6 +69,8 @@ interface IReviewModel {
   todoReview(userId: number): Promise<newPost[]>;
   writeReview(review: review): Promise<Boolean>;
   getReviewByPost(postId: number): Promise<review[]>;
+  getDoneReviewCount(userId: number): Promise<number>;
+  isDone(id: number): Promise<Boolean>;
 }
 interface IReportModel {
   createReport(type: string, type_id: number, content: string): Promise<report>;
@@ -108,9 +110,8 @@ interface INoticeModel {
 interface IAdviceModel {
   getAdvice(): Promise<advice>;
 }
-``;
 interface IRankModel {
-  resetElevation(): Promise<void>;
+  getRank(): Promise<void>;
 }
 
 export {

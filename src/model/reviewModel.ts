@@ -34,6 +34,22 @@ export class ReviewModel implements IReviewModel {
     ]);
     return review.rows[0].user_id;
   }
+
+  async getDoneReviewCount(userId: number): Promise<number> {
+    const count = await pg.query(
+      `select count(*) from review where user_id = $1  and content is not null and is_done = 1 `,
+      [userId]
+    );
+    return count.rows[0].count;
+  }
+
+  async isDone(id: number): Promise<Boolean> {
+    const isDone = await pg.query(
+      `update review set is_done = 1 where id = $1`,
+      [id]
+    );
+    return isDone.rowCount === 1;
+  }
 }
 
 export const reviewModel = new ReviewModel();
