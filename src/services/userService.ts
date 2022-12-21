@@ -12,11 +12,11 @@ export class UserService {
     return await userModel.isUser(email);
   }
 
-  async findUser(id: number): Promise<user[]> {
-    return await userModel.findUser(id);
+  async findUser(id: number): Promise<user> {
+    return await userModel.userInfo(id);
   }
 
-  async userStatusUpdate(id: number): Promise<user[]> {
+  async userStatusUpdate(id: number): Promise<user> {
     return await userModel.userStatusUpdate(id);
   }
 
