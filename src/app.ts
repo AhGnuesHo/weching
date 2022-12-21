@@ -24,6 +24,18 @@ import { Pool } from 'pg';
 import { userRouter } from './routers/userRouter';
 
 const app = express();
+app.use(
+  cors({
+    origin: true,
+    credentials: true,
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  })
+);
+
+app.use(logger('dev'));
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+app.use(cookieParser());
 
 export const pg = new Pool({
   user: user,
@@ -36,13 +48,6 @@ export const pg = new Pool({
 pg.connect()
   .then(() => log.info(`database Connect`))
   .catch((err) => log.err('connection error', err.stack));
-
-app.use(cors({ origin: true, credentials: true }));
-app.use(logger('dev'));
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
-
 require('./passport')();
 
 app.get(endPoint.index, indexRouter);
