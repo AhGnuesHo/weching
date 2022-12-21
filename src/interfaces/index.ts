@@ -90,6 +90,8 @@ interface IUserModel {
   isUser(info: any): Promise<user>;
   isNickName(nickName: string): Promise<Boolean>;
   updatePoint(info: any, deduct: number): Promise<void>;
+  getGrade(id: number): Promise<number>;
+  updateAvg(id: number, avg: number): Promise<Boolean>;
   updateNickname(nickName: string, userId: number): Promise<Boolean>;
 }
 

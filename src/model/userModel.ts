@@ -101,7 +101,18 @@ export class UserModel implements IUserModel {
     );
     return row.rowCount === 1;
   }
+  async updateAvg(avg: number, id: number): Promise<Boolean> {
+    const update = await pg.query(`update users SET avg = $1 where id = $2`, [
+      avg,
+      id,
+    ]);
+    return update.rowCount === 1;
+  }
 
+  async getGrade(id: number): Promise<number> {
+    const grade = await pg.query('SELECT grade FROM users WHERE id = $1', [id]);
+    return grade.rows[0];
+  }
   async updateNickname(nickName: string, userId: number): Promise<boolean> {
     const update = await pg.query(
       'UPDATE users SET nickname = $1 where id= $2',

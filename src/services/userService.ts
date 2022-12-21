@@ -33,6 +33,19 @@ export class UserService {
     }
     return true;
   }
+  async updateAvg(id: number, avg: number): Promise<boolean> {
+    const update = await userModel.updateAvg(id, avg);
+    if (!update) {
+      log.error('평가 실패 : 평균 업데이트 실패');
+      throw new Error('평가 실패 :평균 업데이트 실패');
+    }
+    return true;
+  }
+  async getGradeAvg(id: number): Promise<number> {
+    const grade = await userModel.getGrade(id);
+    const reviewCount = await reviewModel.getDoneReviewCount(id);
+    return reviewCount / grade;
+  }
 
   async updateNickname(nickname: string, userId: number): Promise<Boolean> {
     const result = await userModel.updateNickname(nickname, userId);
