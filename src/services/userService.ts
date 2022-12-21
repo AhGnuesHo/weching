@@ -31,10 +31,14 @@ export class UserService {
       log.error('평가 실패 : 평가 미완료');
       throw new Error('평가 실패 : 평가 미완료');
     }
+
+    const avg = await this.getGradeAvg(id);
+    await this.updateAvg(id, avg);
+
     return true;
   }
   async updateAvg(id: number, avg: number): Promise<boolean> {
-    const update = await userModel.updateAvg(id, avg);
+    const update = await userModel.updateAvg(avg, id);
     if (!update) {
       log.error('평가 실패 : 평균 업데이트 실패');
       throw new Error('평가 실패 :평균 업데이트 실패');
