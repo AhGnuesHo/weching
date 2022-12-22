@@ -15,11 +15,14 @@ export class PostService {
   async createReview(postId: number): Promise<void> {
     const targetUserCount = 3;
     const count = await postModel.getAllUsersCount();
-    let target = [];
-    for (let i = 0; i < targetUserCount; i++) {
-      target.push(Math.floor(Math.random() * (count - 15)) + 15);
-    }
+    let target = [18, 999, 3];
+    // for (let i = 0; i < targetUserCount; i++) {
+    //   target.push(Math.floor(Math.random() * (count - 15)) + 15);
+    // }
     // todo api array로 변경
+
+    // 총합이랑, 평균 낸거 같이 보내기
+    // 등수랑 
 
     await postModel.createReview(target, postId);
   }

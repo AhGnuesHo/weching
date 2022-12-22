@@ -1,6 +1,7 @@
+import { endPoint } from './../constants';
 import { post, IPostModel, newPost, review } from '../interfaces';
 import { pg } from '../app';
-import { QueryResult } from 'pg';
+import { Pool, QueryResult } from 'pg';
 import { postService } from '../services/postService';
 
 export class PostModel implements IPostModel {
@@ -23,15 +24,25 @@ export class PostModel implements IPostModel {
   }
 
   async createReview(targetUser: number[], postId: number): Promise<void> {
-    await Promise.all(
-      targetUser.map(
-        async (user) =>
-          await pg.query(
-            `insert into review (user_id, post_id ) VALUES ($1, $2)`,
-            [user, postId]
-          )
-      )
-    );
+    const poolClient = await pg.connect();
+    try {
+      await poolClient.query('BEGIN');
+      await Promise.all(
+        targetUser.map(
+          async (user) =>
+            await pg.query(
+              `insert into review (user_id, post_id ) VALUES ($1, $2)`,
+              [user, postId]
+            )
+        )
+      );
+    } catch (err) {
+      await poolClient.query('ROLLBACK');
+      throw err;
+    } finally {
+      await poolClient.query('commit');
+      poolClient.release();
+    }
   }
 
   async getPosts(userId: number): Promise<newPost[]> {

@@ -7,6 +7,7 @@ const config = {
   clientID: clientID,
   clientSecret: clientSecret,
   callbackURL: '/auth/google/callback',
+  scope: ['profile', 'email'],
 };
 
 const login = new GoogleStrategy(
