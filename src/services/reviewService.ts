@@ -1,6 +1,8 @@
 import { reviewModel } from '../model/reviewModel';
-import { IReviewModel, newPost, point, review } from '../interfaces';
-import { userModel } from '../model';
+import { IReviewModel, newPost, point, review, grade } from '../interfaces';
+import { userModel, postModel } from '../model';
+import { log } from '../logger';
+import { userService } from './userService';
 
 export class ReviewService {
   constructor(private reviewModel: IReviewModel) {}
@@ -22,6 +24,19 @@ export class ReviewService {
     await userModel.updatePoint(userId, point.REVIEW);
 
     return review;
+  }
+
+  async gradeReview(
+    grade: number,
+    reviewId: number,
+    userId: number
+  ): Promise<grade> {
+    const isDone = await reviewModel.isDone(reviewId, userId);
+    if (!isDone) {
+      log.error('평가 실패 : 평가 미완료');
+      throw new Error('평가 실패 : 평가 미완료');
+    }
+    return await userService.userGradeUpdate(grade, reviewId);
   }
 }
 

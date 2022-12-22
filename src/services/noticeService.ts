@@ -1,13 +1,10 @@
-import { notice, INoticeModel, newNotice } from '../interfaces';
+import {
+  notice,
+  INoticeModel,
+  newNotice,
+  pageNationNotice,
+} from '../interfaces';
 import { noticeModel } from '../model/noticeModel';
-
-import { LargeNumberLike } from 'crypto';
-
-interface pageNationNotice {
-  totalPage: number;
-  currPage: number;
-  notice: newNotice[];
-}
 export class NoticeService {
   constructor(private noticeModel: INoticeModel) {}
   //공지사항 생성

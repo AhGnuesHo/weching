@@ -5,6 +5,7 @@ import { review } from '../interfaces';
 interface reviewControllerInterface {
   getReview: AsyncRequestHandler;
   writeReview: AsyncRequestHandler;
+  gradeReview: AsyncRequestHandler;
 }
 export class Review implements review {
   postId: string;
@@ -37,6 +38,17 @@ export class ReviewController implements reviewControllerInterface {
     const review = plainToClass(Review, request);
 
     const result = await reviewService.writeReview(review);
+    res.json(result);
+  };
+
+  gradeReview: AsyncRequestHandler = async (req, res) => {
+    const id = req.params.reviewId;
+    const reviewId = parseInt(id);
+    const { grade } = req.body;
+    const { userId } = req.body;
+    const userGrade = parseInt(grade);
+    const result = await reviewService.gradeReview(userGrade, reviewId, userId);
+
     res.json(result);
   };
 }

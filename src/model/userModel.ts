@@ -96,7 +96,7 @@ export class UserModel implements IUserModel {
     const id = await reviewModel.getReviewOne(reviewId);
 
     const row = await pg.query(
-      'UPDATE users SET grade =(grade +($1)WHERE id=($3)',
+      'UPDATE users SET grade =(grade +($1))WHERE id=($2)',
       [grade, id]
     );
     return row.rowCount === 1;

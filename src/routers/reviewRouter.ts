@@ -9,3 +9,4 @@ reviewRouter.patch(
   '/write/:postId',
   asyncHandler(reviewController.writeReview)
 );
+reviewRouter.patch('/:reviewId', asyncHandler(reviewController.gradeReview));

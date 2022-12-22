@@ -8,7 +8,6 @@ import { parentPort } from 'worker_threads';
 interface userControllerInterface {
   findUser: AsyncRequestHandler;
   deleteUser: AsyncRequestHandler;
-  updateUserGrade: AsyncRequestHandler;
   updateNickname: AsyncRequestHandler;
 }
 
@@ -42,16 +41,6 @@ export const userController: userControllerInterface = {
     const id = req.body.userId;
     const update = await userService.userStatusUpdate(id);
     res.json(update);
-  },
-
-  async updateUserGrade(req: any, res: any, next: any): Promise<any> {
-    const id = req.params.reviewId;
-    const userId = parseInt(id);
-    const { grade } = req.body;
-    const userGrade = parseInt(grade);
-    const result = await userService.userGradeUpdate(userGrade, userId);
-
-    res.json(result);
   },
 
   async updateNickname(req, res) {

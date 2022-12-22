@@ -7,6 +7,12 @@ interface user {
   grade?: number;
 }
 
+interface grade {
+  reviewCount: number;
+  currGrade: number;
+  newAvg: number;
+}
+
 interface post {
   userId: number;
   content?: string;
@@ -70,7 +76,7 @@ interface IReviewModel {
   writeReview(review: review): Promise<Boolean>;
   getReviewByPost(postId: number): Promise<review[]>;
   getDoneReviewCount(userId: number): Promise<number>;
-  isDone(id: number): Promise<Boolean>;
+  isDone(id: number, userId: number): Promise<Boolean>;
   getReviewWriter(Id: number): Promise<user>;
 }
 interface IReportModel {
@@ -116,7 +122,11 @@ interface IAdviceModel {
 interface IRankModel {
   getRank(): Promise<void>;
 }
-
+interface pageNationNotice {
+  totalPage: number;
+  currPage: number;
+  notice: newNotice[];
+}
 export {
   user,
   post,
@@ -137,6 +147,8 @@ export {
   postWithReview,
   IRankModel,
   IReportModel,
+  pageNationNotice,
+  grade,
   report,
   newReview,
 };

@@ -1,6 +1,7 @@
 import { userModel, reviewModel } from '../model';
-import { user, IUserModel, point } from '../interfaces';
+import { user, IUserModel, point, grade } from '../interfaces';
 import { log } from '../logger';
+
 export class UserService {
   constructor(private userModel: IUserModel) {}
 
@@ -20,40 +21,44 @@ export class UserService {
     return await userModel.userStatusUpdate(id);
   }
 
-  async userGradeUpdate(grade: number, id: number): Promise<Boolean> {
+  async userGradeUpdate(grade: number, id: number): Promise<grade> {
     const doGrade = await userModel.userGrade(grade, id);
     if (!doGrade) {
       log.error('평가 실패');
       throw new Error('평가 실패');
     }
-    const isDone = await reviewModel.isDone(id);
-    if (!isDone) {
-      log.error('평가 실패 : 평가 미완료');
-      throw new Error('평가 실패 : 평가 미완료');
-    }
 
-    const avg = await this.getGradeAvg(id);
-    await this.updateAvg(id, avg);
+    const result = await this.getGradeAvg(id);
 
-    return true;
+    return result;
   }
-  async updateAvg(id: number, avg: number): Promise<boolean> {
+  async updateAvg(id: number, avg: number): Promise<Boolean> {
     const update = await userModel.updateAvg(avg, id);
     if (!update) {
       log.error('평가 실패 : 평균 업데이트 실패');
       throw new Error('평가 실패 :평균 업데이트 실패');
     }
-    return true;
+    return update;
   }
 
   async updatePoint(writerEmail: string): Promise<void> {
     await userModel.updatePoint(writerEmail, point.REVIEW);
   }
 
-  async getGradeAvg(id: number): Promise<number> {
-    const grade = await userModel.getGrade(id);
+  async getGradeAvg(id: number): Promise<grade> {
     const reviewCount = await reviewModel.getDoneReviewCount(id);
-    return reviewCount / grade;
+    const grade = await userModel.getGrade(id);
+    const newAvg = reviewCount / grade;
+    if (reviewCount > 10) {
+      await this.updateAvg(id, newAvg);
+    }
+    const result = {
+      reviewCount: reviewCount,
+      currGrade: grade,
+      newAvg: newAvg,
+    };
+
+    return result;
   }
 
   async updateNickname(nickname: string, userId: number): Promise<Boolean> {
