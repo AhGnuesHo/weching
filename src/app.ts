@@ -24,7 +24,7 @@ import { Pool } from 'pg';
 import { userRouter } from './routers/userRouter';
 
 const app = express();
-app.use(cors());
+app.use(cors({ credentials: true }));
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));

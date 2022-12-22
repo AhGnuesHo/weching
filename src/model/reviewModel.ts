@@ -14,7 +14,7 @@ export class ReviewModel implements IReviewModel {
   async writeReview(review: review): Promise<Boolean> {
     const { postId, userId, content } = review;
     const myReview = await pg.query(
-      `update review set content = $1 where not content in ($1) and post_id = $2 and user_id = $3 `,
+      `update review set content = $1 where post_id = $2 and user_id = $3 `,
       [content, postId, userId]
     );
     return myReview.rowCount === 1;
