@@ -79,9 +79,13 @@ interface IReportModel {
 }
 
 interface report {
-  type: string;
-  typeId: number;
-  content: string;
+  type?: string;
+  typeId?: number;
+  content?: string;
+}
+
+interface newReport extends report {
+  reviewId: number | string;
 }
 
 interface IUserModel {
@@ -136,4 +140,5 @@ export {
   IReportModel,
   report,
   newReview,
+  newReport,
 };

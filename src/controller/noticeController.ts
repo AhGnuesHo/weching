@@ -18,7 +18,6 @@ interface INoticeController {
 
 export class Notice implements newNotice {
   id: string;
-
   title: string;
   content: string;
   constructor(id: string, title: string, content: string) {

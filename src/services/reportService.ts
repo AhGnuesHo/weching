@@ -1,11 +1,17 @@
 import { reportModel } from '../model/reportModel';
-import { IReportModel } from '../interfaces';
+import { IReportModel, newReport, report } from '../interfaces';
 
 export class ReportService {
   constructor(private reportModel: IReportModel) {}
 
-  async createReport(type: string, type_id: number, content: string) {
-    return await reportModel.createReport(type, type_id, content);
+  //todo
+  //report model 부터확인
+  async createReport(
+    type: string,
+    typeId: newReport,
+    content: string
+  ): Promise<report> {
+    return await reportModel.createReport(type, typeId, content);
   }
 
   async findAll(page: number) {

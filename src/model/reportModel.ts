@@ -1,4 +1,4 @@
-import { report, IReportModel } from '../interfaces';
+import { report, IReportModel, newReport } from '../interfaces';
 import { pg } from '../app';
 
 export class ReportModel implements IReportModel {
@@ -6,7 +6,7 @@ export class ReportModel implements IReportModel {
     type: string,
     type_id: number,
     content: string
-  ): Promise<report> {
+  ): Promise<newReport> {
     const row = await pg.query(
       `INSERT INTO report(type,type_id,content) VALUES ($1,$2,$3)RETURNING *`,
       [type, type_id, content]
