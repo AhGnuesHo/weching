@@ -1,4 +1,4 @@
-import { newPost, IReviewModel, review } from '../interfaces';
+import { newPost, IReviewModel, review, user } from '../interfaces';
 import { pg } from '../app';
 import { Review } from '../controller/reviewController';
 
@@ -37,7 +37,7 @@ export class ReviewModel implements IReviewModel {
 
   async getDoneReviewCount(userId: number): Promise<number> {
     const count = await pg.query(
-      `select count(*) from review where user_id = $1  and content is not null and is_done = 1 `,
+      `select count(*) from review where user_id = (select user_id from review where id = $1) and content is not null and is_done = 1 `,
       [userId]
     );
     return count.rows[0].count;
@@ -49,6 +49,14 @@ export class ReviewModel implements IReviewModel {
       [id]
     );
     return isDone.rowCount === 1;
+  }
+
+  async getReviewWriter(reviewId: number): Promise<user> {
+    const user = await pg.query(
+      `select * from users where id = (select user_id from review where id = $1)`,
+      [reviewId]
+    );
+    return user.rows[0];
   }
 }
 

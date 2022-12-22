@@ -71,6 +71,7 @@ interface IReviewModel {
   getReviewByPost(postId: number): Promise<review[]>;
   getDoneReviewCount(userId: number): Promise<number>;
   isDone(id: number): Promise<Boolean>;
+  getReviewWriter(Id: number): Promise<user>;
 }
 interface IReportModel {
   createReport(type: string, type_id: number, content: string): Promise<report>;
@@ -90,6 +91,8 @@ interface IUserModel {
   isUser(info: any): Promise<user>;
   isNickName(nickName: string): Promise<Boolean>;
   updatePoint(info: any, deduct: number): Promise<void>;
+  getGrade(id: number): Promise<number>;
+  updateAvg(id: number, avg: number): Promise<Boolean>;
   updateNickname(nickName: string, userId: number): Promise<Boolean>;
 }
 

@@ -1,5 +1,5 @@
 import { userModel, reviewModel } from '../model';
-import { user, IUserModel } from '../interfaces';
+import { user, IUserModel, point } from '../interfaces';
 import { log } from '../logger';
 export class UserService {
   constructor(private userModel: IUserModel) {}
@@ -31,7 +31,29 @@ export class UserService {
       log.error('평가 실패 : 평가 미완료');
       throw new Error('평가 실패 : 평가 미완료');
     }
+
+    const avg = await this.getGradeAvg(id);
+    await this.updateAvg(id, avg);
+
     return true;
+  }
+  async updateAvg(id: number, avg: number): Promise<boolean> {
+    const update = await userModel.updateAvg(avg, id);
+    if (!update) {
+      log.error('평가 실패 : 평균 업데이트 실패');
+      throw new Error('평가 실패 :평균 업데이트 실패');
+    }
+    return true;
+  }
+
+  async updatePoint(writerEmail: string): Promise<void> {
+    await userModel.updatePoint(writerEmail, point.REVIEW);
+  }
+
+  async getGradeAvg(id: number): Promise<number> {
+    const grade = await userModel.getGrade(id);
+    const reviewCount = await reviewModel.getDoneReviewCount(id);
+    return reviewCount / grade;
   }
 
   async updateNickname(nickname: string, userId: number): Promise<Boolean> {
