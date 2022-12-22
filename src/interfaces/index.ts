@@ -72,11 +72,6 @@ interface IReviewModel {
   getDoneReviewCount(userId: number): Promise<number>;
   isDone(id: number): Promise<Boolean>;
 }
-interface IReportModel {
-  createReport(type: string, type_id: number, content: string): Promise<report>;
-  findAll(page: number): Promise<report[]>;
-  findType(type: string, page: number): Promise<report[]>;
-}
 
 interface report {
   type?: string;
@@ -86,6 +81,13 @@ interface report {
 
 interface newReport extends report {
   reviewId: number | string;
+}
+
+interface pageNationReport {
+  totalPage: number;
+  currPage: number;
+  report?: newReport[];
+  reportType?: newReport[];
 }
 
 interface IUserModel {
@@ -108,9 +110,20 @@ interface INoticeModel {
   findNotice(noticeInfo: newNotice): Promise<newNotice[]>;
   findAll(page: number): Promise<notice[]>;
   update(noticeInfo: newNotice, notice: notice): Promise<notice[]>;
-  // delete(id: number): Promise<notice[]>;
+  delete(noticeDetailId: newNotice): Promise<notice[]>;
 }
 
+interface IReportModel {
+  createReport(
+    type: string,
+    type_id: newReport,
+    content: string
+  ): Promise<report>;
+  findAll(page: number): Promise<newReport[]>;
+  findType(type: string, page: number): Promise<newReport[]>;
+  countAll(): Promise<number>;
+  countType(type: string): Promise<number>;
+}
 interface IAdviceModel {
   getAdvice(): Promise<advice>;
 }
@@ -141,4 +154,5 @@ export {
   report,
   newReview,
   newReport,
+  pageNationReport,
 };

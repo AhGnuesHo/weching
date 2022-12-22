@@ -13,7 +13,7 @@ interface INoticeController {
   findById: AsyncRequestHandler;
   findAll: custom;
   update: AsyncRequestHandler;
-  // delete: AsyncRequestHandler;
+  delete: AsyncRequestHandler;
 }
 
 export class Notice implements newNotice {
@@ -22,7 +22,6 @@ export class Notice implements newNotice {
   content: string;
   constructor(id: string, title: string, content: string) {
     this.id = id;
-
     this.title = title;
     this.content = content;
   }
