@@ -17,7 +17,7 @@ export class PostService {
     const count = await postModel.getAllUsersCount();
     let target = [];
     for (let i = 0; i < targetUserCount; i++) {
-      target.push(Math.floor(Math.random() * (count - 15) + 15));
+      target.push(Math.floor(Math.random() * (count - 15)) + 15);
     }
     // todo api array로 변경
 
