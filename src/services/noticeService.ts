@@ -1,7 +1,13 @@
-import { notice, INoticeModel } from '../interfaces';
+import { notice, INoticeModel, newNotice } from '../interfaces';
 import { noticeModel } from '../model/noticeModel';
-import { newNotice } from '../interfaces';
 
+import { LargeNumberLike } from 'crypto';
+
+interface pageNationNotice {
+  totalPage: number;
+  currPage: number;
+  notice: newNotice[];
+}
 export class NoticeService {
   constructor(private noticeModel: INoticeModel) {}
   //공지사항 생성
@@ -13,8 +19,17 @@ export class NoticeService {
     return await noticeModel.findNotice(noticeDetailId);
   }
   //공지사항 전체 조회
-  async findAll(page: number): Promise<newNotice[]> {
-    return await noticeModel.findAll(page);
+
+  async findAll(page: number): Promise<pageNationNotice> {
+    const totalCount = await noticeModel.countAll();
+    const notice = await noticeModel.findAll(page);
+    const totalPage = Math.ceil(totalCount / 10);
+    const result = {
+      totalPage: totalPage,
+      currPage: page,
+      notice: notice,
+    };
+    return result;
   }
 
   //공지사항 수정

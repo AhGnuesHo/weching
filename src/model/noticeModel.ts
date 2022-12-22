@@ -23,6 +23,11 @@ export class NoticeModel implements INoticeModel {
 
     return row.rows[0];
   }
+
+  async countAll(): Promise<number> {
+    return (await pg.query('select count(*) from notice')).rows[0].count;
+  }
+
   //공지사항 전체 조회
   async findAll(page: number): Promise<newNotice[]> {
     const row = await pg.query(
