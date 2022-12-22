@@ -5,4 +5,4 @@ import { asyncHandler } from '../utils';
 export const reportRouter = Router();
 
 reportRouter.post('/:reviewId', asyncHandler(reportController.createReport));
-reportRouter.get('/', asyncHandler(reportController.findReport));
+reportRouter.get('/', reportController.findReport);
