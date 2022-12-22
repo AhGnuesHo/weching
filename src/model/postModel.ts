@@ -13,7 +13,7 @@ export class PostModel implements IPostModel {
 
     return newPost.rows[0];
   }
-
+// 백엔드에서 전체 페이지 보여주기
   async getAllUsersCount(): Promise<number> {
     const result: QueryResult<any> = await pg.query(
       `select max(id) from users `
