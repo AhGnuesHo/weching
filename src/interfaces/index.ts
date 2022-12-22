@@ -71,6 +71,7 @@ interface IReviewModel {
   getReviewByPost(postId: number): Promise<review[]>;
   getDoneReviewCount(userId: number): Promise<number>;
   isDone(id: number): Promise<Boolean>;
+  getReviewWriter(Id: number): Promise<user>;
 }
 interface IReportModel {
   createReport(type: string, type_id: number, content: string): Promise<report>;

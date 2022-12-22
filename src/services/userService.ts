@@ -1,5 +1,5 @@
 import { userModel, reviewModel } from '../model';
-import { user, IUserModel } from '../interfaces';
+import { user, IUserModel, point } from '../interfaces';
 import { log } from '../logger';
 export class UserService {
   constructor(private userModel: IUserModel) {}
@@ -45,6 +45,11 @@ export class UserService {
     }
     return true;
   }
+
+  async updatePoint(writerEmail: string): Promise<void> {
+    await userModel.updatePoint(writerEmail, point.REVIEW);
+  }
+
   async getGradeAvg(id: number): Promise<number> {
     const grade = await userModel.getGrade(id);
     const reviewCount = await reviewModel.getDoneReviewCount(id);
