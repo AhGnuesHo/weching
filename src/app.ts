@@ -37,7 +37,7 @@ pg.connect()
   .then(() => log.info(`database Connect`))
   .catch((err) => log.err('connection error', err.stack));
 
-app.use(cors({ origin: '*' }));
+app.use(cors());
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -69,8 +69,9 @@ app.listen(port, () => {
 cron.schedule(
   '* * 1-12 * *',
   async () => {
+    log.info(`update ranking`);
     try {
-      await rankModel.getRank();
+      await rankModel.setNewRank();
     } catch (e) {
       log.error(e);
     }

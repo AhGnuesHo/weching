@@ -71,6 +71,11 @@ enum point {
   REVIEW = 5,
 }
 
+interface rank {
+  id: number;
+  avg: number;
+}
+
 interface IReviewModel {
   todoReview(userId: number): Promise<newPost[]>;
   writeReview(review: review): Promise<Boolean>;
@@ -120,7 +125,8 @@ interface IAdviceModel {
   getAdvice(): Promise<advice>;
 }
 interface IRankModel {
-  getRank(): Promise<void>;
+  getRank(): Promise<rank[]>;
+  setNewRank(): Promise<void>;
 }
 interface pageNationNotice {
   totalPage: number;
@@ -145,6 +151,7 @@ export {
   point,
   INoticeModel,
   postWithReview,
+  rank,
   IRankModel,
   IReportModel,
   pageNationNotice,
