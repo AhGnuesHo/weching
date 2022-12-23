@@ -18,7 +18,7 @@ export class RanKModel implements IRankModel {
       newRank.map(
         async (rank) =>
           await pg.query(
-            `insert into best (rank, month, user_id) values (${rank.rank}, select to_date(to_char(now(), 'yyyy-mm'),'yyyy-mm'), ${rank.id}) `
+            `insert into best (rank, month, user_id) values (${rank.rank}, (select to_date(to_char(now(), 'yyyy-mm'),'yyyy-mm')), ${rank.id}) `
           )
       )
     );
@@ -32,7 +32,7 @@ export class RanKModel implements IRankModel {
       userRank.map(
         async (rank) =>
           await pg.query(
-            `insert into rank (user_id, month, grade) values (${rank.id}, select to_date(to_char(now(), 'yyyy-mm'),'yyyy-mm'), ${rank.grade}) `
+            `insert into rank (user_id, month, grade) values (${rank.id}, (select to_date(to_char(now(), 'yyyy-mm'),'yyyy-mm')), ${rank.grade}) `
           )
       )
     );
@@ -43,7 +43,7 @@ export class RanKModel implements IRankModel {
     const poolClient = await pg.connect();
     try {
       await poolClient.query('begin');
-      const updateCount = await poolClient.query(`update users set grade = 0 `);
+      const updateCount = await poolClient.query(``);
       if (allCount !== updateCount.rowCount) {
         log.error(
           `업데이트 실패 : 전체 유저수 ${allCount}, 업데이트 유저수 : ${updateCount.rowCount}`
@@ -61,11 +61,17 @@ export class RanKModel implements IRankModel {
     }
   }
 
-  async getBest(): Promise<any> {
+  async getBest(): Promise<rank[]> {
     const best = await pg.query(
-      `select * from best where month = (select to_date(to_char(now(), 'yyyy-mm'),'yyyy-mm')) `
+      `select  ranker.rank, ranker.user_id, users.nickname, users.grade , users.avg
+from 
+(select user_id, rank from best where month = (select to_date(to_char(now(), 'yyyy-mm'),'yyyy-mm')))
+as ranker
+join users as users
+on ranker.user_id = users.id
+order by ranker.rank `
     );
-    return best;
+    return best.rows;
   }
 }
 

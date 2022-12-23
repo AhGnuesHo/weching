@@ -57,6 +57,7 @@ interface main {
   todoReview: newPost[];
   advice: advice;
   post: postWithReview[];
+  ranking: rank[];
 }
 
 enum postStatus {

@@ -1,3 +1,4 @@
+import { rankModel } from './rankModel';
 import { user } from '../config';
 import { main } from '../interfaces';
 import { ReviewModel, UserModel, AdviceModel } from '../model';
@@ -12,6 +13,7 @@ export class Main {
     const todoReview = await this.todoReview(id);
     const advice = await this.getAdvice();
     const post = await postService.getPosts(id);
+    const ranking = await rankModel.getBest();
     //내가 쓴게시글
     //랭킹 정보 (5개)
     const result: main = {
@@ -19,6 +21,7 @@ export class Main {
       todoReview: todoReview,
       advice: advice,
       post: post,
+      ranking: ranking,
     };
     return result;
   }
