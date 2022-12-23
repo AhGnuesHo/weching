@@ -1,9 +1,7 @@
-import { User } from '../controller/userController';
 import { user, IUserModel } from '../interfaces';
 import { pg } from '../app';
 import { QueryResult } from 'pg';
 import { reviewModel } from './reviewModel';
-import { log } from '../logger';
 import { reviewRouter } from '../routers/reviewRouter';
 export class UserModel implements IUserModel {
   async createUser(user: user): Promise<user> {
@@ -77,7 +75,7 @@ export class UserModel implements IUserModel {
     }
   }
 
-  async getAllUsersCount(): Promise<QueryResult<any>> {
+  async getAllUsersCounts(): Promise<QueryResult<any>> {
     const result: QueryResult<any> = await pg.query(
       `select max(id) from users `
     );
