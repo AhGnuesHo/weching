@@ -1,5 +1,5 @@
 import { PoolClient } from 'pg';
-import { AdviceModel } from './../model/adviceModel';
+import { QueryResult } from 'pg';
 interface user {
   email: string;
   nickName: string;
@@ -56,7 +56,9 @@ interface main {
   user: user;
   todoReview: newPost[];
   advice: advice;
+  post: postWithReview[];
 }
+
 enum postStatus {
   PENDING = 'pending',
   COMPLETE = 'complete',
@@ -114,6 +116,8 @@ interface IUserModel {
   isUser(info: any): Promise<user>;
   isNickName(nickName: string): Promise<Boolean>;
   updatePoint(info: any, deduct: number): Promise<void>;
+  getAllUsersCounts(): Promise<QueryResult<any>>;
+  userStatusUpdate(id: number): Promise<user>;
   getGrade(id: number): Promise<number>;
   updateAvg(id: number, avg: number): Promise<Boolean>;
   updateNickname(nickName: string, userId: number): Promise<Boolean>;
