@@ -1,5 +1,6 @@
 import { PoolClient } from 'pg';
 import { QueryResult } from 'pg';
+import { reviewRouter } from '../routers/reviewRouter';
 interface user {
   email: string;
   nickName: string;
@@ -88,6 +89,8 @@ interface IReviewModel {
   getDoneReviewCountThisMonth(userId: number): Promise<number>;
   isDone(id: number, userId: number): Promise<Boolean>;
   getReviewWriter(Id: number): Promise<user>;
+  reviewBookmark(reviewId: number): Promise<Boolean>;
+  bookmark(userId: number): Promise<any[]>;
 }
 
 interface report {

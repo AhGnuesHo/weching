@@ -1,5 +1,12 @@
 import { reviewModel } from '../model/reviewModel';
-import { IReviewModel, newPost, point, review, grade } from '../interfaces';
+import {
+  IReviewModel,
+  newPost,
+  point,
+  review,
+  grade,
+  newReview,
+} from '../interfaces';
 import { userModel, postModel } from '../model';
 import { log } from '../logger';
 import { userService } from './userService';
@@ -37,6 +44,15 @@ export class ReviewService {
       throw new Error('평가 실패 : 평가 미완료');
     }
     return await userService.userGradeUpdate(grade, reviewId);
+  }
+
+  async reviewBookmark(id: number): Promise<Boolean> {
+    const bookmark = await reviewModel.reviewBookmark(id);
+    return bookmark;
+  }
+
+  async bookmark(id: number): Promise<newReview[]> {
+    return await reviewModel.bookmark(id);
   }
 }
 

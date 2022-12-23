@@ -1,6 +1,5 @@
-import { newPost, IReviewModel, review, user } from '../interfaces';
+import { newPost, IReviewModel, review, user, newReview } from '../interfaces';
 import { pg } from '../app';
-import { Review } from '../controller/reviewController';
 import { log } from '../logger';
 
 export class ReviewModel implements IReviewModel {
@@ -75,6 +74,51 @@ export class ReviewModel implements IReviewModel {
     );
     return user.rows[0];
   }
-}
 
+  async reviewBookmark(id: number): Promise<Boolean> {
+    const reviewStatus = await pg.query(
+      `SELECT bookmark FROM review WHERE id= ($1)`,
+      [id]
+    );
+    let status = reviewStatus.rows[0].bookmark ? false : true;
+
+    const reviewBookmark = await pg.query(
+      `UPDATE review SET bookmark = ($1) where id = ($2)`,
+      [status, id]
+    );
+    return reviewBookmark.rowCount === 1;
+  }
+
+  async bookmark(userId: number): Promise<newReview[]> {
+    const post_Id = await pg.query(
+      `select id  from posts  where user_id = ($1)`,
+      [userId]
+    );
+
+    const post = post_Id.rows;
+    const postId: number[] = [];
+    post.map((item) => {
+      const { id } = item;
+      postId.push(id);
+    });
+
+    const bookmarkReview: any[] = await Promise.all(
+      postId.map(async (id) => {
+        const bookmark = await pg.query(
+          `select * from review  where bookmark = true and post_id = ($1)`,
+          [id]
+        );
+
+        if (bookmark.rowCount !== 0) {
+          return bookmark.rows;
+        }
+      })
+    );
+    const myBookmark: any[] = bookmarkReview.filter((bookmark) => {
+      return bookmark !== undefined || null;
+    });
+
+    return myBookmark;
+  }
+}
 export const reviewModel = new ReviewModel();
