@@ -116,7 +116,6 @@ interface IUserModel {
   isUser(info: any): Promise<user>;
   isNickName(nickName: string): Promise<Boolean>;
   updatePoint(info: any, deduct: number): Promise<void>;
-  getAllUsersCounts(): Promise<QueryResult<any>>;
   userStatusUpdate(id: number): Promise<user>;
   getGrade(id: number): Promise<number>;
   updateAvg(id: number, avg: number): Promise<Boolean>;
