@@ -1,3 +1,4 @@
+import { loginRequired } from '../middlewares';
 import { mainService } from '../services';
 import { AsyncRequestHandler } from '../types';
 
@@ -8,6 +9,7 @@ interface IMainController {
 export class MainController implements IMainController {
   mainInfo: AsyncRequestHandler = async (req, res) => {
     const { userId } = req.body;
+
     const mainInfo = await mainService.mainInfo(userId);
     res.json(mainInfo);
   };
