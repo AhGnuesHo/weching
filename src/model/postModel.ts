@@ -18,7 +18,7 @@ export class PostModel implements IPostModel {
       const posting = await this.posting(post, postingPg);
       await postingPg.query('commit');
       log.info('posting success : ' + post);
-      
+
       const target = await postService.createReview();
       await this.createReview(target, posting.id as number);
       const result = {
@@ -77,10 +77,19 @@ export class PostModel implements IPostModel {
   }
 
   async getPosts(userId: number): Promise<newPost[]> {
-    const getPost = await pg.query(`select * from posts where user_id = $1`, [
-      userId,
-    ]);
+    const getPost = await pg.query(
+      `select * from posts where user_id = $1 order by id desc`,
+      [userId]
+    );
     return getPost.rows;
+  }
+
+  async getPost(userId: number, postId: number): Promise<newPost> {
+    const getPost = await pg.query(
+      `select * from posts where user_id = $1 and post_id = $2 order by id desc`,
+      [userId, postId]
+    );
+    return getPost.rows[0];
   }
 }
 

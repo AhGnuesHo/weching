@@ -49,6 +49,11 @@ export class PostService {
     );
     return result;
   }
+
+  async getPost(userId: number, postId: number): Promise<newPost> {
+    const myPost = await postModel.getPost(userId, postId);
+    return myPost;
+  }
 }
 
 const postService = new PostService(postModel);

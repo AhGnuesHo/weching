@@ -6,7 +6,7 @@ import { log } from '../logger';
 export class ReviewModel implements IReviewModel {
   async todoReview(userId: number): Promise<newPost[]> {
     const todoReview = await pg.query(
-      `select id, content from posts where id in (select post_id from review where user_id = $1)`,
+      `select id, content from posts where id in (select post_id from review where user_id = $1) order by id desc`,
       [userId]
     );
     return todoReview.rows;
@@ -44,23 +44,16 @@ export class ReviewModel implements IReviewModel {
     );
     return count.rows[0].count;
   }
-  async getPostInfoByReviewId(reviewId: number): Promise<number> {
+  async getPostInfoByReviewId(reviewId: number): Promise<newPost> {
     // Promise<newPost>
     const post = await pg.query(
-      'select * from posts where id = (select post_id from review where id = $1) ',
+      'select * from posts where id = (select post_id from review where id = $1)',
       [reviewId]
     );
     // 직렬화 해주기
-    // return post.rows[0];
-    return post.rows[0].user_id;
+    return post.rows[0];
   }
   async isDone(id: number, userId: number): Promise<Boolean> {
-    const postOwner = await this.getPostInfoByReviewId(id);
-    // 쿼리 결과 어떻게 직렬화 하지?
-    if (userId !== postOwner) {
-      log.error('is not owner');
-      throw new Error('본인의 게시글에만 평가를 남길 수 있습니다.');
-    }
     const isDone = await pg.query(
       `update review set is_done = 1 where id = $1`,
       [id]

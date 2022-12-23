@@ -46,7 +46,7 @@ app.use(cookieParser());
 require('./passport')();
 
 app.get(endPoint.index, indexRouter);
-app.use(endPoint.main, loginRequired, mainRouter);
+app.use(endPoint.main, mainRouter);
 app.use(endPoint.auth, authRouter);
 app.use(endPoint.guest, userHandler, guestRouter);
 app.use(endPoint.post, loginRequired, postRouter);
