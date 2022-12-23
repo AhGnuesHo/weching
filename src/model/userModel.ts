@@ -113,6 +113,7 @@ export class UserModel implements IUserModel {
     );
     return grade.rows[0].grade;
   }
+
   async updateNickname(nickName: string, userId: number): Promise<boolean> {
     const update = await pg.query(
       'UPDATE users SET nickname = $1 where id= $2',

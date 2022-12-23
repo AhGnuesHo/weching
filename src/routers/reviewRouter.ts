@@ -10,3 +10,8 @@ reviewRouter.patch(
   asyncHandler(reviewController.writeReview)
 );
 reviewRouter.patch('/:reviewId', asyncHandler(reviewController.gradeReview));
+reviewRouter.patch(
+  '/bookmark/:id',
+  asyncHandler(reviewController.reviewBookmark)
+);
+reviewRouter.get('/bookmark', asyncHandler(reviewController.bookmark));

@@ -2,10 +2,12 @@ import { reviewService } from '../services';
 import { AsyncRequestHandler } from '../types';
 import { plainToClass } from 'class-transformer';
 import { review } from '../interfaces';
+import { reviewRouter } from '../routers/reviewRouter';
 interface reviewControllerInterface {
   getReview: AsyncRequestHandler;
   writeReview: AsyncRequestHandler;
   gradeReview: AsyncRequestHandler;
+  bookmark: AsyncRequestHandler;
 }
 export class Review implements review {
   postId: string;
@@ -49,6 +51,19 @@ export class ReviewController implements reviewControllerInterface {
     const userGrade = parseInt(grade);
     const result = await reviewService.gradeReview(userGrade, reviewId, userId);
 
+    res.json(result);
+  };
+
+  reviewBookmark: AsyncRequestHandler = async (req, res) => {
+    const id = req.params.id;
+    const reviewId = parseInt(id);
+    const reviewBookmark = await reviewService.reviewBookmark(reviewId);
+    res.json(reviewBookmark);
+  };
+
+  bookmark: AsyncRequestHandler = async (req, res) => {
+    const userId = req.body.userId;
+    const result = await reviewService.bookmark(userId);
     res.json(result);
   };
 }
