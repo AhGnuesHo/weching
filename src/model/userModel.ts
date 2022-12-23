@@ -77,10 +77,8 @@ export class UserModel implements IUserModel {
     }
   }
 
-  async getAllUsersCount(): Promise<QueryResult<any>> {
-    const result: QueryResult<any> = await pg.query(
-      `select max(id) from users `
-    );
+  async getAllUsersCount(): Promise<number> {
+    const result = await pg.query(`select max(id) from users `);
 
     return result.rows[0];
   }

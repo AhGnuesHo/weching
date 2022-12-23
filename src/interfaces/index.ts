@@ -1,3 +1,4 @@
+import { PoolClient } from 'pg';
 import { AdviceModel } from './../model/adviceModel';
 interface user {
   email: string;
@@ -102,6 +103,11 @@ interface pageNationReport {
   reportType?: newReport[];
 }
 
+interface newPostAndTargetReview {
+  post: newPost;
+  target: number[];
+}
+
 interface IUserModel {
   createUser(user: user): Promise<user>;
   userInfo(id: number): Promise<user>;
@@ -114,7 +120,7 @@ interface IUserModel {
 }
 
 interface IPostModel {
-  posting(post: post): Promise<newPost>;
+  posting(post: post, pool: PoolClient): Promise<newPost>;
   getAllUsersCount(): Promise<number>;
   createReview(targetUser: number[], postId: number): Promise<void>;
   getPosts(userId: number): Promise<newPost[]>;
@@ -177,4 +183,5 @@ export {
   newReview,
   newReport,
   pageNationReport,
+  newPostAndTargetReview,
 };

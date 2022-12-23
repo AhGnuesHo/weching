@@ -71,6 +71,7 @@ cron.schedule(
     log.info(`update ranking`);
     try {
       await rankModel.setNewRank();
+      await rankModel.resetRank();
     } catch (e) {
       log.error(e);
     }

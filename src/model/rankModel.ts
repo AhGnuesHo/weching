@@ -1,5 +1,7 @@
 import { IRankModel, rank } from '../interfaces';
 import { pg } from '../app';
+import { userModel } from './userModel';
+import { log } from '../logger';
 
 export class RanKModel implements IRankModel {
   async getRank(): Promise<rank[]> {
@@ -17,6 +19,28 @@ export class RanKModel implements IRankModel {
           await pg.query(`insert into best values (now(), ${rank.id}) `)
       )
     );
+  }
+  // async updateCurrRank(): Promise<Boolean> {
+  //   await pg.query(``);
+  // }
+
+  async resetRank(): Promise<void> {
+    const allCount = await userModel.getAllUsersCount();
+    try {
+      const poolClient = await pg.connect();
+      await poolClient.query('begin');
+      const updateCount = await poolClient.query(`update users set rank = 0 `);
+      if (allCount !== updateCount.rowCount) {
+        log.error(
+          `업데이트 실패 : 전체 유저수 ${allCount}, 업데이트 유저수 : ${updateCount.rowCount}`
+        );
+        throw new Error(
+          `업데이트 실패 : 전체 유저수 ${allCount}, 업데이트 유저수 : ${updateCount.rowCount}`
+        );
+      }
+    } catch (e) {
+    } finally {
+    }
   }
 }
 

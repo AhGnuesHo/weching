@@ -1,30 +1,38 @@
 import { postModel, reviewModel } from '../model/index';
-import { post, IPostModel, newPost, postWithReview } from '../interfaces';
+import {
+  post,
+  IPostModel,
+  newPost,
+  postWithReview,
+  newPostAndTargetReview,
+} from '../interfaces';
 import { reviewService } from './reviewService';
 
 export class PostService {
   constructor(private postModel: IPostModel) {}
 
-  async posting(post: post): Promise<newPost> {
-    const result = await postModel.posting(post);
-    const postId = result.id;
-    await this.createReview(postId as number);
+  async posting(post: post): Promise<newPostAndTargetReview> {
+    const result = await postModel.postingAndMatchingReview(post);
     return result;
   }
 
-  async createReview(postId: number): Promise<void> {
+  async createReview(): Promise<number[]> {
     const targetUserCount = 3;
     const count = await postModel.getAllUsersCount();
-    let target = [18, 999, 3];
-    // for (let i = 0; i < targetUserCount; i++) {
-    //   target.push(Math.floor(Math.random() * (count - 15)) + 15);
-    // }
+    let target = [];
+    for (let i = 0; i < targetUserCount; i++) {
+      const random = Math.floor(Math.random() * (count - 15)) + 15;
+      if (target.indexOf(random) === -1) {
+        target.push(random);
+      } else {
+        i--;
+      }
+    }
     // todo api array로 변경
 
     // 총합이랑, 평균 낸거 같이 보내기
-    // 등수랑 
-
-    await postModel.createReview(target, postId);
+    // 등수랑
+    return target;
   }
 
   async getPosts(userId: number): Promise<postWithReview[]> {
