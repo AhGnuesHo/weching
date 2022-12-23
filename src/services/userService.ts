@@ -46,7 +46,7 @@ export class UserService {
   }
 
   async getGradeAvg(id: number): Promise<grade> {
-    const reviewCount = await reviewModel.getDoneReviewCount(id);
+    const reviewCount = await reviewModel.getDoneReviewCountThisMonth(id);
     const grade = await userModel.getGrade(id);
     const newAvg = reviewCount / grade;
     if (reviewCount > 10) {

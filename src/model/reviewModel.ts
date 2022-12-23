@@ -15,7 +15,7 @@ export class ReviewModel implements IReviewModel {
   async writeReview(review: review): Promise<Boolean> {
     const { postId, userId, content } = review;
     const myReview = await pg.query(
-      `update review set content = $1 where post_id = $2 and user_id = $3 `,
+      `update review set content = $1, month = (select to_date(to_char(now(), 'yyyy-mm'),'yyyy-mm')) where post_id = $2 and user_id = $3 `,
       [content, postId, userId]
     );
     return myReview.rowCount === 1;
@@ -36,17 +36,16 @@ export class ReviewModel implements IReviewModel {
     return review.rows[0].user_id;
   }
 
-  async getDoneReviewCount(userId: number): Promise<number> {
+  async getDoneReviewCountThisMonth(reviewId: number): Promise<number> {
     const count = await pg.query(
-      `select count(*) from review where user_id = (select user_id from review where id = $1) and content is not null and is_done = 1 `,
-      [userId]
+      `select count(*) from review where user_id = (select user_id from review where id = $1) 
+      and content is not null and is_done = 1 and month = (select to_date(to_char(now(), 'yyyy-mm'),'yyyy-mm'))`,
+      [reviewId]
     );
     return count.rows[0].count;
   }
-  async getPostInfoByReviewId(
-    reviewId: number
-  ): Promise<number> // Promise<newPost>
-  {
+  async getPostInfoByReviewId(reviewId: number): Promise<number> {
+    // Promise<newPost>
     const post = await pg.query(
       'select * from posts where id = (select post_id from review where id = $1) ',
       [reviewId]

@@ -73,6 +73,7 @@ enum point {
 }
 
 interface rank {
+  rank: number;
   id: number;
   avg: number;
 }
@@ -81,7 +82,7 @@ interface IReviewModel {
   todoReview(userId: number): Promise<newPost[]>;
   writeReview(review: review): Promise<Boolean>;
   getReviewByPost(postId: number): Promise<review[]>;
-  getDoneReviewCount(userId: number): Promise<number>;
+  getDoneReviewCountThisMonth(userId: number): Promise<number>;
   isDone(id: number, userId: number): Promise<Boolean>;
   getReviewWriter(Id: number): Promise<user>;
 }

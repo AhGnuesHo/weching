@@ -28,7 +28,6 @@ export class PostService {
         i--;
       }
     }
-    // todo api array로 변경
 
     // 총합이랑, 평균 낸거 같이 보내기
     // 등수랑
