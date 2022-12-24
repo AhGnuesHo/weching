@@ -1,9 +1,13 @@
 import { Router } from 'express';
 import { postController } from '../controller';
-import { checkPoint } from '../middlewares';
+import { checkPoint, DtoValidatorMiddleware } from '../middlewares';
 import { asyncHandler } from '../utils';
-
+import { PostDto, ReviewDto } from '../dto';
 export const postRouter = Router();
 
-postRouter.post('/', checkPoint, asyncHandler(postController.posting));
+postRouter.post(
+  '/',
+  checkPoint,
+  asyncHandler(postController.posting)
+);
 postRouter.get('/', asyncHandler(postController.getPosts));

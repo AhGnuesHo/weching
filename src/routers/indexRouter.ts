@@ -5,5 +5,5 @@ export const indexRouter = (
   res: Response,
   next: NextFunction
 ) => {
-  res.send('welcome!');
+  res.redirect('/api/main/guest');
 };

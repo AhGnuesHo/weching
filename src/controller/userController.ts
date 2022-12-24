@@ -1,7 +1,7 @@
 import { userService } from '../services';
 import { AsyncRequestHandler } from '../types';
 import { user, newReview } from '../interfaces';
-import { Review } from './reviewController';
+import { ReviewDto } from '../dto';
 import { log } from '../logger';
 import { parentPort } from 'worker_threads';
 
@@ -9,19 +9,6 @@ interface userControllerInterface {
   findUser: AsyncRequestHandler;
   deleteUser: AsyncRequestHandler;
   updateNickname: AsyncRequestHandler;
-}
-
-export class User implements user {
-  email: string;
-  nickName: string;
-  point: number;
-  status: number;
-  constructor(email: string, nickName: string, point: number, status: number) {
-    this.email = email;
-    this.nickName = nickName;
-    this.point = point;
-    this.status = status;
-  }
 }
 
 export const userController: userControllerInterface = {

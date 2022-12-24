@@ -2,26 +2,13 @@ import { reviewService } from '../services';
 import { AsyncRequestHandler } from '../types';
 import { plainToClass } from 'class-transformer';
 import { review } from '../interfaces';
-import { reviewRouter } from '../routers/reviewRouter';
+
+import { ReviewDto } from '../dto';
 interface reviewControllerInterface {
   getReview: AsyncRequestHandler;
   writeReview: AsyncRequestHandler;
   gradeReview: AsyncRequestHandler;
   bookmark: AsyncRequestHandler;
-}
-export class Review implements review {
-  postId: string;
-  userId: number;
-  content: string;
-  constructor(postId: string, userId: number, content: string) {
-    this.postId = postId;
-    this.userId = userId;
-    this.content = content;
-  }
-  get strToNumber(): number {
-    const postId = parseInt(this.postId, 10);
-    return postId;
-  }
 }
 
 export class ReviewController implements reviewControllerInterface {
@@ -32,37 +19,23 @@ export class ReviewController implements reviewControllerInterface {
   };
 
   writeReview: AsyncRequestHandler = async (req, res) => {
-    const request: review = {
-      postId: req.params.postId,
-      userId: req.body.userId,
-      content: req.body.content,
-    };
-    const review = plainToClass(Review, request);
-
-    const result = await reviewService.writeReview(review);
+    const result = await reviewService.writeReview(req.body);
     res.json(result);
   };
 
   gradeReview: AsyncRequestHandler = async (req, res) => {
-    const id = req.params.reviewId;
-    const reviewId = parseInt(id);
-    const { grade } = req.body;
-    const { userId } = req.body;
-    const userGrade = parseInt(grade);
-    const result = await reviewService.gradeReview(userGrade, reviewId, userId);
-
+    const { grade, id, userId } = req.body;
+    const result = await reviewService.gradeReview(grade, id, userId);
     res.json(result);
   };
 
   reviewBookmark: AsyncRequestHandler = async (req, res) => {
-    const id = req.params.id;
-    const reviewId = parseInt(id);
-    const reviewBookmark = await reviewService.reviewBookmark(reviewId);
+    const reviewBookmark = await reviewService.reviewBookmark(req.body.id);
     res.json(reviewBookmark);
   };
 
   bookmark: AsyncRequestHandler = async (req, res) => {
-    const userId = req.body.userId;
+    const { userId } = req.body;
     const result = await reviewService.bookmark(userId);
     res.json(result);
   };

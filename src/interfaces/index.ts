@@ -26,9 +26,10 @@ interface newPost extends post {
 }
 
 interface review {
-  postId: number | string;
+  postId: string | number;
   userId: number;
   content?: string;
+  grade?: number;
 }
 
 interface newReview extends review {
