@@ -1,6 +1,8 @@
+import { plainToInstance } from 'class-transformer';
 import { newPost, IReviewModel, review, user, newReview } from '../interfaces';
 import { pg } from '../app';
 import { log } from '../logger';
+import { PostDto, ReviewDto } from '../dto';
 
 export class ReviewModel implements IReviewModel {
   async todoReview(userId: number): Promise<newPost[]> {
@@ -28,11 +30,10 @@ export class ReviewModel implements IReviewModel {
     return reviews.rows;
   }
 
-  async getReviewOne(id: number): Promise<review> {
-    const review = await pg.query(`select user_id from review where id=($1)`, [
-      id,
-    ]);
-    return review.rows[0].user_id;
+  async getReview(id: number): Promise<review> {
+    const review = await pg.query(`select * from review where id=($1)`, [id]);
+    const result = plainToInstance(ReviewDto, review.rows[0]);
+    return result;
   }
 
   async getDoneReviewCountThisMonth(reviewId: number): Promise<number> {
@@ -44,13 +45,11 @@ export class ReviewModel implements IReviewModel {
     return count.rows[0].count;
   }
   async getPostInfoByReviewId(reviewId: number): Promise<newPost> {
-    // Promise<newPost>
     const post = await pg.query(
       'select * from posts where id = (select post_id from review where id = $1)',
       [reviewId]
     );
-    // 직렬화 해주기
-    return post.rows[0];
+    return plainToInstance(PostDto, post);
   }
   async isDone(id: number, userId: number): Promise<Boolean> {
     const isDone = await pg.query(

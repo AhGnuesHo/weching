@@ -1,13 +1,16 @@
 import { isNumber, IsNumber, IsOptional, IsString, Min } from 'class-validator';
-import { Expose } from 'class-transformer';
+import { Expose, Type } from 'class-transformer';
 import { newPost, postStatus } from '../interfaces';
+import 'reflect-metadata';
 export class PostDto implements newPost {
   @Expose()
   @IsNumber()
-  public id: string;
+  @Type(() => Number)
+  public id: number;
 
-  @Expose()
+  @Expose({ name: 'user_id' })
   @IsNumber()
+  @Type(() => Number)
   public userId: number;
 
   @Expose()
@@ -16,22 +19,4 @@ export class PostDto implements newPost {
 
   @Expose()
   public status?: postStatus;
-
-  constructor(
-    id: string,
-    userId: number,
-    content: string,
-    status?: postStatus
-  ) {
-    this.id = id;
-    this.userId = userId;
-    this.content = content;
-    this.status = status;
-  }
-
-  @Expose()
-  get strToNumber(): number {
-    const id = parseInt(this.id, 10);
-    return id;
-  }
 }

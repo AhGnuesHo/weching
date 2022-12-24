@@ -9,6 +9,8 @@ import { pg } from '../app';
 import { Pool, PoolClient, QueryResult } from 'pg';
 import { postService } from '../services/postService';
 import { log } from '../logger';
+import { plainToInstance } from 'class-transformer';
+import { PostDto } from '../dto';
 
 export class PostModel implements IPostModel {
   async postingAndMatchingReview(post: post): Promise<newPostAndTargetReview> {
@@ -69,7 +71,6 @@ export class PostModel implements IPostModel {
       await reviewPool.query('ROLLBACK');
       const newTarget = await postService.createReview();
       this.createReview(newTarget, postId);
-      // throw new Error('리뷰 매칭 실패 ' + targetUser + '가 존재하지 않습니다');
     } finally {
       await reviewPool.query('commit');
       reviewPool.release();

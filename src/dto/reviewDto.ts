@@ -9,11 +9,11 @@ export class ReviewDto implements newReview {
   id: number;
 
   @Type(() => Number)
-  @Expose()
+  @Expose({ name: 'post_id' })
   postId: string;
 
   @Type(() => Number)
-  @Expose()
+  @Expose({ name: 'user_id' })
   userId: number;
 
   @Expose()

@@ -35,12 +35,6 @@ export class UserModel implements IUserModel {
       );
       return result.rows[0];
     }
-
-    // const result = plainToClass(User, result);
-    // result.rows[0]를 확인해보면 db에서 status와 point모두 int 타입으로 정의했지만, status만 number
-    // 타입이고, point는 문자열로 들어옵니다
-    // 이유가 뭘까요 ?
-    // 쿼리 결과도 직렬화를 해주어야 하냐요 ? 그럼 모든 메소드에서 plainToClass 를 다 사용해주어야하나요 ?
   }
 
   async isNickName(nickName: string): Promise<Boolean> {
@@ -87,16 +81,16 @@ export class UserModel implements IUserModel {
       .then(() => this.userInfo(id));
   }
 
-  //평점
   async userGrade(grade: number, reviewId: number): Promise<Boolean> {
-    const id = await reviewModel.getReviewOne(reviewId);
-
+    const review = await reviewModel.getReview(reviewId);
+    const id = review.userId;
     const row = await pg.query(
       'UPDATE users SET grade =(grade +($1))WHERE id=($2)',
       [grade, id]
     );
     return row.rowCount === 1;
   }
+
   async updateAvg(avg: number, id: number): Promise<Boolean> {
     const formattedAvg = avg.toFixed(2);
     const update = await pg.query(
@@ -124,8 +118,3 @@ export class UserModel implements IUserModel {
 }
 
 export const userModel = new UserModel();
-
-// db 인덱스 메모리 영역에 저장됨
-// radis, 인메모리 같은거
-// 빠름, 근데 비쌈
-// B-tree 구조

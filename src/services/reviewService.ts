@@ -39,10 +39,10 @@ export class ReviewService {
     userId: number
   ): Promise<grade> {
     const myPost = await reviewModel.getPostInfoByReviewId(userId);
-    // if (userId !== myPost.userId) {
-    //   log.error('is not owner');
-    //   throw new Error('본인의 게시글에만 평가를 남길 수 있습니다.');
-    // }
+    if (userId !== myPost.userId) {
+      log.error('is not owner');
+      throw new Error('본인의 게시글에만 평가를 남길 수 있습니다.');
+    }
 
     const isDone = await reviewModel.isDone(reviewId, userId);
     if (!isDone) {
