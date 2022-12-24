@@ -1,9 +1,10 @@
 import { plainToInstance } from 'class-transformer';
 import { newPost, IReviewModel, review, user, newReview } from '../interfaces';
 import { pg } from '../app';
-import { log } from '../logger';
 import { PostDto, ReviewDto } from '../dto';
+import { month } from '../types';
 
+//where절에 있는 서브쿼리 수정하고 싶은데
 export class ReviewModel implements IReviewModel {
   async todoReview(userId: number): Promise<newPost[]> {
     const todoReview = await pg.query(
@@ -16,7 +17,7 @@ export class ReviewModel implements IReviewModel {
   async writeReview(review: review): Promise<Boolean> {
     const { postId, userId, content } = review;
     const myReview = await pg.query(
-      `update review set content = $1, month = (select to_date(to_char(now(), 'yyyy-mm'),'yyyy-mm')) where post_id = $2 and user_id = $3 `,
+      `update review set content = $1, month = ${month.MONTH} where post_id = $2 and user_id = $3 `,
       [content, postId, userId]
     );
     return myReview.rowCount === 1;
@@ -39,11 +40,12 @@ export class ReviewModel implements IReviewModel {
   async getDoneReviewCountThisMonth(reviewId: number): Promise<number> {
     const count = await pg.query(
       `select count(*) from review where user_id = (select user_id from review where id = $1) 
-      and content is not null and is_done = 1 and month = (select to_date(to_char(now(), 'yyyy-mm'),'yyyy-mm'))`,
+      and content is not null and is_done = 1 and month = ${month.MONTH}`,
       [reviewId]
     );
     return count.rows[0].count;
   }
+
   async getPostInfoByReviewId(reviewId: number): Promise<newPost> {
     const post = await pg.query(
       'select * from posts where id = (select post_id from review where id = $1)',
@@ -51,6 +53,7 @@ export class ReviewModel implements IReviewModel {
     );
     return plainToInstance(PostDto, post);
   }
+
   async isDone(id: number, userId: number): Promise<Boolean> {
     const isDone = await pg.query(
       `update review set is_done = 1 where id = $1`,

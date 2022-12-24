@@ -55,10 +55,17 @@ app.use(cookieParser());
 require('./passport')();
 
 app.get('/favicon.ico', (req, res) => res.status(204));
+
 app.get(endPoint.index, indexRouter);
 app.use(endPoint.main, mainRouter);
 app.use(endPoint.auth, authRouter);
-app.use(endPoint.guest, checkEmail, checkName, guestRouter);
+app.use(
+  endPoint.guest,
+  DtoValidatorMiddleware(UserDto, true),
+  checkEmail,
+  checkName,
+  guestRouter
+);
 app.use(
   endPoint.post,
   loginRequired,

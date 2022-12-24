@@ -7,7 +7,7 @@ import {
   grade,
   newReview,
 } from '../interfaces';
-import { userModel, postModel } from '../model';
+import { userModel } from '../model';
 import { log } from '../logger';
 import { userService } from './userService';
 
@@ -39,6 +39,7 @@ export class ReviewService {
     userId: number
   ): Promise<grade> {
     const myPost = await reviewModel.getPostInfoByReviewId(userId);
+    // todo : myPost.userId 는 역직렬화 되지 않았음 수정해야함
     if (userId !== myPost.userId) {
       log.error('is not owner');
       throw new Error('본인의 게시글에만 평가를 남길 수 있습니다.');

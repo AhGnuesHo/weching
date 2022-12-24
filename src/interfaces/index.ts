@@ -1,7 +1,6 @@
 import { PostDto } from './../dto/postDto';
 import { PoolClient } from 'pg';
-import { QueryResult } from 'pg';
-import { reviewRouter } from '../routers/reviewRouter';
+
 interface user {
   email: string;
   nickName: string;

@@ -1,4 +1,3 @@
-import { endPoint } from './../constants';
 import {
   post,
   IPostModel,
@@ -6,7 +5,7 @@ import {
   newPostAndTargetReview,
 } from '../interfaces';
 import { pg } from '../app';
-import { Pool, PoolClient, QueryResult } from 'pg';
+import { PoolClient } from 'pg';
 import { postService } from '../services/postService';
 import { log } from '../logger';
 import { plainToInstance } from 'class-transformer';
@@ -23,13 +22,15 @@ export class PostModel implements IPostModel {
 
       const target = await postService.createReview(post.userId);
       await this.createReview(target, posting);
+
       const result = {
         post: posting,
         target: target,
       };
+
       return result;
     } catch (err) {
-      await postingPg.query('ROLLBACK');
+      await postingPg.query('rollback');
       throw new Error(err + '아이디가 존재하지 않습니다');
     } finally {
       await postingPg.query('commit');
@@ -44,14 +45,13 @@ export class PostModel implements IPostModel {
       [userId, content]
     );
 
+    // todo 아직 역직렬화 제대로 안됨, db 필드는 user_id이고 dto는 userId라서
+    // entity 라는 것을 따로 만들어서 사용해야하는 것인지..?
     return plainToInstance(PostDto, newPost.rows[0]);
   }
 
   async getAllUsersCount(): Promise<number> {
-    const result: QueryResult<any> = await pg.query(
-      `select max(id) from users `
-    );
-
+    const result = await pg.query(`select max(id) from users `);
     return result.rows[0].max;
   }
 
@@ -68,7 +68,7 @@ export class PostModel implements IPostModel {
         )
       );
     } catch (err) {
-      await reviewPool.query('ROLLBACK');
+      await reviewPool.query('rollback');
       const newTarget = await postService.createReview(post.userId);
       this.createReview(newTarget, post);
     } finally {
@@ -82,6 +82,7 @@ export class PostModel implements IPostModel {
       `select * from posts where user_id = $1 order by id desc`,
       [userId]
     );
+
     return getPost.rows;
   }
 
@@ -90,6 +91,7 @@ export class PostModel implements IPostModel {
       `select * from posts where user_id = $1 and post_id = $2 order by id desc`,
       [userId, postId]
     );
+
     return getPost.rows[0];
   }
 }

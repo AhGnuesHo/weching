@@ -35,7 +35,7 @@ export class MainDto implements main {
   ranking: rank[];
 
   @Expose()
-  format(): any {
+  format(): main {
     const result: main = {
       user: this.user,
       todoReview: this.todoReview,

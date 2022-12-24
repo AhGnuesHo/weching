@@ -1,4 +1,3 @@
-import { Length } from 'class-validator';
 import { Request, Response, NextFunction } from 'express';
 import { log } from '../logger';
 import { userModel } from '../model/userModel';
@@ -29,7 +28,7 @@ export const expireUser = async (
   try {
     const { status } = req.body;
     if (status !== 0) {
-      res.status(400).send({ message: `탈퇴한 회원입니다` });
+      res.status(400).send({ message: `탈퇴한 회원입니다.` });
     }
     next();
   } catch (err) {
@@ -48,15 +47,15 @@ export const checkName = async (
 
     const isNickName = await userModel.isNickName(nickName);
     if (isNickName) {
-      log.warn(` ${nickName} 은(는) 존재하는 닉네임입니다. `);
+      log.warn(`${nickName} 은(는) 존재하는 닉네임입니다. `);
       res
         .status(400)
-        .send({ message: ` ${nickName} 은(는) 존재하는 닉네임입니다. ` });
+        .send({ message: `${nickName} 은(는) 존재하는 닉네임입니다. ` });
     }
 
     if (nickName.length > 12) {
       log.warn('닉네임 너무 길다 :' + nickName.Length);
-      res.status(400).send({ message: ` 닉네임은 12자까지 가능합니다` });
+      res.status(400).send({ message: `닉네임은 12자까지 가능합니다` });
     }
 
     if (!nameState) {

@@ -1,6 +1,5 @@
 import { user } from '../interfaces';
-
-import { Expose, Exclude } from 'class-transformer';
+import { Expose, Type } from 'class-transformer';
 import { IsEmail, MaxLength } from 'class-validator';
 
 export class UserDto implements user {
@@ -13,8 +12,9 @@ export class UserDto implements user {
   nickName: string;
 
   @Expose()
-  point: number;
+  status: number;
 
   @Expose()
-  status: number;
+  @Type(() => Number)
+  point: number;
 }

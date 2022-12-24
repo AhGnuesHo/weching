@@ -21,7 +21,6 @@ export const DtoValidatorMiddleware = (
           );
         });
         return res.status(400).json({
-          name: 'ValidationErrorException',
           message: errorsMessageArray,
         });
       });

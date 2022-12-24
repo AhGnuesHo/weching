@@ -1,10 +1,5 @@
 import { userService } from '../services';
 import { AsyncRequestHandler } from '../types';
-import { user, newReview } from '../interfaces';
-import { ReviewDto } from '../dto';
-import { log } from '../logger';
-import { parentPort } from 'worker_threads';
-
 interface userControllerInterface {
   findUser: AsyncRequestHandler;
   deleteUser: AsyncRequestHandler;

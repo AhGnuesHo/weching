@@ -32,6 +32,7 @@ export class UserService {
 
     return result;
   }
+  
   async updateAvg(id: number, avg: number): Promise<Boolean> {
     const update = await userModel.updateAvg(avg, id);
     if (!update) {

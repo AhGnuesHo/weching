@@ -1,4 +1,3 @@
-import { plainToInstance } from 'class-transformer';
 import { postModel, reviewModel } from '../model/index';
 import {
   post,
@@ -7,7 +6,6 @@ import {
   postWithReview,
   newPostAndTargetReview,
 } from '../interfaces';
-import { PostDto } from '../dto';
 
 export class PostService {
   constructor(private postModel: IPostModel) {}
@@ -47,6 +45,7 @@ export class PostService {
         return result;
       })
     );
+
     return result;
   }
 

@@ -1,5 +1,5 @@
 import { newReview } from '../interfaces';
-import { Exclude, Expose, Type } from 'class-transformer';
+import { Expose, Type } from 'class-transformer';
 import 'reflect-metadata';
 import { IsString, Max } from 'class-validator';
 
@@ -9,11 +9,11 @@ export class ReviewDto implements newReview {
   id: number;
 
   @Type(() => Number)
-  @Expose({ name: 'post_id' })
+  // @Expose({ name: 'post_id' })
   postId: string;
 
   @Type(() => Number)
-  @Expose({ name: 'user_id' })
+  // @Expose({ name: 'user_id' })
   userId: number;
 
   @Expose()
