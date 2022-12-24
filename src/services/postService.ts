@@ -1,3 +1,4 @@
+import { plainToInstance } from 'class-transformer';
 import { postModel, reviewModel } from '../model/index';
 import {
   post,
@@ -6,23 +7,23 @@ import {
   postWithReview,
   newPostAndTargetReview,
 } from '../interfaces';
-import { reviewService } from './reviewService';
+import { PostDto } from '../dto';
 
 export class PostService {
   constructor(private postModel: IPostModel) {}
 
   async posting(post: post): Promise<newPostAndTargetReview> {
-    const result = await postModel.postingAndMatchingReview(post);
-    return result;
+    return await postModel.postingAndMatchingReview(post);
   }
 
-  async createReview(): Promise<number[]> {
+  async createReview(userId: number): Promise<number[]> {
     const targetUserCount = 3;
     const count = await postModel.getAllUsersCount();
     let target = [];
+    // 여기 좀 별로인것 같은데 고쳐보겠습니다.
     for (let i = 0; i < targetUserCount; i++) {
       const random = Math.floor(Math.random() * (count - 15)) + 15;
-      if (target.indexOf(random) === -1) {
+      if (target.indexOf(random) === -1 && target.indexOf(userId) == -1) {
         target.push(random);
       } else {
         i--;
@@ -34,10 +35,11 @@ export class PostService {
 
   async getPosts(userId: number): Promise<postWithReview[]> {
     const posts = await postModel.getPosts(userId);
+
     const result = await Promise.all(
       posts.map(async (post) => {
         const { id } = post;
-        const review = await reviewModel.getReviewByPost(id as number);
+        const review = await reviewModel.getReviewByPost(id);
         const result = {
           post: post,
           reviews: review,
@@ -49,8 +51,7 @@ export class PostService {
   }
 
   async getPost(userId: number, postId: number): Promise<newPost> {
-    const myPost = await postModel.getPost(userId, postId);
-    return myPost;
+    return await postModel.getPost(userId, postId);
   }
 }
 

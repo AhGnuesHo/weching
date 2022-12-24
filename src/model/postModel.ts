@@ -21,8 +21,8 @@ export class PostModel implements IPostModel {
       await postingPg.query('commit');
       log.info('posting success : ' + post);
 
-      const target = await postService.createReview();
-      await this.createReview(target, posting.id as number);
+      const target = await postService.createReview(post.userId);
+      await this.createReview(target, posting);
       const result = {
         post: posting,
         target: target,
@@ -37,14 +37,14 @@ export class PostModel implements IPostModel {
     }
   }
 
-  async posting(post: post, pool: PoolClient): Promise<newPost> {
+  async posting(post: post, pool: PoolClient): Promise<PostDto> {
     const { userId, content } = post;
     const newPost = await pool.query(
       'INSERT INTO posts ( user_id, content ) VALUES ($1, $2) RETURNING *',
       [userId, content]
     );
 
-    return newPost.rows[0];
+    return plainToInstance(PostDto, newPost.rows[0]);
   }
 
   async getAllUsersCount(): Promise<number> {
@@ -55,7 +55,7 @@ export class PostModel implements IPostModel {
     return result.rows[0].max;
   }
 
-  async createReview(targetUser: number[], postId: number): Promise<void> {
+  async createReview(targetUser: number[], post: PostDto): Promise<void> {
     const reviewPool = await pg.connect();
     try {
       await Promise.all(
@@ -63,21 +63,21 @@ export class PostModel implements IPostModel {
           async (user) =>
             await reviewPool.query(
               `insert into review (user_id, post_id ) VALUES ($1, $2)`,
-              [user, postId]
+              [user, post.id]
             )
         )
       );
     } catch (err) {
       await reviewPool.query('ROLLBACK');
-      const newTarget = await postService.createReview();
-      this.createReview(newTarget, postId);
+      const newTarget = await postService.createReview(post.userId);
+      this.createReview(newTarget, post);
     } finally {
       await reviewPool.query('commit');
       reviewPool.release();
     }
   }
 
-  async getPosts(userId: number): Promise<newPost[]> {
+  async getPosts(userId: number): Promise<PostDto[]> {
     const getPost = await pg.query(
       `select * from posts where user_id = $1 order by id desc`,
       [userId]

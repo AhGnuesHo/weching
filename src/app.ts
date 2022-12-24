@@ -1,3 +1,6 @@
+import { PostDto } from './dto/postDto';
+import { checkName } from './middlewares/userHandler';
+import { UserDto } from './dto/userDto';
 import { rankModel } from './model/rankModel';
 import express from 'express';
 import cors from 'cors';
@@ -8,10 +11,10 @@ import logger from 'morgan';
 import { log } from './logger';
 import { port, user, host, database, password, postgresPort } from './config';
 import {
+  checkEmail,
   DtoValidatorMiddleware,
   errorHandler,
   loginRequired,
-  userHandler,
 } from './middlewares';
 import {
   indexRouter,
@@ -55,8 +58,13 @@ app.get('/favicon.ico', (req, res) => res.status(204));
 app.get(endPoint.index, indexRouter);
 app.use(endPoint.main, mainRouter);
 app.use(endPoint.auth, authRouter);
-app.use(endPoint.guest, userHandler, guestRouter);
-app.use(endPoint.post, loginRequired, postRouter);
+app.use(endPoint.guest, checkEmail, checkName, guestRouter);
+app.use(
+  endPoint.post,
+  loginRequired,
+  DtoValidatorMiddleware(PostDto, true),
+  postRouter
+);
 app.use(
   endPoint.review,
   loginRequired,
@@ -65,7 +73,12 @@ app.use(
 );
 app.use(endPoint.notice, noticeRouter);
 app.use(endPoint.advice, adviceRouter);
-app.use(endPoint.user, loginRequired, userRouter);
+app.use(
+  endPoint.user,
+  loginRequired,
+  DtoValidatorMiddleware(UserDto, true),
+  userRouter
+);
 app.use(endPoint.report, reportRouter);
 app.use(function (req, res, next) {
   next(createError(404));
@@ -77,6 +90,9 @@ app.listen(port, () => {
   log.info(`Server listening on port: ${port}`);
 });
 
+// 스케줄러는 어느 계층에 있어야하는지 고민해봤는데
+// 어느 곳에 있어도 다 이상한 것 같습니다.
+// 정답을.. 알려주세요ㅜ
 cron.schedule(
   '* * 1-12 * *',
   async () => {

@@ -1,9 +1,6 @@
 import { reviewService } from '../services';
 import { AsyncRequestHandler } from '../types';
-import { plainToClass } from 'class-transformer';
-import { review } from '../interfaces';
 
-import { ReviewDto } from '../dto';
 interface reviewControllerInterface {
   getReview: AsyncRequestHandler;
   writeReview: AsyncRequestHandler;

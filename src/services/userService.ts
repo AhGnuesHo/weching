@@ -64,6 +64,7 @@ export class UserService {
   async updateNickname(nickname: string, userId: number): Promise<Boolean> {
     const result = await userModel.updateNickname(nickname, userId);
     if (!result) {
+      log.error('닉네임 수정 실패');
       throw new Error('fail update NickName');
     }
     return result;

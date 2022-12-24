@@ -10,30 +10,23 @@ interface userControllerInterface {
   deleteUser: AsyncRequestHandler;
   updateNickname: AsyncRequestHandler;
 }
-
-export const userController: userControllerInterface = {
-  async findUser(req: any, res: any, next: any): Promise<any> {
-    const id = req.body.userId;
-    const status = req.body.status;
-
-    if (status !== 0) {
-      throw new Error('가입된 회원이 없습니다.');
-    }
-    const findUser = await userService.findUser(id);
-
-    res.json(findUser);
-  },
-
-  async deleteUser(req: any, res: any, next: any): Promise<any> {
-    const id = req.body.userId;
-    const update = await userService.userStatusUpdate(id);
-    res.json(update);
-  },
-
-  async updateNickname(req, res) {
-    const { nickName } = req.body;
+export class UserController implements userControllerInterface {
+  findUser: AsyncRequestHandler = async (req, res) => {
     const { userId } = req.body;
+    const findUser = await userService.findUser(userId);
+    res.json(findUser);
+  };
+  deleteUser: AsyncRequestHandler = async (req, res) => {
+    const { userId } = req.body;
+    const update = await userService.userStatusUpdate(userId);
+    res.json(update);
+  };
+  updateNickname: AsyncRequestHandler = async (req, res) => {
+    const { nickName, userId } = req.body;
     const update = await userService.updateNickname(nickName, userId);
     res.json(update);
-  },
-};
+  };
+}
+
+const userController = new UserController();
+export { userController };

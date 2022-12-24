@@ -5,8 +5,9 @@ import { main } from '../interfaces';
 export class MainService {
   constructor(private mainModel: Main) {}
 
-  async mainInfo(id: number): Promise<main> {
-    return await mainModel.mainInfo(id);
+  async mainInfo(id: number): Promise<any> {
+    const main = await mainModel.mainInfo(id);
+    return main.format();
   }
 }
 

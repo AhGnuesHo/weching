@@ -8,7 +8,13 @@ export class PostDto implements newPost {
   @Type(() => Number)
   public id: number;
 
-  @Expose({ name: 'user_id' })
+  // body에서는 userId라는 변수명으로 받아오고
+  // 디비 필드는 user_id로 되어있는데
+  // Expose의 name을 user_id와 userId 두가지를 모두 정해 놓을 순 없나요?
+  // 쿼리 결과도 역직렬화를 하고싶고, request받은 것도 역직렬화를 하고 싶습니다..!
+
+  // @Expose({ name: 'user_id' })
+  @Expose()
   @IsNumber()
   @Type(() => Number)
   public userId: number;

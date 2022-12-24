@@ -11,13 +11,7 @@ interface IPostController {
 
 export class PostController implements IPostController {
   posting: AsyncRequestHandler = async (req, res) => {
-    const { userId, content } = req.body;
-    const post: post = {
-      userId: userId,
-      content: content,
-    };
-
-    const user = await postService.posting(post);
+    const user = await postService.posting(req.body);
     res.json(user);
   };
 

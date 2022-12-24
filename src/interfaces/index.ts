@@ -1,3 +1,4 @@
+import { PostDto } from './../dto/postDto';
 import { PoolClient } from 'pg';
 import { QueryResult } from 'pg';
 import { reviewRouter } from '../routers/reviewRouter';
@@ -131,7 +132,7 @@ interface IUserModel {
 interface IPostModel {
   posting(post: post, pool: PoolClient): Promise<newPost>;
   getAllUsersCount(): Promise<number>;
-  createReview(targetUser: number[], postId: number): Promise<void>;
+  createReview(targetUser: number[], post: PostDto): Promise<void>;
   getPosts(userId: number): Promise<newPost[]>;
 }
 interface INoticeModel {
@@ -157,8 +158,9 @@ interface IAdviceModel {
   getAdvice(): Promise<advice>;
 }
 interface IRankModel {
-  getRank(): Promise<rank[]>;
+  getRank(rankPg: PoolClient): Promise<rank[]>;
   setNewRank(): Promise<void>;
+  getBest(): Promise<rank[]>;
 }
 interface pageNationNotice {
   totalPage: number;

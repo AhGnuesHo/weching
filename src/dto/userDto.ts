@@ -1,16 +1,20 @@
 import { user } from '../interfaces';
 
-import { Expose } from 'class-transformer';
+import { Expose, Exclude } from 'class-transformer';
+import { IsEmail, MaxLength } from 'class-validator';
 
-export class User implements user {
+export class UserDto implements user {
+  @Expose()
+  @IsEmail()
   email: string;
+
+  @Expose()
+  @MaxLength(12)
   nickName: string;
+
+  @Expose()
   point: number;
+
+  @Expose()
   status: number;
-  constructor(email: string, nickName: string, point: number, status: number) {
-    this.email = email;
-    this.nickName = nickName;
-    this.point = point;
-    this.status = status;
-  }
 }
