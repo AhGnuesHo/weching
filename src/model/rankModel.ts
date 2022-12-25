@@ -26,11 +26,10 @@ export class RankModel implements IRankModel {
       const newRank = await this.getRank(rankPg);
 
       await Promise.all(
-        newRank.map(
-          async (rank) =>
-            await rankPg.query(
-              `insert into best (rank, month, user_id) values (${rank.rank}, ${month.MONTH}, ${rank.id}) `
-            )
+        newRank.map((rank) =>
+          rankPg.query(
+            `insert into best (rank, month, user_id) values (${rank.rank}, ${month.MONTH}, ${rank.id}) `
+          )
         )
       );
       await this.updateCurrRank(rankPg);
@@ -49,11 +48,10 @@ export class RankModel implements IRankModel {
     const thisMonth = await this.thisMonth();
 
     await Promise.all(
-      userRank.map(
-        async (rank) =>
-          await rankPg.query(
-            `insert into rank (user_id, month, grade) values (${rank.id},${month.MONTH} , ${rank.grade}) `
-          )
+      userRank.map((rank) =>
+        rankPg.query(
+          `insert into rank (user_id, month, grade) values (${rank.id},${month.MONTH} , ${rank.grade}) `
+        )
       )
     );
   }
@@ -66,9 +64,6 @@ export class RankModel implements IRankModel {
       // todo 유저 등급 리셋하는 쿼리 넣기
       const updateCount = await poolClient.query(``);
       if (allCount !== updateCount.rowCount) {
-        log.error(
-          `업데이트 실패 : 전체 유저수 ${allCount}, 업데이트 유저수 : ${updateCount.rowCount}`
-        );
         throw new Error(
           `업데이트 실패 : 전체 유저수 ${allCount}, 업데이트 유저수 : ${updateCount.rowCount}`
         );

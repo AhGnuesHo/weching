@@ -9,7 +9,7 @@ import { PoolClient } from 'pg';
 import { postService } from '../services/postService';
 import { log } from '../logger';
 import { plainToInstance } from 'class-transformer';
-import { PostDto } from '../dto';
+import { PostDto, PostEntity } from '../dto';
 
 export class PostModel implements IPostModel {
   async postingAndMatchingReview(post: post): Promise<newPostAndTargetReview> {
@@ -38,16 +38,14 @@ export class PostModel implements IPostModel {
     }
   }
 
-  async posting(post: post, pool: PoolClient): Promise<PostDto> {
+  async posting(post: post, pool: PoolClient): Promise<PostEntity> {
     const { userId, content } = post;
     const newPost = await pool.query(
       'INSERT INTO posts ( user_id, content ) VALUES ($1, $2) RETURNING *',
       [userId, content]
     );
 
-    // todo 아직 역직렬화 제대로 안됨, db 필드는 user_id이고 dto는 userId라서
-    // entity 라는 것을 따로 만들어서 사용해야하는 것인지..?
-    return plainToInstance(PostDto, newPost.rows[0]);
+    return plainToInstance(PostEntity, newPost.rows[0]);
   }
 
   async getAllUsersCount(): Promise<number> {
@@ -58,7 +56,7 @@ export class PostModel implements IPostModel {
   async createReview(targetUser: number[], post: PostDto): Promise<void> {
     const reviewPool = await pg.connect();
     try {
-      await Promise.all(
+      await Promise.allSettled(
         targetUser.map(
           async (user) =>
             await reviewPool.query(

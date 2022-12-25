@@ -80,7 +80,6 @@ export class UserModel implements IUserModel {
       .query('UPDATE users SET status = 1 WHERE id=($1) and status = 0', [id])
       .then((res) => {
         if (res.rowCount === 0) {
-          log.error('탈퇴처리된 회원 : ' + id);
           throw new Error('이미 탈퇴 처리 된 회원입니다.');
         }
 

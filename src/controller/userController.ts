@@ -4,6 +4,7 @@ interface userControllerInterface {
   findUser: AsyncRequestHandler;
   deleteUser: AsyncRequestHandler;
   updateNickname: AsyncRequestHandler;
+  isUsingEmail: AsyncRequestHandler;
 }
 export class UserController implements userControllerInterface {
   findUser: AsyncRequestHandler = async (req, res) => {
@@ -20,6 +21,10 @@ export class UserController implements userControllerInterface {
     const { nickName, userId } = req.body;
     const update = await userService.updateNickname(nickName, userId);
     res.json(update);
+  };
+  isUsingEmail: AsyncRequestHandler = async (req, res) => {
+    const { nameState } = req.body;
+    res.json(nameState);
   };
 }
 

@@ -1,14 +1,5 @@
-import {
-  IsArray,
-  isNumber,
-  IsNumber,
-  IsOptional,
-  IsString,
-  Length,
-  Min,
-  MinLength,
-} from 'class-validator';
-import { Exclude, Expose } from 'class-transformer';
+import { IsArray, Length } from 'class-validator';
+import { Expose } from 'class-transformer';
 import {
   advice,
   main,
@@ -18,18 +9,21 @@ import {
   user,
 } from '../interfaces';
 import 'reflect-metadata';
+
 export class MainDto implements main {
+  @Expose()
   user: user;
 
+  @Expose()
   todoReview: newPost[];
 
+  @Expose()
   advice: advice;
 
+  @Expose()
   post: postWithReview[];
 
-  // 상위 10명의 랭킹을 배열로 받아올 때
-  // 유효성 검사를 위해 아래와 같은 데코레이터를 사용했는데
-  // 적용이 되지 않는 것 같습니다
+  @Expose()
   @IsArray()
   @Length(10)
   ranking: rank[];

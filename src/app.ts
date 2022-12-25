@@ -1,5 +1,4 @@
 import { PostDto } from './dto/postDto';
-import { checkName } from './middlewares/userHandler';
 import { UserDto } from './dto/userDto';
 import { rankModel } from './model/rankModel';
 import express from 'express';
@@ -14,6 +13,8 @@ import {
   checkEmail,
   DtoValidatorMiddleware,
   errorHandler,
+  checkName,
+  updateHandler,
   loginRequired,
 } from './middlewares';
 import {
@@ -64,6 +65,7 @@ app.use(
   DtoValidatorMiddleware(UserDto, true),
   checkEmail,
   checkName,
+  updateHandler,
   guestRouter
 );
 app.use(

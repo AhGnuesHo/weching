@@ -1,3 +1,4 @@
+import { ReviewEntity } from './../dto/reviewDto';
 import { plainToInstance } from 'class-transformer';
 import { newPost, IReviewModel, review, user, newReview } from '../interfaces';
 import { pg } from '../app';
@@ -8,7 +9,7 @@ import { month } from '../types';
 export class ReviewModel implements IReviewModel {
   async todoReview(userId: number): Promise<newPost[]> {
     const todoReview = await pg.query(
-      `select id, content from posts where id in (select post_id from review where user_id = $1) order by id desc`,
+      `select * from posts where id in (select post_id from review where user_id = $1) order by id desc`,
       [userId]
     );
     return todoReview.rows;
@@ -17,9 +18,10 @@ export class ReviewModel implements IReviewModel {
   async writeReview(review: review): Promise<Boolean> {
     const { postId, userId, content } = review;
     const myReview = await pg.query(
-      `update review set content = $1, month = ${month.MONTH} where post_id = $2 and user_id = $3 `,
+      `update review set content = $1, month = ${month.MONTH} where post_id = $2 and user_id = $3 and content is null `,
       [content, postId, userId]
     );
+
     return myReview.rowCount === 1;
   }
 
@@ -28,13 +30,14 @@ export class ReviewModel implements IReviewModel {
       `select id, content, status from review where post_id = $1 and content is not null`,
       [postId]
     );
+
     return reviews.rows;
   }
 
-  async getReview(id: number): Promise<review> {
+  async getReview(id: number): Promise<ReviewEntity> {
     const review = await pg.query(`select * from review where id=($1)`, [id]);
-    const result = plainToInstance(ReviewDto, review.rows[0]);
-    return result;
+
+    return plainToInstance(ReviewEntity, review.rows[0]);
   }
 
   async getDoneReviewCountThisMonth(reviewId: number): Promise<number> {
@@ -43,6 +46,7 @@ export class ReviewModel implements IReviewModel {
       and content is not null and is_done = 1 and month = ${month.MONTH}`,
       [reviewId]
     );
+
     return count.rows[0].count;
   }
 
@@ -51,7 +55,8 @@ export class ReviewModel implements IReviewModel {
       'select * from posts where id = (select post_id from review where id = $1)',
       [reviewId]
     );
-    return plainToInstance(PostDto, post);
+
+    return post.rows[0];
   }
 
   async isDone(id: number, userId: number): Promise<Boolean> {
@@ -59,6 +64,7 @@ export class ReviewModel implements IReviewModel {
       `update review set is_done = 1 where id = $1`,
       [id]
     );
+
     return isDone.rowCount === 1;
   }
 
@@ -67,6 +73,7 @@ export class ReviewModel implements IReviewModel {
       `select * from users where id = (select user_id from review where id = $1)`,
       [reviewId]
     );
+
     return user.rows[0];
   }
 
@@ -81,6 +88,7 @@ export class ReviewModel implements IReviewModel {
       `UPDATE review SET bookmark = ($1) where id = ($2)`,
       [status, id]
     );
+
     return reviewBookmark.rowCount === 1;
   }
 
@@ -116,4 +124,5 @@ export class ReviewModel implements IReviewModel {
     return myBookmark;
   }
 }
+
 export const reviewModel = new ReviewModel();

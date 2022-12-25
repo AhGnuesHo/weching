@@ -1,3 +1,6 @@
+import { PostEntity } from './../dto/postDto';
+import { plainToClass, plainToInstance } from 'class-transformer';
+import { ReviewDto, ReviewEntity } from './../dto/reviewDto';
 import { reviewModel } from '../model/reviewModel';
 import {
   IReviewModel,
@@ -14,19 +17,26 @@ import { userService } from './userService';
 export class ReviewService {
   constructor(private reviewModel: IReviewModel) {}
 
-  async getReview(userId: number): Promise<newPost[]> {
+  async getReview(userId: number): Promise<PostEntity[]> {
     const todoReview = await reviewModel.todoReview(userId);
     if (!todoReview) {
-      throw new Error(`not Found userId : ${userId}`);
+      throw new Error(`유저를 찾을 수 없음 : 유저 아이디  ${userId}`);
     }
-    return todoReview;
+    return plainToInstance(PostEntity, todoReview);
   }
 
-  async writeReview(review: review): Promise<review> {
+  async writeReview(review: ReviewDto): Promise<review> {
+    const myTodo = await this.getReview(review.userId);
+
+    const isMyTodo = myTodo.find((todo) => todo.id === review.postId);
+    if (!isMyTodo) {
+      throw new Error('배정되지 않은 게시글에는 칭찬을 할 수 없습니다.');
+    }
     const result = await reviewModel.writeReview(review);
     if (!result) {
-      throw new Error(`칭찬 실패`);
+      throw new Error(`이미 칭찬 한 게시글 입니다 ${JSON.stringify(review)}`);
     }
+
     const { userId } = review;
     await userModel.updatePoint(userId, point.REVIEW);
 
@@ -38,18 +48,18 @@ export class ReviewService {
     reviewId: number,
     userId: number
   ): Promise<grade> {
-    const myPost = await reviewModel.getPostInfoByReviewId(userId);
-    // todo : myPost.userId 는 역직렬화 되지 않았음 수정해야함
-    if (userId !== myPost.userId) {
-      log.error('is not owner');
+    const myPost = await reviewModel.getPostInfoByReviewId(reviewId);
+    const myPostEntity = plainToInstance(PostEntity, myPost);
+
+    if (userId !== myPostEntity.userId) {
       throw new Error('본인의 게시글에만 평가를 남길 수 있습니다.');
     }
 
     const isDone = await reviewModel.isDone(reviewId, userId);
     if (!isDone) {
-      log.error('평가 실패 : 평가 미완료');
       throw new Error('평가 실패 : 평가 미완료');
     }
+
     return await userService.userGradeUpdate(grade, reviewId);
   }
 
