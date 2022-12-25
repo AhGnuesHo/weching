@@ -1,4 +1,4 @@
-import { report, IReportModel, newReport } from '../interfaces';
+import { report, IReportModel, newReport, reviewStatus } from '../interfaces';
 import { pg } from '../app';
 
 export class ReportModel implements IReportModel {
@@ -7,10 +7,27 @@ export class ReportModel implements IReportModel {
     type_id: newReport,
     content: string
   ): Promise<newReport> {
-    const row = await pg.query(
+    const report = await pg.query(
       `INSERT INTO report(type,type_id,content) VALUES ($1,$2,$3)RETURNING *`,
       [type, type_id, content]
     );
+
+    const reviewStatus = await pg.query(
+      `UPDATE review SET status = 1 where id=($1)`,
+      [type_id]
+    );
+
+    // const result: reviewStatus = {
+    //   report: report.rows[0],
+    //   reviewStatus: reviewStatus.rowCount,
+    // };
+    // console.log(result);
+
+    return report.rows[0];
+  }
+
+  async findReport(id: newReport): Promise<newReport[]> {
+    const row = await pg.query(`SELECT * FROM report where type_id=($1)`, [id]);
     return row.rows[0];
   }
 

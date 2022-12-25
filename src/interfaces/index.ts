@@ -172,6 +172,12 @@ interface pageNationNotice {
   currPage: number;
   notice: newNotice[];
 }
+
+interface reviewStatus {
+  report: report[];
+  reviewStatus: number;
+}
+
 export {
   user,
   post,
@@ -201,4 +207,5 @@ export {
   pageNationReport,
   newPostAndTargetReview,
   mainUserInfo,
+  reviewStatus,
 };
