@@ -1,3 +1,4 @@
+import { EReview } from './../types/index';
 import { userModel, reviewModel } from '../model';
 import { user, IUserModel, point, grade } from '../interfaces';
 
@@ -47,7 +48,7 @@ export class UserService {
     const reviewCount = await reviewModel.getDoneReviewCountThisMonth(id);
     const grade = await userModel.getGrade(id);
     const newAvg = reviewCount / grade;
-    if (reviewCount > 10) {
+    if (reviewCount > EReview.LIMIT_COUNT) {
       await this.updateAvg(id, newAvg);
     }
     const result = {

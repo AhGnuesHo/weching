@@ -1,14 +1,14 @@
 import { IRankModel, rank } from '../interfaces';
 import { pg } from '../app';
 import { log } from '../logger';
-import { month } from '../types';
+import { query } from '../types';
 import { PoolClient } from 'pg';
 export class RankModel implements IRankModel {
   // 해당 월을 구하는 쿼리를 계속 수행하기보다 thisMonth함수에서 이번 달을 구하고, 필요한 곳에서 쓰려고 하는데
   // 에러가 나서 쓰지 못하고 있습니다 어떻게 개선해야할까요?
   async thisMonth(): Promise<Date> {
     return await (
-      await pg.query(month.MONTH)
+      await pg.query(query.MONTH)
     ).rows[0];
   }
 
@@ -28,7 +28,7 @@ export class RankModel implements IRankModel {
       await Promise.all(
         newRank.map((rank) =>
           rankPg.query(
-            `insert into best (rank, month, user_id) values (${rank.rank}, ${month.MONTH}, ${rank.id}) `
+            `insert into best (rank, month, user_id) values (${rank.rank}, ${query.MONTH}, ${rank.id}) `
           )
         )
       );
@@ -50,7 +50,7 @@ export class RankModel implements IRankModel {
     await Promise.all(
       userRank.map((rank) =>
         rankPg.query(
-          `insert into rank (user_id, month, grade) values (${rank.id},${month.MONTH} , ${rank.grade}) `
+          `insert into rank (user_id, month, grade) values (${rank.id},${query.MONTH} , ${rank.grade}) `
         )
       )
     );
@@ -82,7 +82,7 @@ export class RankModel implements IRankModel {
     const best = await pg.query(
       `select  ranker.rank, ranker.user_id, users.nickname, users.grade , users.avg
     from 
-    (select user_id, rank from best where month = ${month.MONTH})
+    (select user_id, rank from best where month = ${query.MONTH})
     as ranker
     join users as users
     on ranker.user_id = users.id

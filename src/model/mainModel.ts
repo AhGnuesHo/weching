@@ -1,6 +1,6 @@
 import { MainDto } from './../dto/mainDto';
 import { plainToInstance } from 'class-transformer';
-import { RankModel, rankModel } from './rankModel';
+import { RankModel } from './rankModel';
 
 import {
   IAdviceModel,

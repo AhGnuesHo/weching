@@ -2,8 +2,7 @@ import { ReviewEntity } from './../dto/reviewDto';
 import { plainToInstance } from 'class-transformer';
 import { newPost, IReviewModel, review, user, newReview } from '../interfaces';
 import { pg } from '../app';
-import { PostDto, ReviewDto } from '../dto';
-import { month } from '../types';
+import { query } from '../types';
 
 //where절에 있는 서브쿼리 수정하고 싶은데
 export class ReviewModel implements IReviewModel {
@@ -18,7 +17,7 @@ export class ReviewModel implements IReviewModel {
   async writeReview(review: review): Promise<Boolean> {
     const { postId, userId, content } = review;
     const myReview = await pg.query(
-      `update review set content = $1, month = ${month.MONTH} where post_id = $2 and user_id = $3 and content is null `,
+      `update review set content = $1, month = ${query.MONTH} where post_id = $2 and user_id = $3 and content is null `,
       [content, postId, userId]
     );
 
@@ -43,7 +42,7 @@ export class ReviewModel implements IReviewModel {
   async getDoneReviewCountThisMonth(reviewId: number): Promise<number> {
     const count = await pg.query(
       `select count(*) from review where user_id = (select user_id from review where id = $1) 
-      and content is not null and is_done = 1 and month = ${month.MONTH}`,
+      and content is not null and is_done = 1 and month = ${query.MONTH}`,
       [reviewId]
     );
 

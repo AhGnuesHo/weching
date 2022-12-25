@@ -1,3 +1,4 @@
+import { EReview } from './../types/index';
 import { postModel, reviewModel } from '../model/index';
 import {
   post,
@@ -15,12 +16,13 @@ export class PostService {
   }
 
   async createReview(userId: number): Promise<number[]> {
-    const targetUserCount = 3;
     const count = await postModel.getAllUsersCount();
     let target = [];
-    // 여기 좀 별로인것 같은데 고쳐보겠습니다.
-    for (let i = 0; i < targetUserCount; i++) {
-      const random = Math.floor(Math.random() * (count - 15)) + 15;
+
+    for (let i = 0; i < EReview.TARGET_USER; i++) {
+      const random =
+        Math.floor(Math.random() * (count - EReview.LIMIT_USER_NUMBER)) +
+        EReview.LIMIT_USER_NUMBER;
       if (target.indexOf(random) === -1 && target.indexOf(userId) == -1) {
         target.push(random);
       } else {
