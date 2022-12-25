@@ -59,9 +59,9 @@ export class ReviewModel implements IReviewModel {
     return post.rows[0];
   }
 
-  async isDone(id: number, userId: number): Promise<Boolean> {
+  async isDone(id: number): Promise<Boolean> {
     const isDone = await pg.query(
-      `update review set is_done = 1 where id = $1`,
+      `update review set is_done = 1 where id = $1 and is_done = 0`,
       [id]
     );
 

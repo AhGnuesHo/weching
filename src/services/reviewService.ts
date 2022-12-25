@@ -55,9 +55,9 @@ export class ReviewService {
       throw new Error('본인의 게시글에만 평가를 남길 수 있습니다.');
     }
 
-    const isDone = await reviewModel.isDone(reviewId, userId);
+    const isDone = await reviewModel.isDone(reviewId);
     if (!isDone) {
-      throw new Error('평가 실패 : 평가 미완료');
+      throw new Error('평가 실패 : 이미 평가를 끝낸 리뷰입니다');
     }
 
     return await userService.userGradeUpdate(grade, reviewId);
