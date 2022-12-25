@@ -1,4 +1,4 @@
-import { MainDto } from './../dto/mainDto';
+import { MainEntity } from './../dto';
 import { plainToInstance } from 'class-transformer';
 import { RankModel } from './rankModel';
 
@@ -9,6 +9,7 @@ import {
   IReviewModel,
   IUserModel,
   main,
+  mainUserInfo,
 } from '../interfaces';
 import { ReviewModel, UserModel, AdviceModel, PostModel } from '../model';
 
@@ -29,9 +30,7 @@ export interface Main
     IRankModel {}
 
 export class Main {
-  async mainInfo(id: number): Promise<MainDto> {
-    const userInfo = await this.userInfo(id);
-    const todoReview = await this.todoReview(id);
+  async mainInfo(): Promise<MainEntity> {
     const advice = await this.getAdvice();
 
     // 2.
@@ -39,18 +38,21 @@ export class Main {
     // post는 postService의 getPosts에서 게시물과 게시물에 달린 리뷰를 합치는 로직을 거쳐서 가져옵니다
     // postService를 import해서 사용하면 이건 DI에 맞지 않는 것 같은데 어떤 식으로 사용하면 좋을까요?
 
-    const post = await postService.getPosts(id);
     const ranking = await this.getBest();
 
     const result: main = {
-      user: userInfo,
-      todoReview: todoReview,
       advice: advice,
-      post: post,
       ranking: ranking,
     };
 
-    return plainToInstance(MainDto, result);
+    return plainToInstance(MainEntity, result);
+  }
+
+  async userMainInfo(id: number): Promise<mainUserInfo> {
+    const user = await this.userInfo(id);
+    const todoReview = await this.todoReview(id);
+    const posts = await postService.getPosts(id);
+    return { user, todoReview, posts };
   }
 }
 

@@ -22,7 +22,7 @@ export class ReviewService {
     if (!todoReview) {
       throw new Error(`유저를 찾을 수 없음 : 유저 아이디  ${userId}`);
     }
-    return plainToInstance(PostEntity, todoReview);
+    return todoReview;
   }
 
   async writeReview(review: ReviewDto): Promise<review> {

@@ -7,11 +7,6 @@ export const userRouter = Router();
 
 userRouter.get('/', expireUser, asyncHandler(userController.findUser));
 userRouter.delete('/', asyncHandler(userController.deleteUser));
-userRouter.post(
-  '/checkName',
-  checkName,
-  asyncHandler(userController.isUsingEmail)
-);
 userRouter.patch(
   '/',
   expireUser,

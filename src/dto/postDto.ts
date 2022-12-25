@@ -1,6 +1,7 @@
+import { ReviewEntity } from './reviewDto';
 import { isNumber, IsNumber, IsOptional, IsString, Min } from 'class-validator';
 import { Expose, Type } from 'class-transformer';
-import { newPost, postStatus } from '../interfaces';
+import { newPost, postStatus, postWithReview } from '../interfaces';
 import 'reflect-metadata';
 export class PostDto implements newPost {
   @Expose()
@@ -38,4 +39,8 @@ export class PostEntity implements newPost {
 
   @Expose()
   public status?: postStatus;
+
+  @Expose({ name: 'reviews' })
+  public reviews: ReviewEntity[];
+
 }

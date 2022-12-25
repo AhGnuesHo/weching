@@ -1,3 +1,4 @@
+import { plainToClass, plainToInstance } from 'class-transformer';
 import { EReview } from './../types/index';
 import { postModel, reviewModel } from '../model/index';
 import {
@@ -7,6 +8,7 @@ import {
   postWithReview,
   newPostAndTargetReview,
 } from '../interfaces';
+import { PostEntity } from '../dto';
 
 export class PostService {
   constructor(private postModel: IPostModel) {}
@@ -37,13 +39,14 @@ export class PostService {
     const posts = await postModel.getPosts(userId);
 
     const result = await Promise.all(
-      posts.map(async (post) => {
+      posts.map(async (post: PostEntity) => {
         const { id } = post;
         const review = await reviewModel.getReviewByPost(id);
         const result = {
           post: post,
           reviews: review,
         };
+
         return result;
       })
     );

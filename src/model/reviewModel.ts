@@ -3,15 +3,16 @@ import { plainToInstance } from 'class-transformer';
 import { newPost, IReviewModel, review, user, newReview } from '../interfaces';
 import { pg } from '../app';
 import { query } from '../types';
+import { PostEntity } from '../dto';
 
 //where절에 있는 서브쿼리 수정하고 싶은데
 export class ReviewModel implements IReviewModel {
-  async todoReview(userId: number): Promise<newPost[]> {
+  async todoReview(userId: number): Promise<PostEntity[]> {
     const todoReview = await pg.query(
       `select * from posts where id in (select post_id from review where user_id = $1) order by id desc`,
       [userId]
     );
-    return todoReview.rows;
+    return plainToInstance(PostEntity, todoReview.rows);
   }
 
   async writeReview(review: review): Promise<Boolean> {
@@ -24,13 +25,13 @@ export class ReviewModel implements IReviewModel {
     return myReview.rowCount === 1;
   }
 
-  async getReviewByPost(postId: number): Promise<review[]> {
+  async getReviewByPost(postId: number): Promise<ReviewEntity[]> {
     const reviews = await pg.query(
       `select id, content, status from review where post_id = $1 and content is not null`,
       [postId]
     );
 
-    return reviews.rows;
+    return plainToInstance(ReviewEntity, reviews.rows);
   }
 
   async getReview(id: number): Promise<ReviewEntity> {

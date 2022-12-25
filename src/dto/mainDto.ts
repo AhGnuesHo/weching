@@ -1,3 +1,4 @@
+import { UserEntity } from './userDto';
 import { IsArray, Length } from 'class-validator';
 import { Expose } from 'class-transformer';
 import {
@@ -10,9 +11,9 @@ import {
 } from '../interfaces';
 import 'reflect-metadata';
 
-export class MainDto implements main {
+export class MainEntity {
   @Expose()
-  user: user;
+  user: UserEntity;
 
   @Expose()
   todoReview: newPost[];
@@ -30,7 +31,7 @@ export class MainDto implements main {
 
   @Expose()
   format(): main {
-    const result: main = {
+    const result = {
       user: this.user,
       todoReview: this.todoReview,
       post: this.post,

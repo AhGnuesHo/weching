@@ -1,5 +1,7 @@
-import { PostDto } from './../dto/postDto';
+import { ReviewEntity } from './../dto/reviewDto';
+import { PostDto, PostEntity } from './../dto/postDto';
 import { PoolClient } from 'pg';
+import { UserEntity } from '../dto';
 
 interface user {
   email: string;
@@ -37,9 +39,16 @@ interface newReview extends review {
 }
 
 interface postWithReview {
-  post: newPost;
-  reviews: review[];
+  post: PostEntity;
+  reviews: ReviewEntity[];
 }
+
+interface mainUserInfo {
+  user: UserEntity;
+  todoReview: PostEntity[];
+  posts: postWithReview[];
+}
+
 interface notice {
   title?: string;
   content?: string;
@@ -55,10 +64,7 @@ interface advice {
   message: string;
 }
 interface main {
-  user: user;
-  todoReview: newPost[];
   advice: advice;
-  post: postWithReview[];
   ranking: rank[];
 }
 
@@ -84,9 +90,9 @@ interface rank {
 }
 
 interface IReviewModel {
-  todoReview(userId: number): Promise<newPost[]>;
+  todoReview(userId: number): Promise<PostEntity[]>;
   writeReview(review: review): Promise<Boolean>;
-  getReviewByPost(postId: number): Promise<review[]>;
+  getReviewByPost(postId: number): Promise<ReviewEntity[]>;
   getDoneReviewCountThisMonth(userId: number): Promise<number>;
   isDone(id: number, userId: number): Promise<Boolean>;
   getReviewWriter(Id: number): Promise<user>;
@@ -118,7 +124,7 @@ interface newPostAndTargetReview {
 
 interface IUserModel {
   createUser(user: user): Promise<user>;
-  userInfo(id: number): Promise<user>;
+  userInfo(id: number): Promise<UserEntity>;
   isUser(info: any): Promise<user>;
   isNickName(nickName: string): Promise<Boolean>;
   updatePoint(info: any, deduct: number): Promise<void>;
@@ -194,4 +200,5 @@ export {
   newReport,
   pageNationReport,
   newPostAndTargetReview,
+  mainUserInfo,
 };
