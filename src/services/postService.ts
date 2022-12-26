@@ -1,10 +1,8 @@
-import { plainToClass, plainToInstance } from 'class-transformer';
 import { EReview } from './../types/index';
 import { postModel, reviewModel } from '../model/index';
 import {
   post,
   IPostModel,
-  newPost,
   postWithReview,
   newPostAndTargetReview,
 } from '../interfaces';

@@ -9,7 +9,7 @@ import { PoolClient } from 'pg';
 import { postService } from '../services/postService';
 import { log } from '../logger';
 import { plainToInstance } from 'class-transformer';
-import { PostDto, PostEntity } from '../dto';
+import { PostEntity } from '../dto';
 
 export class PostModel implements IPostModel {
   async postingAndMatchingReview(post: post): Promise<newPostAndTargetReview> {
@@ -53,7 +53,7 @@ export class PostModel implements IPostModel {
     return result.rows[0].max;
   }
 
-  async createReview(targetUser: number[], post: PostDto): Promise<void> {
+  async createReview(targetUser: number[], post: PostEntity): Promise<void> {
     const reviewPool = await pg.connect();
     try {
       await Promise.allSettled(

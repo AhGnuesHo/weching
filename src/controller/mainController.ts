@@ -1,4 +1,3 @@
-import { loginRequired } from '../middlewares';
 import { mainService } from '../services';
 import { AsyncRequestHandler } from '../types';
 

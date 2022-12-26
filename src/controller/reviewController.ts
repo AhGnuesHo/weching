@@ -1,4 +1,4 @@
-import { postService, reviewService } from '../services';
+import { reviewService } from '../services';
 import { AsyncRequestHandler } from '../types';
 
 interface reviewControllerInterface {

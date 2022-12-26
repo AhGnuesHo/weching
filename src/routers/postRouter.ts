@@ -6,5 +6,5 @@ import { PostDto, ReviewDto } from '../dto';
 export const postRouter = Router();
 
 postRouter.post('/', checkPoint, asyncHandler(postController.posting));
-postRouter.get('/', asyncHandler(postController.getPost));
+postRouter.get('/:postId', asyncHandler(postController.getPost));
 postRouter.get('/list', asyncHandler(postController.getPosts));

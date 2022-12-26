@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { guestController, mainController, userController } from '../controller';
+import { guestController } from '../controller';
 import { asyncHandler } from '../utils';
 
 export const guestRouter = Router();

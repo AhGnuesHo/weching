@@ -137,7 +137,7 @@ interface IUserModel {
 interface IPostModel {
   posting(post: post, pool: PoolClient): Promise<newPost>;
   getAllUsersCount(): Promise<number>;
-  createReview(targetUser: number[], post: PostDto): Promise<void>;
+  createReview(targetUser: number[], post: PostEntity): Promise<void>;
   getPosts(userId: number): Promise<newPost[]>;
 }
 interface INoticeModel {

@@ -20,6 +20,11 @@ export class PostDto implements newPost {
 
   @Expose()
   public status?: postStatus;
+
+  @Expose()
+  paramToNumber(param: string): number {
+    return parseInt(param);
+  }
 }
 
 export class PostEntity implements newPost {

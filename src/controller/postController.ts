@@ -18,7 +18,9 @@ export class PostController implements IPostController {
   };
 
   getPost: AsyncRequestHandler = async (req, res) => {
-    const { userId, postId } = req.body;
+    const { userId } = req.body;
+    const postId = req.body.paramToNumber(req.params.postId);
+
     const post = await postService.getPost(userId, postId);
     res.json(post);
   };

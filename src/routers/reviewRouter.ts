@@ -1,7 +1,5 @@
 import { Router } from 'express';
 import { reviewController } from '../controller';
-import { ReviewDto } from '../dto';
-import { DtoValidatorMiddleware } from '../middlewares';
 import { asyncHandler } from '../utils';
 
 export const reviewRouter = Router();

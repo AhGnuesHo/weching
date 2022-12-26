@@ -1,7 +1,6 @@
 import { postModel } from './../model/postModel';
-import { PostEntity } from './../dto/postDto';
-import { plainToClass, plainToInstance } from 'class-transformer';
-import { ReviewDto, ReviewEntity } from './../dto/reviewDto';
+import { PostEntity, ReviewDto } from './../dto';
+import { plainToInstance } from 'class-transformer';
 import { reviewModel } from '../model/reviewModel';
 import {
   IReviewModel,
@@ -12,7 +11,6 @@ import {
   newReview,
 } from '../interfaces';
 import { userModel } from '../model';
-import { log } from '../logger';
 import { userService } from './userService';
 
 export class ReviewService {

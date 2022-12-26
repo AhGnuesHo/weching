@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { reportController } from '../controller';
 import { asyncHandler } from '../utils';
-import { checkReport } from '../middlewares/';
+import { checkReport } from '../middlewares';
 
 export const reportRouter = Router();
 
