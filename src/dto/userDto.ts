@@ -34,7 +34,6 @@ export class UserEntity {
 
   @Expose()
   status: number;
-
   @Expose()
   @Type(() => Number)
   point: number;
