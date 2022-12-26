@@ -54,9 +54,11 @@ export class PostService {
     return result;
   }
 
-  async getPost(userId: number, postId: number): Promise<PostEntity> {
+  async getPost(userId: number, postId: number): Promise<postWithReview> {
     await postModel.hasNewReview(postId, 0);
-    return await postModel.getPost(userId, postId);
+    const post = await postModel.getPost(userId, postId);
+    const reviews = await reviewModel.getReviewByPost(postId);
+    return { post, reviews };
   }
 }
 
