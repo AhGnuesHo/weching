@@ -57,8 +57,7 @@ export class NoticeController implements INoticeController {
 
   //공지사항 전체 조회
   findAll: custom = async (req, res) => {
-    let { query } = req;
-    const page = query.page;
+    const { page } = req.query;
 
     const findAll = await noticeService.findAll(page);
     res.json(findAll);

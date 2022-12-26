@@ -14,7 +14,6 @@
     "sourceMap": true,
     "strictPropertyInitialization": false,
     "emitDecoratorMetadata": true,
-    "types": ["reflect-metadata"],
-    
+    "types": ["reflect-metadata"]
   }
 }
