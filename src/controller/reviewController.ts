@@ -1,4 +1,4 @@
-import { reviewService } from '../services';
+import { postService, reviewService } from '../services';
 import { AsyncRequestHandler } from '../types';
 
 interface reviewControllerInterface {
@@ -16,7 +16,8 @@ export class ReviewController implements reviewControllerInterface {
   };
 
   writeReview: AsyncRequestHandler = async (req, res) => {
-    const result = await reviewService.writeReview(req.body);
+    const review = req.body;
+    const result = await reviewService.writeReview(review);
     res.json(result);
   };
 

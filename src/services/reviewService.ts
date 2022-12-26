@@ -1,3 +1,4 @@
+import { postModel } from './../model/postModel';
 import { PostEntity } from './../dto/postDto';
 import { plainToClass, plainToInstance } from 'class-transformer';
 import { ReviewDto, ReviewEntity } from './../dto/reviewDto';
@@ -39,7 +40,7 @@ export class ReviewService {
 
     const { userId } = review;
     await userModel.updatePoint(userId, point.REVIEW);
-
+    await postModel.hasNewReview(review.postId, 1);
     return review;
   }
 

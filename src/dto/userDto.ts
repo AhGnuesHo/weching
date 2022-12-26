@@ -38,8 +38,10 @@ export class UserEntity {
   point: number;
 
   @Expose({ name: 'post_count' })
+  @Type(() => Number)
   postCount: number;
 
   @Expose({ name: 'review_count' })
+  @Type(() => Number)
   reviewCount: number;
 }

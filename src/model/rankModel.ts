@@ -14,7 +14,7 @@ export class RankModel implements IRankModel {
 
   async getRank(rankPg: PoolClient): Promise<rank[]> {
     const ranking = await rankPg.query(
-      'select (ROW_NUMBER() OVER()) AS rank , best.id, best.avg FROM  ( SELECT  id, avg FROM users ORDER BY avg DESC ) as best LIMIT 10'
+      'select (ROW_NUMBER() OVER()) AS rank , best.id, best.avg FROM  (  ) as best LIMIT 10'
     );
     return ranking.rows;
   }
@@ -44,7 +44,7 @@ export class RankModel implements IRankModel {
 
   async updateCurrRank(rankPg: PoolClient): Promise<void> {
     const userRank = (await rankPg.query(`select id, grade from users`)).rows;
-    // 이 thisMonth를 쓰고 싶은데.. 에러가 나서 일단 month.MONTH로 쿼리를 바로 넣어 놨습니다
+
     const thisMonth = await this.thisMonth();
 
     await Promise.all(

@@ -5,9 +5,6 @@ import { asyncHandler } from '../utils';
 import { PostDto, ReviewDto } from '../dto';
 export const postRouter = Router();
 
-postRouter.post(
-  '/',
-  checkPoint,
-  asyncHandler(postController.posting)
-);
-postRouter.get('/', asyncHandler(postController.getPosts));
+postRouter.post('/', checkPoint, asyncHandler(postController.posting));
+postRouter.get('/', asyncHandler(postController.getPost));
+postRouter.get('/list', asyncHandler(postController.getPosts));

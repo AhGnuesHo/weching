@@ -54,7 +54,8 @@ export class PostService {
     return result;
   }
 
-  async getPost(userId: number, postId: number): Promise<newPost> {
+  async getPost(userId: number, postId: number): Promise<PostEntity> {
+    await postModel.hasNewReview(postId, 0);
     return await postModel.getPost(userId, postId);
   }
 }

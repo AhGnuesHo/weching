@@ -86,11 +86,17 @@ export class PostModel implements IPostModel {
 
   async getPost(userId: number, postId: number): Promise<PostEntity> {
     const getPost = await pg.query(
-      `select * from posts where user_id = $1 and post_id = $2 order by id desc`,
+      `select * from posts where user_id = $1 and id = $2 order by id desc`,
       [userId, postId]
     );
 
     return plainToInstance(PostEntity, getPost.rows[0]);
+  }
+
+  async hasNewReview(postId: number, check: number): Promise<void> {
+    await pg.query(`update posts set is_checked = ${check} where id = $1 `, [
+      postId,
+    ]);
   }
 }
 

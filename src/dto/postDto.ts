@@ -43,4 +43,6 @@ export class PostEntity implements newPost {
   @Expose({ name: 'reviews' })
   public reviews: ReviewEntity[];
 
+  @Expose({ name: 'is_checked' })
+  public isChecked: number;
 }

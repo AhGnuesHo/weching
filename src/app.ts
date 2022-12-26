@@ -33,7 +33,7 @@ import { Pool } from 'pg';
 import { userRouter } from './routers/userRouter';
 import { ReviewDto } from './dto';
 
-const app = express();
+export const app = express();
 
 export const pg = new Pool({
   user: user,

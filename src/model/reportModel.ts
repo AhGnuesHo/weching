@@ -12,10 +12,7 @@ export class ReportModel implements IReportModel {
       [type, type_id, content]
     );
 
-    const reviewStatus = await pg.query(
-      `UPDATE review SET status = 1 where id=($1)`,
-      [type_id]
-    );
+    await pg.query(`UPDATE review SET status = 1 where id=($1)`, [type_id]);
 
     // const result: reviewStatus = {
     //   report: report.rows[0],
