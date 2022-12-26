@@ -14,16 +14,10 @@ export class ReportModel implements IReportModel {
 
     await pg.query(`UPDATE review SET status = 1 where id=($1)`, [type_id]);
 
-    // const result: reviewStatus = {
-    //   report: report.rows[0],
-    //   reviewStatus: reviewStatus.rowCount,
-    // };
-    // console.log(result);
-
     return report.rows[0];
   }
 
-  async findReport(id: newReport): Promise<newReport[]> {
+  async findReport(id: number): Promise<newReport[]> {
     const row = await pg.query(`SELECT * FROM report where type_id=($1)`, [id]);
     return row.rows[0];
   }

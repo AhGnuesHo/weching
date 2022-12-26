@@ -16,11 +16,6 @@ export class ReportService {
     typeId: newReport,
     content: string
   ): Promise<newReport> {
-    const isReport = await reportModel.findReport(typeId);
-    if (isReport) {
-      throw new Error('이미 신고된 리뷰 입니다.');
-    }
-
     return await reportModel.createReport(type, typeId, content);
   }
 

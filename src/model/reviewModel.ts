@@ -93,35 +93,11 @@ export class ReviewModel implements IReviewModel {
   }
 
   async bookmark(userId: number): Promise<newReview[]> {
-    const post_Id = await pg.query(
-      `select id  from posts  where user_id = ($1)`,
+    const myBookmark = await pg.query(
+      `select * from review  where bookmark = true and post_id in ( select id  from posts  where user_id =($1))`,
       [userId]
     );
-
-    const post = post_Id.rows;
-    const postId: number[] = [];
-    post.map((item) => {
-      const { id } = item;
-      postId.push(id);
-    });
-
-    const bookmarkReview: any[] = await Promise.all(
-      postId.map(async (id) => {
-        const bookmark = await pg.query(
-          `select * from review  where bookmark = true and post_id = ($1)`,
-          [id]
-        );
-
-        if (bookmark.rowCount !== 0) {
-          return bookmark.rows;
-        }
-      })
-    );
-    const myBookmark: any[] = bookmarkReview.filter((bookmark) => {
-      return bookmark !== undefined || null;
-    });
-
-    return myBookmark;
+    return myBookmark.rows[0];
   }
 }
 

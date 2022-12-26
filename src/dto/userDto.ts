@@ -1,6 +1,7 @@
 import { user } from '../interfaces';
 import { Expose, Type, Exclude } from 'class-transformer';
 import { IsEmail, MaxLength } from 'class-validator';
+import 'reflect-metadata';
 
 export class UserDto implements user {
   @Expose()

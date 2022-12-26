@@ -47,18 +47,18 @@ export class ReportController implements IReportController {
       reviewTypeId,
       content
     );
+
     res.json(report);
   };
 
   findReport: custom = async (req, res, next) => {
     try {
-      const { query } = req;
-      const page = query.page;
-      const type = query.type;
+      const { page } = req.query;
+      const { type } = req.query;
 
       const report = await reportService.findAll(page);
 
-      if (type !== undefined) {
+      if (type) {
         const findReportType = await reportService.findType(type, page);
         return res.json(findReportType);
       }
