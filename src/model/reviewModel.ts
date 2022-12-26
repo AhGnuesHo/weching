@@ -97,7 +97,7 @@ export class ReviewModel implements IReviewModel {
       `select * from review  where bookmark = true and post_id in ( select id  from posts  where user_id =($1))`,
       [userId]
     );
-    return myBookmark.rows[0];
+    return myBookmark.rows;
   }
 }
 

@@ -21,7 +21,7 @@ export class UserModel implements IUserModel {
   // 결과들을 서비스 계층에서 합쳐서 보내는 중 어떤게 더 성능상 유리한가요 ?
   async userInfo(id: number): Promise<UserEntity> {
     const info = await pg.query(
-      'select *, (select count(*) from posts where user_id = ($1)) as post_count,(select count(*) from review  where user_id = ($1) ) as review_count from users where id =(21)',
+      'select *, (select count(*) from posts where user_id = ($1)) as post_count,(select count(*) from review  where user_id = ($1) ) as review_count from users where id =($1)',
       [id]
     );
 
