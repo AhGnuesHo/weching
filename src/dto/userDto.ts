@@ -36,6 +36,7 @@ export class UserEntity {
   status: number;
 
   @Expose()
+  @Type(() => Number)
   point: number;
 
   @Expose({ name: 'post_count' })
