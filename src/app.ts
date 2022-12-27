@@ -68,12 +68,7 @@ app.use(
   updateHandler,
   guestRouter
 );
-app.use(
-  endPoint.post,
-  loginRequired,
-  DtoValidatorMiddleware(PostDto, true),
-  postRouter
-);
+app.use(endPoint.post, loginRequired, postRouter);
 app.use(
   endPoint.review,
   loginRequired,
