@@ -58,6 +58,12 @@ interface newNotice extends notice {
   id: number | string;
 }
 
+interface cursorPage {
+  findMaxId: number;
+  findAllCursor: newNotice[];
+  nextCursor: string | number | null;
+}
+
 interface advice {
   author: string;
   authorrofile: string;
@@ -208,4 +214,5 @@ export {
   newPostAndTargetReview,
   mainUserInfo,
   reviewStatus,
+  cursorPage,
 };
