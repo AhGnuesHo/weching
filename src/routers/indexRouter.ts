@@ -6,5 +6,6 @@ export const indexRouter = (
   res: Response,
   next: NextFunction
 ) => {
-  res.redirect("../../client/build/index.html");
+  // res.redirect("../../client/build/index.html");
+  res.redirect("/api/main");
 };
