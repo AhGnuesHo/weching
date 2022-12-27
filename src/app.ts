@@ -32,6 +32,7 @@ import { endPoint } from './constants';
 import { Pool } from 'pg';
 import { userRouter } from './routers/userRouter';
 import { ReviewDto } from './dto';
+import path from 'path';
 
 export const app = express();
 
@@ -54,6 +55,8 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
 require('./passport')();
+
+app.use(express.static(path.join(__dirname, '../client/build')));
 
 app.get('/favicon.ico', (req, res) => res.status(204));
 
@@ -113,3 +116,7 @@ cron.schedule(
     timezone: 'Asia/Seoul',
   }
 );
+
+app.get('*', function (req, res) {
+  res.sendFile(path.join(__dirname, '../client/build/index.html'));
+});
