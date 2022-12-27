@@ -6,12 +6,17 @@ import { Request, Response, NextFunction } from 'express';
 
 interface Query {
   page: number;
+  cursor: number;
 }
-type custom = (req: Request<{}, {}, {}, Query>, res: Response) => Promise<any>;
+type custom = (
+  req: Request<{}, {}, {}, Query>,
+  res: Response,
+  next: NextFunction
+) => Promise<any>;
 interface INoticeController {
   create: AsyncRequestHandler;
   findById: AsyncRequestHandler;
-  findAll: custom;
+  // findAll: custom;
   update: AsyncRequestHandler;
   delete: AsyncRequestHandler;
 }
@@ -55,13 +60,22 @@ export class NoticeController implements INoticeController {
     res.json(findById);
   };
 
-  //공지사항 전체 조회
+  // 공지사항 전체 조회
   findAll: custom = async (req, res) => {
     const { page } = req.query;
 
     const findAll = await noticeService.findAll(page);
     res.json(findAll);
   };
+
+  //공지사항 전체 조회 (커서 페이징)
+
+  // findAllCursor: custom = async (req, res, next) => {
+  //   const { cursor } = req.query;
+  //   const result = await noticeService.findAllCursor(cursor);
+
+  //   res.json(result);
+  // };
 
   //공지사항 수정
   update: AsyncRequestHandler = async (req, res) => {
