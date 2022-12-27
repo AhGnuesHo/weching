@@ -1,8 +1,8 @@
-import { IRankModel, rank } from '../interfaces';
-import { pg } from '../app';
-import { log } from '../logger';
-import { query } from '../types';
-import { PoolClient } from 'pg';
+import { IRankModel, rank } from "../interfaces";
+import { pg } from "../app";
+import { log } from "../logger";
+import { query } from "../types";
+import { PoolClient } from "pg";
 export class RankModel implements IRankModel {
   // 해당 월을 구하는 쿼리를 계속 수행하기보다 thisMonth함수에서 이번 달을 구하고, 필요한 곳에서 쓰려고 하는데
   // 에러가 나서 쓰지 못하고 있습니다 어떻게 개선해야할까요?
@@ -14,7 +14,7 @@ export class RankModel implements IRankModel {
 
   async getRank(rankPg: PoolClient): Promise<rank[]> {
     const ranking = await rankPg.query(
-      'select (ROW_NUMBER() OVER()) AS rank , best.id, best.avg FROM  (  ) as best LIMIT 10'
+      "select (ROW_NUMBER() OVER()) AS rank , best.id, best.avg FROM  (  ) as best LIMIT 10"
     );
     return ranking.rows;
   }
@@ -22,7 +22,7 @@ export class RankModel implements IRankModel {
   async setNewRank(): Promise<void> {
     const rankPg = await pg.connect();
     try {
-      rankPg.query('begin');
+      rankPg.query("begin");
       const newRank = await this.getRank(rankPg);
 
       await Promise.all(
@@ -34,14 +34,13 @@ export class RankModel implements IRankModel {
       );
       await this.updateCurrRank(rankPg);
     } catch (err) {
-      await rankPg.query('rollback');
+      await rankPg.query("rollback");
       throw err;
     } finally {
-      await rankPg.query('commit');
+      await rankPg.query("commit");
       rankPg.release();
     }
   }
-
   async updateCurrRank(rankPg: PoolClient): Promise<void> {
     const userRank = (await rankPg.query(`select id, grade from users`)).rows;
 
@@ -57,10 +56,10 @@ export class RankModel implements IRankModel {
   }
 
   async resetRank(): Promise<void> {
-    const allCount = (await pg.query('select count (*) from users')).rows[0];
+    const allCount = (await pg.query("select count (*) from users")).rows[0];
     const poolClient = await pg.connect();
     try {
-      await poolClient.query('begin');
+      await poolClient.query("begin");
       // todo 유저 등급 리셋하는 쿼리 넣기
       const updateCount = await poolClient.query(``);
       if (allCount !== updateCount.rowCount) {
@@ -69,10 +68,10 @@ export class RankModel implements IRankModel {
         );
       }
     } catch (e) {
-      await poolClient.query('rollback');
+      await poolClient.query("rollback");
       throw e;
     } finally {
-      await poolClient.query('commit');
+      await poolClient.query("commit");
       poolClient.release();
     }
   }

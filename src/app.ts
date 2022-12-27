@@ -1,14 +1,14 @@
-import { PostDto } from './dto/postDto';
-import { UserDto } from './dto/userDto';
-import { rankModel } from './model/rankModel';
-import express from 'express';
-import cors from 'cors';
-import createError from 'http-errors';
-import cookieParser from 'cookie-parser';
-import cron from 'node-cron';
-import logger from 'morgan';
-import { log } from './logger';
-import { port, user, host, database, password, postgresPort } from './config';
+import { PostDto } from "./dto/postDto";
+import { UserDto } from "./dto/userDto";
+import { rankModel } from "./model/rankModel";
+import express from "express";
+import cors from "cors";
+import createError from "http-errors";
+import cookieParser from "cookie-parser";
+import cron from "node-cron";
+import logger from "morgan";
+import { log } from "./logger";
+import { port, user, host, database, password, postgresPort } from "./config";
 import {
   checkEmail,
   DtoValidatorMiddleware,
@@ -16,7 +16,7 @@ import {
   checkName,
   updateHandler,
   loginRequired,
-} from './middlewares';
+} from "./middlewares";
 import {
   indexRouter,
   guestRouter,
@@ -27,12 +27,12 @@ import {
   reviewRouter,
   adviceRouter,
   reportRouter,
-} from './routers';
-import { endPoint } from './constants';
-import { Pool } from 'pg';
-import { userRouter } from './routers/userRouter';
-import { ReviewDto } from './dto';
-import path from 'path';
+} from "./routers";
+import { endPoint } from "./constants";
+import { Pool } from "pg";
+import { userRouter } from "./routers/userRouter";
+import { ReviewDto } from "./dto";
+import path from "path";
 
 export const app = express();
 
@@ -46,19 +46,19 @@ export const pg = new Pool({
 
 pg.connect()
   .then(() => log.info(`database Connect`))
-  .catch((err) => log.err('connection error', err.stack));
+  .catch((err) => log.err("connection error", err.stack));
 
 app.use(cors());
-app.use(logger('dev'));
+app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
-require('./passport')();
+require("./passport")();
 
-app.use(express.static(path.join(__dirname, '../client/build')));
+app.use(express.static(path.join(__dirname, "../client/build")));
 
-app.get('/favicon.ico', (req, res) => res.status(204));
+app.get("/favicon.ico", (req, res) => res.status(204));
 
 app.get(endPoint.index, indexRouter);
 app.use(endPoint.main, mainRouter);
@@ -101,7 +101,7 @@ app.listen(port, () => {
 // 어느 곳에 있어도 다 이상한 것 같습니다.
 // 정답을.. 알려주세요ㅜ
 cron.schedule(
-  '* * 1-12 * *',
+  "* * 1-12 * *",
   async () => {
     log.info(`update ranking`);
     try {
@@ -113,10 +113,10 @@ cron.schedule(
   },
   {
     scheduled: true,
-    timezone: 'Asia/Seoul',
+    timezone: "Asia/Seoul",
   }
 );
 
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '../client/build'));
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "../client/build"));
 });

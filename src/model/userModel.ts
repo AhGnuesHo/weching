@@ -1,14 +1,15 @@
-import { plainToInstance } from 'class-transformer';
-import { user, IUserModel } from '../interfaces';
-import { pg } from '../app';
-import { reviewModel } from './reviewModel';
-import { log } from '../logger';
-import { UserDto, UserEntity } from '../dto';
+import { plainToInstance } from "class-transformer";
+import { user, IUserModel } from "../interfaces";
+import { pg } from "../app";
+import { reviewModel } from "./reviewModel";
+import { log } from "../logger";
+import { UserDto, UserEntity } from "../dto";
+import { isStringObject } from "util/types";
 export class UserModel implements IUserModel {
   async createUser(user: user): Promise<user> {
     const { email, nickName } = user;
     const newUser = await pg.query(
-      'INSERT INTO users ( email, nickname ) VALUES ($1, $2) RETURNING *',
+      "INSERT INTO users ( email, nickname ) VALUES ($1, $2) RETURNING *",
       [email, nickName]
     );
 
@@ -21,20 +22,25 @@ export class UserModel implements IUserModel {
   // 결과들을 서비스 계층에서 합쳐서 보내는 중 어떤게 더 성능상 유리한가요 ?
   async userInfo(id: number): Promise<UserEntity> {
     const info = await pg.query(
-      'select *, (select count(*) from posts where user_id = ($1)) as post_count,(select count(*) from review  where user_id = ($1) ) as review_count,(select grade from rank where user_id =($1) )as rankGrade,(select month from rank where user_id =($1)) as rankGradeMonth from users where id =($1)',
+      "select *, (select count(*) from posts where user_id = ($1)) as post_count,(select count(*) from review  where user_id = ($1) ) as review_count from users where id =($1)",
       [id]
     );
 
     return plainToInstance(UserEntity, info.rows[0]);
   }
 
+  async rankInfo(id: number): Promise<any> {
+    const info = await pg.query(`select * from rank where user_id = $1`, [id]);
+    return info.rows;
+  }
+
   // 다형성을 써보려고 했는데 코드가 좀 별로 인 것 같습니다 !
   async isUser(info: string | number): Promise<UserDto> {
-    let query = '';
-    if (typeof info === 'string') {
-      query = 'select *  from users where email = $1 and status = 0';
-    } else if (typeof info === 'number') {
-      query = 'select *  from users where id = $1 and status = 0';
+    let query = "";
+    if (typeof info === "string") {
+      query = "select *  from users where email = $1 and status = 0";
+    } else if (typeof info === "number") {
+      query = "select *  from users where id = $1 and status = 0";
     }
 
     let result = await pg.query(query, [info]);
@@ -43,7 +49,7 @@ export class UserModel implements IUserModel {
   }
 
   async isNickName(nickName: string): Promise<Boolean> {
-    const result = await pg.query('select * from users where nickname = $1', [
+    const result = await pg.query("select * from users where nickname = $1", [
       nickName,
     ]);
 
@@ -56,15 +62,15 @@ export class UserModel implements IUserModel {
     const rest = user.point + deduct;
     if (rest < 0) {
       log.error(`${user} 포인트 모자람 현재 포인트 : ${user.point}`);
-      throw new Error('포인트 모자람');
+      throw new Error("포인트 모자람");
     }
 
-    if (typeof info === 'string') {
+    if (typeof info === "string") {
       await pg.query(`update users set point = $1 where email = $2`, [
         rest,
         info,
       ]);
-    } else if (typeof info === 'number') {
+    } else if (typeof info === "number") {
       await pg.query(`update users set point = $1 where id = $2`, [rest, info]);
     }
   }
@@ -77,10 +83,10 @@ export class UserModel implements IUserModel {
 
   async userStatusUpdate(id: number): Promise<user> {
     return await pg
-      .query('UPDATE users SET status = 1 WHERE id=($1) and status = 0', [id])
+      .query("UPDATE users SET status = 1 WHERE id=($1) and status = 0", [id])
       .then((res) => {
         if (res.rowCount === 0) {
-          throw new Error('이미 탈퇴 처리 된 회원입니다.');
+          throw new Error("이미 탈퇴 처리 된 회원입니다.");
         }
 
         return this.userInfo(id);
@@ -91,7 +97,7 @@ export class UserModel implements IUserModel {
     const review = await reviewModel.getReview(reviewId);
     const id = review.userId;
     const row = await pg.query(
-      'UPDATE users SET grade =(grade +($1))WHERE id=($2)',
+      "UPDATE users SET grade =(grade +($1))WHERE id=($2)",
       [grade, id]
     );
 
@@ -110,7 +116,7 @@ export class UserModel implements IUserModel {
 
   async getGrade(id: number): Promise<number> {
     const grade = await pg.query(
-      'SELECT grade FROM users WHERE id = (select user_id from review where id = $1)',
+      "SELECT grade FROM users WHERE id = (select user_id from review where id = $1)",
       [id]
     );
 
@@ -119,7 +125,7 @@ export class UserModel implements IUserModel {
 
   async updateNickname(nickName: string, userId: number): Promise<boolean> {
     const update = await pg.query(
-      'UPDATE users SET nickname = $1 where id= $2',
+      "UPDATE users SET nickname = $1 where id= $2",
       [nickName, userId]
     );
 

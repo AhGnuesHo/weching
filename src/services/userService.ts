@@ -1,6 +1,7 @@
-import { EReview } from './../types/index';
-import { userModel, reviewModel } from '../model';
-import { user, IUserModel, point, grade } from '../interfaces';
+import { EReview } from "./../types/index";
+import { userModel, reviewModel } from "../model";
+import { user, IUserModel, point, grade } from "../interfaces";
+import { UserEntity } from "../dto";
 
 export class UserService {
   constructor(private userModel: IUserModel) {}
@@ -13,8 +14,10 @@ export class UserService {
     return await userModel.isUser(email);
   }
 
-  async findUser(id: number): Promise<user> {
-    return await userModel.userInfo(id);
+  async findUser(id: number): Promise<any> {
+    const user = await userModel.userInfo(id);
+    const rank = await userModel.rankInfo(id);
+    return { user, rank };
   }
 
   async userStatusUpdate(id: number): Promise<user> {
@@ -24,7 +27,7 @@ export class UserService {
   async userGradeUpdate(grade: number, id: number): Promise<grade> {
     const doGrade = await userModel.userGrade(grade, id);
     if (!doGrade) {
-      throw new Error('평가 실패');
+      throw new Error("평가 실패");
     }
 
     const result = await this.getGradeAvg(id);
@@ -35,7 +38,7 @@ export class UserService {
   async updateAvg(id: number, avg: number): Promise<Boolean> {
     const update = await userModel.updateAvg(avg, id);
     if (!update) {
-      throw new Error('평가 실패 :평균 업데이트 실패');
+      throw new Error("평가 실패 :평균 업데이트 실패");
     }
     return update;
   }
@@ -63,7 +66,7 @@ export class UserService {
   async updateNickname(nickname: string, userId: number): Promise<Boolean> {
     const result = await userModel.updateNickname(nickname, userId);
     if (!result) {
-      throw new Error('fail update NickName');
+      throw new Error("fail update NickName");
     }
     return result;
   }
