@@ -56,7 +56,7 @@ app.use(cookieParser());
 
 require('./passport')();
 
-// app.use(express.static(path.join(__dirname, '../client/build')));
+app.use(express.static(path.join(__dirname, '../client/build')));
 
 app.get('/favicon.ico', (req, res) => res.status(204));
 
@@ -117,6 +117,6 @@ cron.schedule(
   }
 );
 
-// app.get('*', function (req, res) {
-//   res.sendFile(path.join(__dirname, '../client/build/index.html'));
-// });
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../client/build'));
+});

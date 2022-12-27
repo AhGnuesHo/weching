@@ -1,13 +1,10 @@
-import { Request, Response, NextFunction } from 'express';
+import { Request, Response, NextFunction } from "express";
+import path from "path";
 
 export const indexRouter = (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
-  res.redirect('/api/main');
+  res.redirect("../../client/build/index.html");
 };
-
-// app.get('/', function (req) {
-//   응답.sendFile(path.join(__dirname, '/client/build/index.html'));
-// });

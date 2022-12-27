@@ -39,9 +39,11 @@
     "start": "node dist/src/app.js",
     "build": "tsc -p .",
     "dev": "nodemon --watch \"src/**/*.ts\" --exec \"ts-node\" src/app.ts",
-    "test": "jest --setupFiles dotenv/config --forceExit --detectOpenHandles"
+    "client": "cd client && yarn start",
+    "server": "concurrently --kill-others-on-fail \"yarn client\" \"yarn start\""
   },
   "dependencies": {
+    "@types/concurrently": "^7.0.0",
     "@types/express-session": "^1.17.5",
     "@types/node-cron": "^3.0.6",
     "@types/passport": "^1.0.11",
@@ -52,6 +54,7 @@
     "@types/winston": "^2.4.4",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.0",
+    "concurrently": "^7.6.0",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
     "dotenv": "^16.0.3",
@@ -68,22 +71,5 @@
     "reflect-metadata": "^0.1.13",
     "winston": "^3.8.2",
     "winston-daily-rotate-file": "^4.7.1"
-  },
-  "jest": {
-    "transform": {
-      "^.+\\.ts$": "ts-jest"
-    },
-    "testRegex": "\\.test\\.ts$",
-    "moduleFileExtensions": [
-      "ts",
-      "tsx",
-      "js",
-      "json"
-    ],
-    "globals": {
-      "ts-jest": {
-        "diagnostics": true
-      }
-    }
   }
 }
