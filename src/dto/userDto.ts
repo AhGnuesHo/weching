@@ -2,6 +2,7 @@ import { user } from '../interfaces';
 import { Expose, Type, Exclude } from 'class-transformer';
 import { IsEmail, MaxLength } from 'class-validator';
 import 'reflect-metadata';
+import { type } from 'os';
 
 export class UserDto implements user {
   @Expose()
@@ -46,4 +47,8 @@ export class UserEntity {
   @Expose({ name: 'review_count' })
   @Type(() => Number)
   reviewCount: number;
+
+  @Expose()
+  @Type(() => Number)
+  rankgrade: number;
 }

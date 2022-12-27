@@ -31,11 +31,26 @@ export class NoticeModel implements INoticeModel {
   //공지사항 전체 조회
   async findAll(page: number): Promise<newNotice[]> {
     const row = await pg.query(
-      // todo
       'select  * from notice order BY id desc limit 10 offset (($1)-1)*10 ',
       [page]
     );
     return row.rows;
+  }
+
+  //공지사항 전체 조회 (커서 페이징)
+  async findAllCursor(cursor: number): Promise<newNotice[]> {
+    const row = await pg.query(
+      `select * from notice where id<=($1) order by id desc limit 10`,
+      [cursor]
+    );
+    return row.rows;
+  }
+
+  //공지사항 조회 MAX_ID 값 조회
+  async findMaxId(): Promise<number> {
+    return await (
+      await pg.query(`select max(id) from notice`)
+    ).rows[0].max;
   }
 
   // //공지사항 업데이트

@@ -3,6 +3,7 @@ import {
   INoticeModel,
   newNotice,
   pageNationNotice,
+  cursorPage,
 } from '../interfaces';
 import { noticeModel } from '../model/noticeModel';
 export class NoticeService {
@@ -15,7 +16,7 @@ export class NoticeService {
   async findOneNotice(noticeDetailId: newNotice): Promise<newNotice[]> {
     return await noticeModel.findNotice(noticeDetailId);
   }
-  //공지사항 전체 조회
+  // //공지사항 전체 조회
 
   async findAll(page: number): Promise<pageNationNotice> {
     const totalCount = await noticeModel.countAll();
@@ -27,6 +28,28 @@ export class NoticeService {
       notice: notice,
     };
     return result;
+  }
+
+  //
+  // async findAllCursor(cursor: number): Promise<cursorPage> {
+  //   const findMaxId = await noticeModel.findMaxId();
+  //   const findAllCursor = await noticeModel.findAllCursor(cursor);
+  //   const nextCursor =
+  //     findAllCursor.length === 10
+  //       ? findAllCursor[findAllCursor.length - 1].id
+  //       : null;
+
+  //   const cursorPage: cursorPage = {
+  //     findMaxId: findMaxId,
+  //     findAllCursor: findAllCursor,
+  //     nextCursor: nextCursor,
+  //   };
+
+  //   return cursorPage;
+  // }
+
+  async findAllCount(): Promise<number> {
+    return await noticeModel.countAll();
   }
 
   //공지사항 수정
