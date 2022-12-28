@@ -6,7 +6,7 @@ import { log } from "../../logger";
 const config = {
   clientID: clientID,
   clientSecret: clientSecret,
-  callbackURL: "/auth/google/callback",
+  callbackURL: "/google/callback",
   scope: ["profile", "email"],
 };
 
