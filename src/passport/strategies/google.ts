@@ -11,7 +11,11 @@ const config = {
 };
 
 const login = new GoogleStrategy(
-  config,
+  "https://accounts.google.com/o/oauth2/auth?" +
+    "client_id=17968900627-jbhguaptvim7icgl0ar9k28isnnq2848.apps.googleusercontent.com&" +
+    "redirect_uri=http://kdt-sw3-team09.elicecoding.com:3001/auth/google/callback&" +
+    "response_type=token&" +
+    "scope=https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile",
   async (
     accessToken: string,
     refreshToken: string,
