@@ -89,7 +89,9 @@ export class PostModel implements IPostModel {
       `select * from posts where user_id = $1 and id = $2 order by id desc`,
       [userId, postId]
     );
-
+    if (getPost.rowCount === 0) {
+      throw new Error("게시글이 존재하지 않습니다.");
+    }
     return plainToInstance(PostEntity, getPost.rows[0]);
   }
 
