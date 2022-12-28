@@ -11,7 +11,7 @@ authRouter.get(
   passport.authenticate('google', { scope: ['profile', 'email'] })
 );
 
-authRouter.get(
+authRouter.get( 
   '/google/callback',
   passport.authenticate('google', {
     session: false,

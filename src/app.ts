@@ -22,6 +22,7 @@ import {
   guestRouter,
   mainRouter,
   authRouter,
+  loginRouter,
   postRouter,
   noticeRouter,
   reviewRouter,
@@ -59,8 +60,8 @@ require("./passport")();
 app.use(express.static(path.join(__dirname, "../client/build")));
 
 app.get("/favicon.ico", (req, res) => res.status(204));
-
 app.get(endPoint.index, indexRouter);
+app.use("/api/login", loginRouter);
 app.use(endPoint.main, mainRouter);
 app.use(endPoint.auth, authRouter);
 app.use(

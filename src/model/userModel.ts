@@ -30,7 +30,7 @@ export class UserModel implements IUserModel {
   }
 
   // 다형성을 써보려고 했는데 코드가 좀 별로 인 것 같습니다 !
-  async isUser(info: string | number): Promise<UserDto> {
+  async isUser(info: string | number): Promise<UserEntity> {
     let query = "";
     if (typeof info === "string") {
       query = "select *  from users where email = $1 and status = 0";
@@ -40,7 +40,7 @@ export class UserModel implements IUserModel {
 
     let result = await pg.query(query, [info]);
 
-    return plainToInstance(UserDto, result.rows[0]);
+    return plainToInstance(UserEntity, result.rows[0]);
   }
 
   async isNickName(nickName: string): Promise<Boolean> {
