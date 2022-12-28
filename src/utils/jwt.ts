@@ -1,21 +1,21 @@
-import jwt, { Secret } from 'jsonwebtoken';
-import { jwtSecret } from '../config';
+import jwt, { Secret } from "jsonwebtoken";
+import { jwtSecret } from "../config";
 
 export const setUserToken = (res: any, user: any) => {
   const accessToken = jwt.sign(
     { userId: user.id, email: user.email, status: user.status },
     jwtSecret as Secret,
     {
-      expiresIn: '23h',
+      expiresIn: "23h",
     }
   );
   const refreshToken = jwt.sign(
     { userId: user.id, email: user.email, status: user.status },
     jwtSecret as Secret,
     {
-      expiresIn: '14d',
+      expiresIn: "14d",
     }
   );
 
-  return { accessToken, refreshToken };
+  return { accessToken, refreshToken, role: user.status };
 };

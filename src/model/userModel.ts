@@ -4,7 +4,6 @@ import { pg } from "../app";
 import { reviewModel } from "./reviewModel";
 import { log } from "../logger";
 import { UserDto, UserEntity } from "../dto";
-import { isStringObject } from "util/types";
 export class UserModel implements IUserModel {
   async createUser(user: user): Promise<user> {
     const { email, nickName } = user;
@@ -16,13 +15,9 @@ export class UserModel implements IUserModel {
     return newUser.rows[0];
   }
 
-  // 아래처럼 서브쿼리를 써서 조회해오는 것과
-  // 쿼리를 posts_count, review_count를 구해오는 함수를 각각 만들어서
-  // 함수를 통해 값을 구해온 뒤,
-  // 결과들을 서비스 계층에서 합쳐서 보내는 중 어떤게 더 성능상 유리한가요 ?
   async userInfo(id: number): Promise<UserEntity> {
     const info = await pg.query(
-      "select *, (select count(*) from posts where user_id = ($1)) as post_count,(select count(*) from review  where user_id = ($1) ) as review_count from users where id =($1)",
+      "select *, (select count(content) from posts where user_id = ($1)) as post_count,(select count(content) from review  where user_id = ($1) ) as review_count from users where id =($1)",
       [id]
     );
 

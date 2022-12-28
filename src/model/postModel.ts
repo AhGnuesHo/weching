@@ -3,22 +3,22 @@ import {
   IPostModel,
   newPost,
   newPostAndTargetReview,
-} from '../interfaces';
-import { pg } from '../app';
-import { PoolClient } from 'pg';
-import { postService } from '../services/postService';
-import { log } from '../logger';
-import { plainToInstance } from 'class-transformer';
-import { PostEntity } from '../dto';
+} from "../interfaces";
+import { pg } from "../app";
+import { PoolClient } from "pg";
+import { postService } from "../services/postService";
+import { log } from "../logger";
+import { plainToInstance } from "class-transformer";
+import { PostEntity } from "../dto";
 
 export class PostModel implements IPostModel {
   async postingAndMatchingReview(post: post): Promise<newPostAndTargetReview> {
     const postingPg = await pg.connect();
     try {
-      postingPg.query('begin');
+      postingPg.query("begin");
       const posting = await this.posting(post, postingPg);
-      await postingPg.query('commit');
-      log.info('posting success : ' + post);
+      await postingPg.query("commit");
+      log.info("posting success : " + post);
 
       const target = await postService.createReview(post.userId);
       await this.createReview(target, posting);
@@ -30,10 +30,10 @@ export class PostModel implements IPostModel {
 
       return result;
     } catch (err) {
-      await postingPg.query('rollback');
-      throw new Error(err + '아이디가 존재하지 않습니다');
+      await postingPg.query("rollback");
+      throw new Error(err + "아이디가 존재하지 않습니다");
     } finally {
-      await postingPg.query('commit');
+      await postingPg.query("commit");
       postingPg.release();
     }
   }
@@ -41,7 +41,7 @@ export class PostModel implements IPostModel {
   async posting(post: post, pool: PoolClient): Promise<PostEntity> {
     const { userId, content } = post;
     const newPost = await pool.query(
-      'INSERT INTO posts ( user_id, content ) VALUES ($1, $2) RETURNING *',
+      "INSERT INTO posts ( user_id, content ) VALUES ($1, $2) RETURNING *",
       [userId, content]
     );
 
@@ -66,11 +66,11 @@ export class PostModel implements IPostModel {
         )
       );
     } catch (err) {
-      await reviewPool.query('rollback');
+      await reviewPool.query("rollback");
       const newTarget = await postService.createReview(post.userId);
       this.createReview(newTarget, post);
     } finally {
-      await reviewPool.query('commit');
+      await reviewPool.query("commit");
       reviewPool.release();
     }
   }

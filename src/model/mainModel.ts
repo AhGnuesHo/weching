@@ -1,6 +1,6 @@
-import { MainEntity } from './../dto';
-import { plainToInstance } from 'class-transformer';
-import { RankModel } from './rankModel';
+import { MainEntity } from "./../dto";
+import { plainToInstance } from "class-transformer";
+import { RankModel } from "./rankModel";
 
 import {
   IAdviceModel,
@@ -10,11 +10,11 @@ import {
   IUserModel,
   main,
   mainUserInfo,
-} from '../interfaces';
-import { ReviewModel, UserModel, AdviceModel, PostModel } from '../model';
+} from "../interfaces";
+import { ReviewModel, UserModel, AdviceModel, PostModel } from "../model";
 
-import { applyMixins } from '../services/components';
-import { postService } from '../services';
+import { applyMixins } from "../services/components";
+import { postService } from "../services";
 
 // 1.
 // 서비스에서 의존성 주입을 할때 클래스 대신 인터페이스를 주입하는 이유가 클래스에 의존 관계가 너무 종속되어있어서

@@ -1,11 +1,9 @@
-import { ReviewEntity } from './../dto/reviewDto';
-import { plainToInstance } from 'class-transformer';
-import { newPost, IReviewModel, review, user, newReview } from '../interfaces';
-import { pg } from '../app';
-import { query } from '../types';
-import { PostEntity } from '../dto';
-
-//where절에 있는 서브쿼리 수정하고 싶은데
+import { ReviewEntity } from "./../dto/reviewDto";
+import { plainToInstance } from "class-transformer";
+import { newPost, IReviewModel, review, user, newReview } from "../interfaces";
+import { pg } from "../app";
+import { query } from "../types";
+import { PostEntity } from "../dto";
 export class ReviewModel implements IReviewModel {
   async todoReview(userId: number): Promise<PostEntity[]> {
     const todoReview = await pg.query(
@@ -42,7 +40,7 @@ export class ReviewModel implements IReviewModel {
 
   async getDoneReviewCountThisMonth(reviewId: number): Promise<number> {
     const count = await pg.query(
-      `select count(*) from review where user_id = (select user_id from review where id = $1) 
+      `select count(content) from review where user_id = (select user_id from review where id = $1) 
       and content is not null and is_done = 1 and month = ${query.MONTH}`,
       [reviewId]
     );
@@ -52,7 +50,7 @@ export class ReviewModel implements IReviewModel {
 
   async getPostInfoByReviewId(reviewId: number): Promise<newPost> {
     const post = await pg.query(
-      'select * from posts where id = (select post_id from review where id = $1)',
+      "select * from posts where id = (select post_id from review where id = $1)",
       [reviewId]
     );
 
