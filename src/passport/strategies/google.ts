@@ -1,13 +1,13 @@
-const GoogleStrategy = require('passport-google-oauth20').Strategy;
-import { clientID, clientSecret } from '../../config';
-import { userService } from '../../services/userService';
-import { userEnum } from '../../interfaces';
-import { log } from '../../logger';
+const GoogleStrategy = require("passport-google-oauth20").Strategy;
+import { clientID, clientSecret } from "../../config";
+import { userService } from "../../services/userService";
+import { userEnum } from "../../interfaces";
+import { log } from "../../logger";
 const config = {
   clientID: clientID,
   clientSecret: clientSecret,
-  callbackURL: '/auth/google/callback',
-  scope: ['profile', 'email'],
+  callbackURL: "http://kdt-sw3-team09.elicecoding.com/auth/google/callback",
+  scope: ["profile", "email"],
 };
 
 const login = new GoogleStrategy(
