@@ -86,8 +86,8 @@ export class PostModel implements IPostModel {
 
   async getPost(userId: number, postId: number): Promise<PostEntity> {
     const getPost = await pg.query(
-      `select * from posts where id = $2 order by id desc`,
-      [userId, postId]
+      `select * from posts where id = $1 order by id desc`,
+      [postId]
     );
 
     return plainToInstance(PostEntity, getPost.rows[0]);
