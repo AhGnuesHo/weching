@@ -6,7 +6,7 @@ import { log } from "../../logger";
 const config = {
   clientID: clientID,
   clientSecret: clientSecret,
-  callbackURL: "/auth/google/callback",
+  redirectURL: "http://kdt-sw3-team09.elicecoding.com/auth/google/callback",
   scope: ["profile", "email"],
 };
 
