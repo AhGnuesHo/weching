@@ -1,8 +1,8 @@
-import { user } from '../interfaces';
-import { Expose, Type, Exclude } from 'class-transformer';
-import { IsEmail, MaxLength } from 'class-validator';
-import 'reflect-metadata';
-import { type } from 'os';
+import { user } from "../interfaces";
+import { Expose, Type, Exclude } from "class-transformer";
+import { IsEmail, MaxLength } from "class-validator";
+import "reflect-metadata";
+import { type } from "os";
 
 export class UserDto implements user {
   @Expose()
@@ -25,11 +25,10 @@ export class UserEntity {
   @Expose()
   id: number;
 
-  @Exclude()
-  @IsEmail()
+  @Expose()
   email: string;
 
-  @Expose({ name: 'nickname' })
+  @Expose({ name: "nickname" })
   @MaxLength(12)
   nickName: string;
 
@@ -40,11 +39,11 @@ export class UserEntity {
   @Type(() => Number)
   point: number;
 
-  @Expose({ name: 'post_count' })
+  @Expose({ name: "post_count" })
   @Type(() => Number)
   postCount: number;
 
-  @Expose({ name: 'review_count' })
+  @Expose({ name: "review_count" })
   @Type(() => Number)
   reviewCount: number;
 
