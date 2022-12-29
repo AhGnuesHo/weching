@@ -1,12 +1,12 @@
-import { EReview } from './../types/index';
-import { postModel, reviewModel } from '../model/index';
+import { EReview } from "./../types/index";
+import { postModel, reviewModel } from "../model/index";
 import {
   post,
   IPostModel,
   postWithReview,
   newPostAndTargetReview,
-} from '../interfaces';
-import { PostEntity } from '../dto';
+} from "../interfaces";
+import { PostEntity } from "../dto";
 
 export class PostService {
   constructor(private postModel: IPostModel) {}
@@ -23,7 +23,7 @@ export class PostService {
       const random =
         Math.floor(Math.random() * (count - EReview.LIMIT_USER_NUMBER)) +
         EReview.LIMIT_USER_NUMBER;
-      if (target.indexOf(random) === -1 && target.indexOf(userId) == -1) {
+      if (target.indexOf(random) === -1 && target.indexOf(userId) === -1) {
         target.push(random);
       } else {
         i--;
