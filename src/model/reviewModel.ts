@@ -7,7 +7,7 @@ import { PostEntity } from "../dto";
 export class ReviewModel implements IReviewModel {
   async todoReview(userId: number): Promise<PostEntity[]> {
     const todoReview = await pg.query(
-      `select * from posts where id in (select post_id from review where user_id = $1) and content is null order by id desc`,
+      `select * from posts where id in (select post_id from review where user_id = $1 and content is null ) order by id desc`,
       [userId]
     );
     return plainToInstance(PostEntity, todoReview.rows);
