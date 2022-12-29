@@ -6,7 +6,7 @@ import jwt from "jsonwebtoken";
 export function loginRequired(req: Request, res: Response, next: NextFunction) {
   const userToken = req.headers.authorization?.split(" ")[1];
 
-  if (!userToken || userToken === "null" || userToken === undefined) {
+  if (!userToken || userToken === "null" || userToken === "undefined") {
     log.error("Authorization 토큰 없음");
     errorResponse(
       res,
@@ -38,7 +38,7 @@ export function loginRequired(req: Request, res: Response, next: NextFunction) {
 export function mainUser(req: Request, res: Response, next: NextFunction) {
   const userToken = req.headers.authorization?.split(" ")[1];
 
-  if (!userToken || userToken === "null" || userToken === undefined) {
+  if (!userToken || userToken === "null" || userToken === "undefined") {
     res.json([]);
     return;
   }
