@@ -33,9 +33,9 @@ export class UserModel implements IUserModel {
   async isUser(info: string | number): Promise<UserEntity> {
     let query = "";
     if (typeof info === "string") {
-      query = "select *  from users where email = $1 and status = 0";
+      query = "select *  from users where email = $1 and status != 1 ";
     } else if (typeof info === "number") {
-      query = "select *  from users where id = $1 and status = 0";
+      query = "select *  from users where id = $1 and status != 1";
     }
 
     let result = await pg.query(query, [info]);
