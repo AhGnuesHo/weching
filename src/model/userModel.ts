@@ -57,7 +57,7 @@ export class UserModel implements IUserModel {
     const rest = user.point + deduct;
     if (rest < 0) {
       log.error(`${user} 포인트 모자람 현재 포인트 : ${user.point}`);
-      throw new Error("포인트 모자람");
+      throw new Error("포인트 모자랍니다 !");
     }
 
     if (typeof info === "string") {
