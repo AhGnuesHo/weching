@@ -25,7 +25,7 @@ export class ReviewModel implements IReviewModel {
 
   async getReviewByPost(postId: number): Promise<ReviewEntity[]> {
     const reviews = await pg.query(
-      `select *  from review where post_id = $1 and content is not null`,
+      `select *  from review where post_id = $1 and content is not null order by id desc`,
       [postId]
     );
 
