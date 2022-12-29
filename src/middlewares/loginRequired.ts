@@ -45,9 +45,9 @@ export function mainUser(req: Request, res: Response, next: NextFunction) {
 
   const secretKey = process.env.JWT_SECRET_KEY || "secret-key";
   const jwtDecoded = jwt.verify(userToken, secretKey);
-  const userId = (<{ userId: string }>jwtDecoded).userId;
-  const email = (<{ email: string }>jwtDecoded).email;
-  const status = (<{ status: number }>jwtDecoded).status;
+  const userId = (<{ userId: string }>jwtDecoded)?.userId;
+  const email = (<{ email: string }>jwtDecoded)?.email;
+  const status = (<{ status: number }>jwtDecoded)?.status;
   req.body.userId = userId;
   req.body.email = email;
   req.body.status = status;
