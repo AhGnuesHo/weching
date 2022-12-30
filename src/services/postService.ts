@@ -17,18 +17,18 @@ export class PostService {
 
   async createReview(userId: number): Promise<number[]> {
     const count = await postModel.getAllUsersCount();
-    let target = [20, 27, 24];
+    let target = [];
 
-    // for (let i = 0; i < EReview.TARGET_USER; i++) {
-    //   const random =
-    //     Math.floor(Math.random() * (count - EReview.LIMIT_USER_NUMBER)) +
-    //     EReview.LIMIT_USER_NUMBER;
-    //   if (target.indexOf(random) === -1 && target.indexOf(userId) === -1) {
-    //     target.push(random);
-    //   } else {
-    //     i--;
-    //   }
-    // }
+    for (let i = 0; i < EReview.TARGET_USER; i++) {
+      const random =
+        Math.floor(Math.random() * (count - EReview.LIMIT_USER_NUMBER)) +
+        EReview.LIMIT_USER_NUMBER;
+      if (target.indexOf(random) === -1 && target.indexOf(userId) === -1) {
+        target.push(random);
+      } else {
+        i--;
+      }
+    }
 
     return target;
   }
