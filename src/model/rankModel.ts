@@ -14,7 +14,7 @@ export class RankModel implements IRankModel {
 
   async getRank(rankPg: PoolClient): Promise<rank[]> {
     const ranking = await rankPg.query(
-      "select (ROW_NUMBER() OVER()) AS rank , best.id, best.avg FROM  (  ) as best LIMIT 10"
+      "select (ROW_NUMBER() OVER()) AS rank , best.id, best.avg FROM  (  SELECT id, avg FROM users where  avg is not null ORDER BY avg desc ) as best LIMIT 10"
     );
     return ranking.rows;
   }
