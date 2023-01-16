@@ -47,7 +47,7 @@ export const pg = new Pool({
 
 pg.connect()
   .then(() => log.info(`database Connect`))
-  .catch((err) => log.err("connection error", err.stack));
+  .catch((err) => log.error("connection error", err.stack));
 
 app.use(cors({ credentials: true, origin: "http://localhost:3000" }));
 app.use(logger("dev"));
