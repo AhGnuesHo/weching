@@ -1,7 +1,7 @@
-import { ReviewEntity } from './../dto/reviewDto';
-import { PostDto, PostEntity } from './../dto/postDto';
-import { PoolClient } from 'pg';
-import { UserEntity } from '../dto';
+import { ReviewEntity } from "./../dto/reviewDto";
+import { PostDto, PostEntity } from "./../dto/postDto";
+import { PoolClient } from "pg";
+import { UserEntity } from "../dto";
 
 interface user {
   email: string;
@@ -75,13 +75,13 @@ interface main {
 }
 
 enum postStatus {
-  PENDING = 'pending',
-  COMPLETE = 'complete',
+  PENDING = "pending",
+  COMPLETE = "complete",
 }
 
 enum userEnum {
-  USER = 'user',
-  GUEST = 'guest',
+  USER = "user",
+  GUEST = "guest",
 }
 
 enum point {
@@ -143,7 +143,11 @@ interface IUserModel {
 interface IPostModel {
   posting(post: post, pool: PoolClient): Promise<newPost>;
   getAllUsersCount(): Promise<number>;
-  createReview(targetUser: number[], post: PostEntity): Promise<void>;
+  createReview(
+    targetUser: number[],
+    post: PostEntity,
+    pool: PoolClient
+  ): Promise<void>;
   getPosts(userId: number): Promise<newPost[]>;
 }
 interface INoticeModel {
