@@ -1,5 +1,5 @@
-import { postService } from '../services/postService';
-import { AsyncRequestHandler } from '../types';
+import { postService } from "../services/postService";
+import { AsyncRequestHandler } from "../types";
 interface IPostController {
   posting: AsyncRequestHandler;
   getPost: AsyncRequestHandler;
@@ -8,6 +8,7 @@ interface IPostController {
 export class PostController implements IPostController {
   posting: AsyncRequestHandler = async (req, res) => {
     const user = await postService.posting(req.body);
+
     res.json(user);
   };
 

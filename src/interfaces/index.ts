@@ -1,3 +1,4 @@
+import { Pool } from "pg";
 import { ReviewEntity } from "./../dto/reviewDto";
 import { PostDto, PostEntity } from "./../dto/postDto";
 import { PoolClient } from "pg";
