@@ -56,9 +56,10 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
 require("./passport")();
-
-app.use(express.static(path.join(__dirname, "../client/build")));
-
+app.use(express.static(path.join(__dirname, "../client_w/build")));
+app.get("/", function (req, res) {
+  res.sendFile(path.join(__dirname, "../client_w/build/index.html"));
+});
 app.get("/favicon.ico", (req, res) => res.status(204));
 app.get(endPoint.index, indexRouter);
 app.use("/api/login", loginRouter);
@@ -98,11 +99,8 @@ app.listen(port, () => {
   log.info(`Server listening on port: ${port}`);
 });
 
-// 스케줄러는 어느 계층에 있어야하는지 고민해봤는데
-// 어느 곳에 있어도 다 이상한 것 같습니다.
-// 정답을.. 알려주세요ㅜ
 cron.schedule(
-  "* * 1-12 * *",
+  "* * 1 1-12 *",
   async () => {
     log.info(`update ranking`);
     try {
@@ -119,5 +117,5 @@ cron.schedule(
 );
 
 app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "../client/build"));
+  res.sendFile(path.join(__dirname, "../client_w/build/index.html"));
 });

@@ -60,8 +60,8 @@ export class RankModel implements IRankModel {
     const poolClient = await pg.connect();
     try {
       await poolClient.query("begin");
-      // todo 유저 등급 리셋하는 쿼리 넣기
-      const updateCount = await poolClient.query(``);
+
+      const updateCount = await poolClient.query(` `);
       if (allCount !== updateCount.rowCount) {
         throw new Error(
           `업데이트 실패 : 전체 유저수 ${allCount}, 업데이트 유저수 : ${updateCount.rowCount}`
