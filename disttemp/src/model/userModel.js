@@ -31,7 +31,7 @@ class UserModel {
     }
     rankInfo(id) {
         return __awaiter(this, void 0, void 0, function* () {
-            const info = yield app_1.pg.query(`select 
+            const info = yield app_1.pg.query(`select distinct
      * from rank where user_id = $1`, [id]);
             return info.rows;
         });

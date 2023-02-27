@@ -25,8 +25,11 @@ export class UserModel implements IUserModel {
   }
 
   async rankInfo(id: number): Promise<any> {
-    const info = await pg.query(`select 
-     * from rank where user_id = $1`, [id]);
+    const info = await pg.query(
+      `select distinct
+     * from rank where user_id = $1`,
+      [id]
+    );
     return info.rows;
   }
 
