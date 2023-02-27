@@ -1,0 +1,1 @@
+{"version":3,"file":"adviceModel.js","sourceRoot":"","sources":["../../../src/model/adviceModel.ts"],"names":[],"mappings":";;;;;;;;;;;;AACA,gCAA4B;AAG5B,MAAa,WAAW;IAChB,SAAS;;YACb,MAAM,GAAG,GAAG,MAAM,QAAE,CAAC,KAAK,CACxB,gDAAgD,CACjD,CAAC;YACF,OAAO,GAAG,CAAC,IAAI,CAAC,CAAC,CAAC,CAAC;QACrB,CAAC;KAAA;CACF;AAPD,kCAOC;AAEY,QAAA,WAAW,GAAG,IAAI,WAAW,EAAE,CAAC"}

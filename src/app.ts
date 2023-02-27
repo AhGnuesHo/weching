@@ -49,17 +49,13 @@ pg.connect()
   .then(() => log.info(`database Connect`))
   .catch((err) => log.error("connection error", err.stack));
 
-app.use(cors({ credentials: true, origin: "http://localhost:3000" }));
+app.use(cors({}));
 app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
 require("./passport")();
-app.use(express.static(path.join(__dirname, "../client_w/build")));
-app.get("/", function (req, res) {
-  res.sendFile(path.join(__dirname, "../client_w/build/index.html"));
-});
 app.get("/favicon.ico", (req, res) => res.status(204));
 app.get(endPoint.index, indexRouter);
 app.use("/api/login", loginRouter);
@@ -115,7 +111,3 @@ cron.schedule(
     timezone: "Asia/Seoul",
   }
 );
-
-app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "../client_w/build/index.html"));
-});

@@ -6,7 +6,7 @@
     "module": "commonjs",
     "rootDir": "./",
     "moduleResolution": "node",
-    "outDir": "./dist",
+    "outDir": "disttemp",
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "strict": true,
