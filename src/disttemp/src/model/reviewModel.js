@@ -10,7 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.reviewModel = exports.ReviewModel = void 0;
-const reviewDto_1 = require("./../dto/reviewDto");
+const reviewDto_1 = require("../dto/reviewDto");
 const class_transformer_1 = require("class-transformer");
 const app_1 = require("../app");
 const types_1 = require("../types");

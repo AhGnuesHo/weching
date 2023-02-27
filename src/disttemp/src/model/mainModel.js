@@ -10,10 +10,10 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.mainModel = exports.Main = void 0;
-const dto_1 = require("./../dto");
+const dto_1 = require("../dto");
 const class_transformer_1 = require("class-transformer");
 const rankModel_1 = require("./rankModel");
-const model_1 = require("../model");
+const model_1 = require(".");
 const components_1 = require("../services/components");
 const services_1 = require("../services");
 class Main {

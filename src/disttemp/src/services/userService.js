@@ -10,7 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.userService = exports.UserService = void 0;
-const index_1 = require("./../types/index");
+const index_1 = require("../types/index");
 const model_1 = require("../model");
 const interfaces_1 = require("../interfaces");
 class UserService {
