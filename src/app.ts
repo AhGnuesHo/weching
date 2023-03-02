@@ -33,7 +33,6 @@ import { endPoint } from "./constants";
 import { Pool } from "pg";
 import { userRouter } from "./routers/userRouter";
 import { ReviewDto } from "./dto";
-import path from "path";
 
 export const app = express();
 
@@ -58,7 +57,6 @@ app.use(cookieParser());
 require("./passport")();
 app.get("/favicon.ico", (req, res) => res.status(204));
 app.get(endPoint.index, indexRouter);
-app.use("/api/login", loginRouter);
 app.use(endPoint.main, mainRouter);
 app.use(endPoint.auth, authRouter);
 app.use(
@@ -88,6 +86,7 @@ app.use(endPoint.report, reportRouter);
 app.use(function (req, res, next) {
   next(createError(404));
 });
+app.use("/api/login", loginRouter);
 
 app.use(errorHandler);
 
@@ -96,7 +95,7 @@ app.listen(port, () => {
 });
 
 cron.schedule(
-  "* * 1 1-12 *",
+  "0 0 12 1 1/1 ? *",
   async () => {
     log.info(`update ranking`);
     try {

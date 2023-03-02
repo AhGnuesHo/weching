@@ -6,20 +6,20 @@ interface IPostController {
   getPosts: AsyncRequestHandler;
 }
 export class PostController implements IPostController {
-  posting: AsyncRequestHandler = async (req, res) => {
+  public posting: AsyncRequestHandler = async (req, res) => {
     const user = await postService.posting(req.body);
 
     res.json(user);
   };
 
-  getPost: AsyncRequestHandler = async (req, res) => {
+  public getPost: AsyncRequestHandler = async (req, res) => {
     const { userId } = req.body;
     const postId = req.body.paramToNumber(req.params.postId);
     const post = await postService.getPost(userId, postId);
     res.json(post);
   };
 
-  getPosts: AsyncRequestHandler = async (req, res) => {
+  public getPosts: AsyncRequestHandler = async (req, res) => {
     const { userId } = req.body;
     const myAllPost = await postService.getPosts(userId);
     res.json(myAllPost);

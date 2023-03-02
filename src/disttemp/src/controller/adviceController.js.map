@@ -1,1 +1,0 @@
-{"version":3,"file":"adviceController.js","sourceRoot":"","sources":["../../../src/controller/adviceController.ts"],"names":[],"mappings":";;;;;;;;;;;;AAAA,0CAA4C;AAO/B,QAAA,gBAAgB,GAA8B;IACnD,SAAS,CAAC,GAAQ,EAAE,GAAQ;;YAChC,MAAM,MAAM,GAAG,MAAM,wBAAa,CAAC,SAAS,EAAE,CAAC;YAE/C,GAAG,CAAC,IAAI,CAAC,MAAM,CAAC,CAAC;QACnB,CAAC;KAAA;CACF,CAAC"}
