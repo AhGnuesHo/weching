@@ -65,7 +65,7 @@ exports.app.use(middlewares_1.errorHandler);
 exports.app.listen(config_1.port, () => {
     logger_1.log.info(`Server listening on port: ${config_1.port}`);
 });
-node_cron_1.default.schedule("0 0 12 1 1/1 ? *", () => __awaiter(void 0, void 0, void 0, function* () {
+node_cron_1.default.schedule("* * 1 1-12 *", () => __awaiter(void 0, void 0, void 0, function* () {
     logger_1.log.info(`update ranking`);
     try {
         yield rankModel_1.rankModel.setNewRank();

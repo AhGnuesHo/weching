@@ -61,10 +61,11 @@ export class RankModel implements IRankModel {
     try {
       await poolClient.query("begin");
 
-      const updateCount = await poolClient.query(` `); 
-      if (allCount !== updateCount.rowCount) {
+      const updateCount = await poolClient.query(`update users set grade = 0 `);
+
+      if (allCount.count != updateCount.rowCount) {
         throw new Error(
-          `업데이트 실패 : 전체 유저수 ${allCount}, 업데이트 유저수 : ${updateCount.rowCount}`
+          `업데이트 실패 : 전체 유저수 ${allCount.count}, 업데이트 유저수 : ${updateCount.rowCount}`
         );
       }
     } catch (e) {

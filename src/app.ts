@@ -95,7 +95,7 @@ app.listen(port, () => {
 });
 
 cron.schedule(
-  "0 0 12 1 1/1 ? *",
+  "* * 1 1-12 *",
   async () => {
     log.info(`update ranking`);
     try {

@@ -58,7 +58,7 @@ class RankModel {
             const poolClient = yield app_1.pg.connect();
             try {
                 yield poolClient.query("begin");
-                const updateCount = yield poolClient.query(` `);
+                const updateCount = yield poolClient.query(`update users set grade = 0 `);
                 if (allCount !== updateCount.rowCount) {
                     throw new Error(`업데이트 실패 : 전체 유저수 ${allCount}, 업데이트 유저수 : ${updateCount.rowCount}`);
                 }
