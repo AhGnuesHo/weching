@@ -57,10 +57,10 @@ exports.app.use(constants_1.endPoint.notice, routers_1.noticeRouter);
 exports.app.use(constants_1.endPoint.advice, routers_1.adviceRouter);
 exports.app.use(constants_1.endPoint.user, middlewares_1.loginRequired, (0, middlewares_1.DtoValidatorMiddleware)(userDto_1.UserDto, true), userRouter_1.userRouter);
 exports.app.use(constants_1.endPoint.report, routers_1.reportRouter);
+exports.app.use("/api/login", routers_1.loginRouter);
 exports.app.use(function (req, res, next) {
     next((0, http_errors_1.default)(404));
 });
-exports.app.use("/api/login", routers_1.loginRouter);
 exports.app.use(middlewares_1.errorHandler);
 exports.app.listen(config_1.port, () => {
     logger_1.log.info(`Server listening on port: ${config_1.port}`);

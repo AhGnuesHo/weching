@@ -83,10 +83,10 @@ app.use(
   userRouter
 );
 app.use(endPoint.report, reportRouter);
+app.use("/api/login", loginRouter);
 app.use(function (req, res, next) {
   next(createError(404));
 });
-app.use("/api/login", loginRouter);
 
 app.use(errorHandler);
 
